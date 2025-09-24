@@ -2,3 +2,7 @@ opencv-python
 mediapipe
 numpy
 pyttsx3
+tensorflow
+pandas
+scikit-learn
+joblib

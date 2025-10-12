@@ -6,46 +6,136 @@ import mediapipe as mp
 import numpy as np
 import time
 import math
-import pyttsx3
-from multiprocessing import Process, Queue
+from gtts import gTTS
+import pygame
+import os
+import tempfile
+from threading import Thread
+from queue import Queue
 import atexit
 
-# --- TTS (voice) Setup ---
-def voice_worker(queue):
-    """Function to run in a separate process for text-to-speech."""
-    engine = pyttsx3.init()
-    engine.setProperty('rate', 165)
-    engine.setProperty('volume', 1.0)
-    while True:
-        text_to_say = queue.get()
-        if text_to_say is None:
-            break
-        try:
-            engine.say(text_to_say)
-            engine.runAndWait()
-        except Exception as e:
-            print(f"Error in TTS engine: {e}")
+# --- TTS (voice) Setup with gTTS + pygame (RELIABLE on Windows!) ---
+class VoiceSystem:
+    def __init__(self):
+        """Initialize pygame mixer for audio playback"""
+        pygame.mixer.init(frequency=22050, size=-16, channels=2, buffer=512)
+        self.queue = Queue()
+        self.temp_dir = tempfile.gettempdir()
+        self.last_say_time = {}
+        self.running = True  # Set before starting thread!
+        self.thread = Thread(target=self._worker, daemon=True)
+        self.thread.start()
+        print("[VOICE] gTTS + pygame voice system initialized!")
+    
+    def _worker(self):
+        """Worker thread that processes voice messages"""
+        print("[VOICE WORKER] Started")
+        message_count = 0
+        
+        while self.running:
+            try:
+                msg = self.queue.get(timeout=1)
+                if msg is None:
+                    print("[VOICE WORKER] Stopping")
+                    break
+                
+                text, msg_id = msg
+                message_count += 1
+                
+                print(f"[VOICE WORKER] #{message_count}: Generating audio for: {text[:50]}...")
+                
+                # Generate speech file
+                tts = gTTS(text=text, lang='hi', slow=False)
+                audio_file = os.path.join(self.temp_dir, f"voice_{msg_id}.mp3")
+                tts.save(audio_file)
+                
+                print(f"[VOICE WORKER] #{message_count}: Playing audio...")
+                
+                # Play audio
+                pygame.mixer.music.load(audio_file)
+                pygame.mixer.music.play()
+                
+                # Wait for playback to finish
+                while pygame.mixer.music.get_busy() and self.running:
+                    time.sleep(0.1)
+                
+                # Cleanup
+                try:
+                    os.remove(audio_file)
+                except:
+                    pass
+                
+                print(f"[VOICE WORKER] #{message_count}: Finished")
+                
+            except:
+                # Timeout or error, continue
+                pass
+    
+    def say(self, text, priority='normal', msg_type='general'):
+        """Queue text to be spoken"""
+        intervals = {
+            'high': 0.8,
+            'normal': 1.8,
+            'low': 3.5
+        }
+        min_interval = intervals.get(priority, 1.8)
+        
+        now = time.time()
+        last_time = self.last_say_time.get(msg_type, 0)
+        time_since_last = now - last_time
+        
+        if time_since_last > min_interval:
+            msg_id = f"{msg_type}_{int(now*1000)}"
+            self.queue.put((text, msg_id))
+            self.last_say_time[msg_type] = now
+            print(f"[VOICE] Queued [{priority}][{msg_type}]: {text[:50]}...")
+            return True
+        else:
+            print(f"[VOICE DEBUG] Skipped [{msg_type}]: too soon ({time_since_last:.2f}s < {min_interval}s)")
+            return False
+    
+    def stop(self):
+        """Stop the voice system"""
+        print("[VOICE] Stopping...")
+        self.running = False
+        self.queue.put(None)
+        self.thread.join(timeout=5)
+        pygame.mixer.quit()
+        print("[VOICE] Stopped")
 
-_tts_queue = Queue()
-_tts_process = Process(target=voice_worker, args=(_tts_queue,), daemon=True)
-_tts_process.start()
-_last_say_time = 0
+_voice_system = None
 
-def say(text, min_interval=1.8):
-    """Sends text to the TTS process to be spoken."""
-    global _last_say_time
-    now = time.time()
-    if now - _last_say_time > min_interval:
-        print(f"🔊 Queuing: {text}")
-        _tts_queue.put(text)
-        _last_say_time = now
+def init_voice():
+    """Initialize voice system - called lazily on first use"""
+    global _voice_system
+    if _voice_system is None:
+        print("[VOICE MAIN] Initializing gTTS voice system...")
+        _voice_system = VoiceSystem()
+        print("[VOICE MAIN] Voice system ready!")
+
+def say(text, min_interval=1.8, priority='normal', msg_type='general'):
+    """
+    Sends text to the TTS system to be spoken.
+    
+    Args:
+        text: Text to speak
+        min_interval: Minimum time between same message type (seconds)
+        priority: 'high' (0.8s interval), 'normal' (1.8s), 'low' (3.5s)
+        msg_type: Message type for tracking (e.g., 'pelvis', 'dorsi', 'rep')
+    """
+    # Initialize voice system on first use
+    init_voice()
+    
+    # Use the voice system
+    if _voice_system:
+        return _voice_system.say(text, priority, msg_type)
+    return False
 
 def stop_tts():
     """Stops the text-to-speech engine gracefully."""
-    _tts_queue.put(None)
-    _tts_process.join(timeout=2) # Wait for the process to finish
-    if _tts_process.is_alive():
-        _tts_process.terminate()
+    global _voice_system
+    if _voice_system:
+        _voice_system.stop()
 
 
 atexit.register(stop_tts)
@@ -106,30 +196,33 @@ VIOLATION_PERSIST_FRAMES = 8
 
 def enhanced_calibration_guide():
     """Enhanced calibration with comprehensive setup guidance"""
-    # Sequential voice instructions without blocking
-    say("Glute Fly AI Trainer starting.", min_interval=0.1)
-    say("This exercise helps fix hip problems and FAI.", min_interval=0.1)
-    say("First, set up your equipment and position.", min_interval=0.1)
+    # Sequential voice instructions - each with unique msg_type to avoid blocking
+    print("[DEBUG] Starting enhanced calibration guide...")
+    
+    say("Glute Fly AI Trainer shuru ho raha hai.", priority='normal', msg_type='intro1')
+    say("Yeh exercise hip problems aur FAI fix karne mein madad karta hai.", priority='normal', msg_type='intro2')
+    say("Pehle apna equipment aur position set karo.", priority='normal', msg_type='setup1')
     
     # Equipment setup
-    say("Equipment needed: 2 inch thick pad or towel, 2 kg dumbbell.", min_interval=0.1)
-    say("Place the pad or towel under your hip for support.", min_interval=0.1)
-    say("Hold the 2 kg dumbbell in your hand.", min_interval=0.1)
+    say("Equipment chahiye: 2 inch mota pad ya towel, aur 2 kg dumbbell.", priority='normal', msg_type='equipment1')
+    say("Pad ko apne hip ke neeche rakho support ke liye.", priority='normal', msg_type='equipment2')
     
     # Position setup
-    say("Now, position yourself correctly.", min_interval=0.1)
-    say("Lie down on your side with legs straight.", min_interval=0.1)
-    say("Place your heels at the edge of your hips.", min_interval=0.1)
-    say("Touch your Achilles top to your other knee.", min_interval=0.1)
-    say("Keep your foot dorsiflexed - toes toward shin.", min_interval=0.1)
-    say("Hips should be 4 inches forward from square position.", min_interval=0.1)
-    say("Chest forward, slight back arch.", min_interval=0.1)
-    say("Ready for calibration? Press C when positioned correctly.", min_interval=0.1)
+    say("Ab apni position sahi karo.", priority='normal', msg_type='position1')
+    say("Side pe let jao, legs seedhi rakho.", priority='normal', msg_type='position2')
+    say("Heels ko hips ke edge par rakho.", priority='normal', msg_type='position3')
+    say("Achilles ka top dusre knee ko touch karna chahiye.", priority='normal', msg_type='position4')
+    say("Foot dorsiflexed rakho - toes shin ki taraf.", priority='normal', msg_type='position5')
+    say("Hips 4 inch forward rakhne hain square position se.", priority='normal', msg_type='position6')
+    say("Chest forward, back mein halka sa arch.", priority='normal', msg_type='position7')
+    say("Position ready hai? Toh C press karo calibration ke liye.", priority='normal', msg_type='ready')
+    
+    print("[DEBUG] Enhanced calibration guide complete - all messages queued")
 
 def enhanced_calibration_process(pose, cap, side, baseline):
     """Enhanced calibration with real-time setup validation"""
-    say("Starting calibration. Hold your setup position still.", min_interval=0.1)
-    say("Checking your position now. Stay still for 3 seconds.", min_interval=0.1)
+    say("Calibration shuru kar rahe hain. Position still rakho.", priority='normal', msg_type='calibration1')
+    say("Position check ho raha hai. 3 seconds still raho.", priority='normal', msg_type='calibration2')
     
     frames = 0
     sum_pelvis_x = 0.0
@@ -209,7 +302,7 @@ def enhanced_calibration_process(pose, cap, side, baseline):
                 heels_hip_distance = abs(heel2[0] - hip2[0]) / w2
                 if heels_hip_distance > 0.08:  # 8% threshold
                     if 'heels' not in corrections_given:
-                        say("Adjust heels closer to hip edge.", min_interval=0.5)
+                        say("Heels ko hip edge ke paas rakho.", priority='high', msg_type='calib_heels')
                         corrections_given.add('heels')
                         last_correction_time = current_time
                 else:
@@ -218,7 +311,7 @@ def enhanced_calibration_process(pose, cap, side, baseline):
                 # Check Achilles touch (knee-ankle-foot angle)
                 if not (60 <= dorsi_ang2 <= 120):
                     if 'achilles' not in corrections_given:
-                        say("Touch Achilles top to other knee.", min_interval=0.5)
+                        say("Achilles ka top dusre knee ko touch karo.", priority='high', msg_type='calib_achilles')
                         corrections_given.add('achilles')
                         last_correction_time = current_time
                 else:
@@ -227,7 +320,7 @@ def enhanced_calibration_process(pose, cap, side, baseline):
                 # Check dorsiflexion
                 if not (80 <= dorsi_ang2 <= 120):
                     if 'dorsi' not in corrections_given:
-                        say("Keep foot dorsiflexed - toes toward shin.", min_interval=0.5)
+                        say("Foot dorsiflexed rakho - toes shin ki taraf.", priority='high', msg_type='calib_dorsi')
                         corrections_given.add('dorsi')
                         last_correction_time = current_time
                 else:
@@ -236,7 +329,7 @@ def enhanced_calibration_process(pose, cap, side, baseline):
                 # Check hip angle (shoulder-hip-knee)
                 if not (160 <= hip_ang2 <= 180):
                     if 'hip_angle' not in corrections_given:
-                        say("Hips should be 4 inches forward from square.", min_interval=0.5)
+                        say("Hips 4 inch forward rakhne hain square se.", priority='high', msg_type='calib_hip')
                         corrections_given.add('hip_angle')
                         last_correction_time = current_time
                 else:
@@ -245,7 +338,7 @@ def enhanced_calibration_process(pose, cap, side, baseline):
                 # Check back arch
                 if hip_ang2 < 160:
                     if 'back_arch' not in corrections_given:
-                        say("Chest forward, maintain back arch.", min_interval=0.5)
+                        say("Chest forward rakho, back mein arch maintain karo.", priority='high', msg_type='calib_arch')
                         corrections_given.add('back_arch')
                         last_correction_time = current_time
                 else:
@@ -275,22 +368,21 @@ def enhanced_calibration_process(pose, cap, side, baseline):
         # Setup validation summary
         total_checks = sum(setup_checks.values())
         if total_checks > frames * 0.7:  # 70% of frames passed checks
-            say("Calibration complete! Setup verified.", min_interval=0.1)
-            say("Start with small lifts - just one inch height.", min_interval=0.1)
-            say("Keep hips completely still during movement.", min_interval=0.1)
-            say("Control over speed - slow and controlled.", min_interval=0.1)
+            say("Calibration complete! Setup verified hai.", priority='normal', msg_type='calib_done1')
+            say("Choti lifts se shuru karo - sirf ek inch height.", priority='normal', msg_type='calib_done2')
+            say("Hips bilkul still rakhne hain movement mein.", priority='normal', msg_type='calib_done3')
+            say("Speed pe control rakho - slow aur controlled.", priority='normal', msg_type='calib_done4')
         else:
-            say("Calibration done, but setup needs improvement.", min_interval=0.1)
-            say("Focus on proper positioning for better results.", min_interval=0.1)
+            say("Calibration ho gaya, lekin setup improve karna padega.", priority='normal', msg_type='calib_warning1')
+            say("Sahi positioning pe focus karo better results ke liye.", priority='normal', msg_type='calib_warning2')
             
         return True
     else:
-        say("Calibration failed. Try again with better positioning.", min_interval=0.5)
+        say("Calibration fail ho gaya. Dobara try karo sahi position ke saath.", priority='normal', msg_type='calib_fail')
         return False
 
 def main():
-    # Initialize voice first
-    # init_voice() # This line is no longer needed as voice is in a separate process
+    # Voice system will auto-initialize on first say() call (lazy initialization)
     
     cap = cv2.VideoCapture(0)
     if not cap.isOpened():
@@ -306,6 +398,19 @@ def main():
     direction = 0  # 0 = down, 1 = up
     fps_prev = 0.0
     p_time = 0.0
+    
+    # Continuous guidance system - periodic reminders
+    last_guidance_time = time.time()
+    guidance_interval = 15  # Reminder every 15 seconds
+    guidance_messages = [
+        "Yaad rakho, hips bilkul still rakhne hain.",
+        "Control ke saath lift karo. Speed se nahi.",
+        "Ankle dorsiflexed rakho throughout.",
+        "Choti lifts karo, ek inch hi kaafi hai.",
+        "Pelvis ko straight rakho, roll mat hone do.",
+        "Slow aur controlled movement maintain karo."
+    ]
+    guidance_index = 0
 
     # calibration stores
     baseline = {
@@ -473,14 +578,14 @@ def main():
                     cv2.putText(image, f"{int((sm_progress or 0)*100)}%", (bar_x1-5, top-10),
                                 cv2.FONT_HERSHEY_SIMPLEX, 0.6, (255,255,255), 2)
 
-                    # rep logic (hysteresis)
+                    # rep logic (hysteresis) with Hindi/English mixed feedback
                     if (sm_progress or 0) >= KNEE_UP_THRESHOLD and direction == 0:
                         direction = 1
-                        say("Good lift! Hold the position.", min_interval=2.0)
+                        say("Achha! Leg upar hai. Position hold karo.", priority='normal', msg_type='rep_up')
                     if (sm_progress or 0) <= KNEE_DOWN_THRESHOLD and direction == 1:
                         direction = 0
                         reps += 1
-                        say(f"Excellent! Rep {reps} completed. Keep hips still.", min_interval=2.0)
+                        say(f"Shabash! Rep {reps} complete. Hips still rakho.", priority='normal', msg_type='rep_complete')
 
                 # --------- form checks ----------
                 warnings = []
@@ -536,46 +641,68 @@ def main():
                                 cv2.FONT_HERSHEY_SIMPLEX, 0.6, (0, 255, 0), 2)
                     ycursor += 28
 
-                # Voice feedback for violations
+                # Voice feedback for violations with continuous reminders
                 if vio['pelvis_shift'] > VIOLATION_PERSIST_FRAMES:
-                    say("Keep your hips completely still. No forward or backward movement.")
-                    vio['pelvis_shift'] = 0
+                    if say("Hips ko bilkul still rakho. Forward ya backward mat jao.", 
+                           priority='high', msg_type='pelvis_shift'):
+                        vio['pelvis_shift'] = -5  # Small negative allows quick re-trigger if still violating
+                        
                 if vio['hip_roll'] > VIOLATION_PERSIST_FRAMES:
-                    say("Don't let your pelvis roll back. Stay straight up and down.")
-                    vio['hip_roll'] = 0
+                    if say("Pelvis ko roll back mat hone do. Seedha rakho.", 
+                           priority='high', msg_type='hip_roll'):
+                        vio['hip_roll'] = -5
+                        
                 if vio['dorsi'] > VIOLATION_PERSIST_FRAMES:
-                    say("Keep your ankle dorsiflexed. Toes toward shin.")
-                    vio['dorsi'] = 0
+                    if say("Ankle dorsiflexed rakho. Toes ko shin ki taraf.", 
+                           priority='high', msg_type='dorsi'):
+                        vio['dorsi'] = -5
                 
-                # Individual positive voice feedback
-                if positive_vio['pelvis_stable'] > VIOLATION_PERSIST_FRAMES:
-                    say("Great! Your hips are staying stable!")
-                    positive_vio['pelvis_stable'] = 0
-                if positive_vio['hip_straight'] > VIOLATION_PERSIST_FRAMES:
-                    say("Excellent! Your pelvis is staying straight!")
-                    positive_vio['hip_straight'] = 0
-                if positive_vio['dorsi_good'] > VIOLATION_PERSIST_FRAMES:
-                    say("Perfect! Your ankle dorsiflexion is spot on!")
-                    positive_vio['dorsi_good'] = 0
+                # Individual positive voice feedback with low priority (less frequent)
+                if positive_vio['pelvis_stable'] > VIOLATION_PERSIST_FRAMES * 2:
+                    if say("Bahut badhiya! Hips bilkul stable hain!", 
+                           priority='low', msg_type='pelvis_stable'):
+                        positive_vio['pelvis_stable'] = 0
+                        
+                if positive_vio['hip_straight'] > VIOLATION_PERSIST_FRAMES * 2:
+                    if say("Ekdum perfect! Pelvis straight hai!", 
+                           priority='low', msg_type='hip_straight'):
+                        positive_vio['hip_straight'] = 0
+                        
+                if positive_vio['dorsi_good'] > VIOLATION_PERSIST_FRAMES * 2:
+                    if say("Zabardast! Ankle dorsiflexion ekdum sahi hai!", 
+                           priority='low', msg_type='dorsi_good'):
+                        positive_vio['dorsi_good'] = 0
                 
-                # Positive voice feedback for correct posture
-                if len(positive_feedback) >= 2:  # If 2 or more things are correct
-                    if vio['pelvis_shift'] == 0 and vio['hip_roll'] == 0 and vio['dorsi'] == 0:
+                # Overall positive voice feedback when form is good
+                if len(positive_feedback) >= 3:  # If all 3 things are correct
+                    if vio['pelvis_shift'] <= 0 and vio['hip_roll'] <= 0 and vio['dorsi'] <= 0:
                         # Random positive feedback to avoid repetition
                         positive_messages = [
-                            "Perfect form! Keep it up!",
-                            "Excellent posture! You're doing great!",
-                            "Outstanding! Your form is spot on!",
-                            "Fantastic! Keep maintaining that form!",
-                            "Brilliant! Your technique is perfect!",
-                            "Amazing! You're mastering this exercise!"
+                            "Bahut achha! Form perfect hai!",
+                            "Shabash! Posture ekdum sahi hai!",
+                            "Kamaal ka! Keep it up!",
+                            "Ekdum mast! Form maintain karo!",
+                            "Perfect! Aise hi karte raho!",
+                            "Zabardast! Technique ekdum perfect!"
                         ]
                         import random
-                        say(random.choice(positive_messages))
-                        # Reset to avoid spam
-                        vio['pelvis_shift'] = -10
-                        vio['hip_roll'] = -10
-                        vio['dorsi'] = -10
+                        if say(random.choice(positive_messages), priority='low', msg_type='overall_good'):
+                            # Reset to avoid spam
+                            vio['pelvis_shift'] = -15
+                            vio['hip_roll'] = -15
+                            vio['dorsi'] = -15
+                
+                # Continuous guidance system - periodic reminders during exercise
+                current_time = time.time()
+                if baseline['knee_y'] is not None:  # Only after calibration
+                    if current_time - last_guidance_time > guidance_interval:
+                        # Only give guidance if no active violations
+                        if (vio['pelvis_shift'] <= 0 and vio['hip_roll'] <= 0 and 
+                            vio['dorsi'] <= 0 and len(warnings) == 0):
+                            if say(guidance_messages[guidance_index], 
+                                   priority='low', msg_type='guidance'):
+                                guidance_index = (guidance_index + 1) % len(guidance_messages)
+                                last_guidance_time = current_time
 
                 # UI header/footer
                 cv2.putText(image, f"Side: {side}   Reps: {reps}", (10, 40),
@@ -599,14 +726,14 @@ def main():
                 break
             elif key == ord('l'):
                 side = 'right' if side == 'left' else 'left'
-                say(f"{side} side")
+                say(f"Ab {side} side. Position adjust karo.", priority='normal', msg_type='side_switch')
                 # reset smoothing to avoid jump artifacts
                 sm_knee_y = sm_pelvis_x = sm_lrhip_dx = sm_hip_angle = sm_dorsi = sm_progress = None
                 # keep baseline (user can recalibrate)
             elif key == ord('r'):
                 reps = 0
                 direction = 0
-                say("Counters reset")
+                say("Counter reset ho gaya. Phir se shuru karo.", priority='normal', msg_type='reset')
             elif key == ord('c'):
                 # Enhanced calibration with setup validation
                 success = enhanced_calibration_process(pose, cap, side, baseline)

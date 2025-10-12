@@ -1,10 +1,9 @@
 opencv-python
 mediapipe
 numpy
-pyttsx3
+gtts
+pygame
 tensorflow
 pandas
 scikit-learn
 joblib
-
-pywin32

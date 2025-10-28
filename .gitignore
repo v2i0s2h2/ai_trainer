@@ -1,6 +1,51 @@
-# Ignore the virtual environment directory
+# Python
 .venv/
-
-# Ignore Python cache files
 __pycache__/
 *.pyc
+*.pyo
+*.pyd
+.Python
+*.so
+*.egg
+*.egg-info/
+dist/
+build/
+.pytest_cache/
+
+# Node
+node_modules/
+.svelte-kit/
+build/
+.output/
+.vercel/
+.netlify/
+package-lock.json
+
+# Database
+*.db
+*.sqlite
+data/*.db
+
+# Environment
+.env
+.env.local
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+logs/
+
+# Temporary
+tmp/
+temp/
+*.tmp

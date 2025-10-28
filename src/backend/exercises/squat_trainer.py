@@ -1,19 +1,22 @@
 # Squat Trainer
-# Run: python -m src.exercises.squat_trainer
+# Run: python -m src.backend.exercises.squat_trainer
 
 import cv2
 import mediapipe as mp
 import numpy as np
 import time
-from typing import Optional, Tuple
+from typing import Optional, Tuple, Dict, Any
 
-from src.core.voice_feedback import VoiceSystem
+try:
+    from src.backend.core.voice_feedback import VoiceSystem
+    voice = VoiceSystem()
+    VOICE_ENABLED = True
+except:
+    VOICE_ENABLED = False
 
 
 mp_pose = mp.solutions.pose
 mp_drawing = mp.solutions.drawing_utils
-
-voice = VoiceSystem()
 
 def get_xy(results, idx, w, h):
 	lm = results.pose_landmarks.landmark[idx]
@@ -33,8 +36,9 @@ def angle_deg(a, b, c) -> float:
 
 
 def say(text: str, min_interval: float = 1.8) -> None:
-	priority = 'high' if min_interval <= 1.0 else ('normal' if min_interval <= 2.0 else 'low')
-	voice.say(text, priority=priority, msg_type='squat')
+	if VOICE_ENABLED:
+		priority = 'high' if min_interval <= 1.0 else ('normal' if min_interval <= 2.0 else 'low')
+		voice.say(text, priority=priority, msg_type='squat')
 
 
 class SquatTrainer:
@@ -44,10 +48,13 @@ class SquatTrainer:
 		self.knee_min_angle = 70.0   # target bottom angle
 		self.knee_up_angle = 160.0   # standing threshold
 		self.last_guidance_time = time.time()
+		self.last_feedback_time = 0.0
+		self.feedback_cooldown = 2.0  # seconds between feedback messages
 		self.guidance_interval = 12
 		self.calibrated = False
 		self.stance_width_px: Optional[float] = None
 		self.torso_upright_min_angle = 45.0  # torso vs vertical min (rough check)
+		self.current_feedback = ""  # Store current feedback message
 
 	def posture_guide(self) -> None:
 		say("Squat start karne se pehle sahi posture set karo.")
@@ -105,6 +112,85 @@ class SquatTrainer:
 		# vertical ref point below hip
 		vert = (hip[0], hip[1] + 100)
 		return angle_deg(sh, hip, vert)
+	
+	def process_frame(self, results, w: int, h: int, side: str = 'left') -> Dict[str, Any]:
+		"""
+		Process a single frame for API/WebSocket use
+		Returns feedback dict with reps, angles, corrections
+		"""
+		feedback_messages = []
+		
+		if not results.pose_landmarks:
+			return {
+				"reps": self.reps,
+				"feedback": "No pose detected - step into frame",
+				"angles": {},
+				"progress": 0.0
+			}
+		
+		# Auto-calibrate if not done
+		if not self.calibrated:
+			if self.check_setup(results, w, h):
+				self.calibrated = True
+				self.current_feedback = "Setup verified! Start squats"
+			else:
+				self.current_feedback = "Adjust stance to shoulder width"
+		
+		# Compute angles
+		knee_angle = self.compute_knee_angle(results, side, w, h)
+		torso_angle = self.compute_torso_angle_from_vertical(results, w, h)
+		
+		# Check form and provide corrections (with cooldown)
+		now = time.time()
+		if now - self.last_feedback_time > self.feedback_cooldown:
+			if torso_angle < self.torso_upright_min_angle:
+				feedback_messages.append("Chest up, back straight")
+				self.last_feedback_time = now
+			
+			# Check knee tracking
+			L_KNEE = mp_pose.PoseLandmark.LEFT_KNEE.value
+			R_KNEE = mp_pose.PoseLandmark.RIGHT_KNEE.value
+			L_ANKLE = mp_pose.PoseLandmark.LEFT_ANKLE.value
+			R_ANKLE = mp_pose.PoseLandmark.RIGHT_ANKLE.value
+			lknee = get_xy(results, L_KNEE, w, h)
+			rknee = get_xy(results, R_KNEE, w, h)
+			lank = get_xy(results, L_ANKLE, w, h)
+			rank = get_xy(results, R_ANKLE, w, h)
+			
+			if abs(lknee[0] - lank[0]) > 0.25 * w or abs(rknee[0] - rank[0]) > 0.25 * w:
+				feedback_messages.append("Keep knees over toes")
+				self.last_feedback_time = now
+		
+		# Rep detection using hysteresis
+		if knee_angle <= self.knee_min_angle and self.direction == 0:
+			self.direction = 1  # going down
+			feedback_messages.append("Going down - keep control")
+		elif knee_angle >= self.knee_up_angle and self.direction == 1:
+			self.direction = 0  # back up
+			self.reps += 1
+			feedback_messages.append(f"Rep {self.reps} complete! Good job")
+		
+		# Calculate progress (0-1 range based on knee angle)
+		progress = 0.0
+		if knee_angle < self.knee_up_angle:
+			progress = 1.0 - (knee_angle - self.knee_min_angle) / (self.knee_up_angle - self.knee_min_angle)
+			progress = max(0.0, min(1.0, progress))
+		
+		# Update feedback if we have new messages
+		if feedback_messages:
+			self.current_feedback = " | ".join(feedback_messages)
+		elif not self.current_feedback or now - self.last_feedback_time > 5.0:
+			self.current_feedback = "Good form - keep going!"
+		
+		return {
+			"reps": self.reps,
+			"feedback": self.current_feedback,
+			"angles": {
+				"knee": round(knee_angle, 1),
+				"torso": round(torso_angle, 1)
+			},
+			"progress": round(progress, 2)
+		}
 
 	def run(self) -> None:
 		cap = cv2.VideoCapture(0)

@@ -20,6 +20,14 @@ if [ -f "requirements.txt" ]; then
     pip install -r requirements.txt
 fi
 
+# Which trainer to run (default glute fly enhanced)
+MODE=${1:-glute}
+
+if [ "$MODE" = "squat" ]; then
+    python -m src.exercises.squat_trainer
+    exit $?
+fi
+
 # Run the trainer (prefer non-enhanced if present; fallback to enhanced)
 if [ -f "glute_fly_trainer.py" ]; then
     python glute_fly_trainer.py

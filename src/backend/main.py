@@ -30,9 +30,18 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Import routers (will create these next)
-from src.backend.api import routes
-from src.backend.api import websocket as ws
+# Import routers
+try:
+    from src.backend.api import routes
+    from src.backend.api import websocket as ws
+except ImportError:
+    # Fallback for direct execution
+    import sys
+    from pathlib import Path
+    root = Path(__file__).parent.parent.parent
+    sys.path.insert(0, str(root))
+    from src.backend.api import routes
+    from src.backend.api import websocket as ws
 
 # Register routes
 app.include_router(routes.router, prefix="/api")

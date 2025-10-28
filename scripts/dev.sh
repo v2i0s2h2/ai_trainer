@@ -52,14 +52,13 @@ trap cleanup INT TERM
 
 # Start backend in background
 echo "${BLUE}[Backend]${NC} Starting FastAPI server..."
-cd src/backend && python main.py &
+python startup_backend.py &
 BACKEND_PID=$!
 
 # Wait a moment for backend to start
 sleep 2
 
 # Start frontend
-cd ../..
 echo "${BLUE}[Frontend]${NC} Starting Vite dev server..."
 npm run dev &
 FRONTEND_PID=$!

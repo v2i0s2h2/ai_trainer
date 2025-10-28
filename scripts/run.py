@@ -1,48 +1,25 @@
-#!/usr/bin/env python3
-"""
-Run script for AI Trainer Pro
-"""
-import os
-import sys
-import subprocess
 
-def main():
-    # Get the directory where this script is located
-    script_dir = os.path.dirname(os.path.abspath(__file__))
-    parent_dir = os.path.dirname(script_dir)
-    
-    # Path to main.py
-    main_path = os.path.join(parent_dir, 'main.py')
-    
-    # Check if file exists
-    if not os.path.exists(main_path):
-        print(f"Error: {main_path} not found!")
-        return
-    
-    # Path to virtual environment
-    venv_python = os.path.join(parent_dir, '.venv', 'Scripts', 'python.exe')
-    
-    # Check if virtual environment exists
-    if not os.path.exists(venv_python):
-        print(f"Error: Virtual environment not found at {venv_python}")
-        print("Please run: python -m venv .venv")
-        return
-    
-    print("Starting AI Trainer Pro...")
-    print(f"Working directory: {parent_dir}")
-    print(f"Python: {venv_python}")
-    print(f"Main: {main_path}")
-    print("-" * 50)
-    
-    try:
-        # Run the trainer
-        subprocess.run([venv_python, main_path], cwd=parent_dir)
-    except KeyboardInterrupt:
-        print("\nApplication interrupted by user")
-    except Exception as e:
-        print(f"Error running trainer: {e}")
+#!/bin/bash
 
-if __name__ == "__main__":
-    main()
+# Check if virtual environment exists
+if [ ! -d ".venv" ]; then
+    echo "Virtual environment not found. Creating..."
+    # Try to use Python 3.10 if available
+    if command -v python3.10 &> /dev/null; then
+        echo "Using Python 3.10"
+        python3.10 -m venv .venv
+    else
+        echo "Python 3.10 not found. Using default Python. Consider installing Python 3.10 via pyenv."
+        python3 -m venv .venv
+    fi
+fi
 
+# Activate virtual environment
+source .venv/bin/activate
 
+# Install dependencies if not already installed
+echo "Checking dependencies..."
+pip install --quiet opencv-python mediapipe numpy gtts pygame tensorflow pandas scikit-learn joblib 2>/dev/null || pip install -r requirements.txt
+
+# Run the trainer
+python glute_fly_trainer.py

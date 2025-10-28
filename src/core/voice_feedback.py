@@ -10,17 +10,42 @@ import tempfile
 from threading import Thread
 from queue import Queue
 import time
+import traceback
+try:
+    import pyttsx3  # Fallback TTS on Linux if gTTS/pygame fails
+except Exception:
+    pyttsx3 = None
 
 class VoiceSystem:
     def __init__(self):
         """Initialize pygame mixer for audio playback"""
-        pygame.mixer.init(frequency=22050, size=-16, channels=2, buffer=512)
+        # Prefer PulseAudio on Linux (common on Arch/PipeWire)
+        os.environ.setdefault("SDL_AUDIODRIVER", "pulse")
+        self.backend = "gtts"
         self.queue = Queue()
-        self.thread = Thread(target=self._worker, daemon=True)
-        self.thread.start()
         self.temp_dir = tempfile.gettempdir()
         self.last_say_time = {}
-        print("[VOICE] gTTS + pygame voice system initialized!")
+        self.pyttsx3_engine = None
+        try:
+            pygame.mixer.init(frequency=22050, size=-16, channels=2, buffer=512)
+            print("[VOICE] Initialized gTTS + pygame backend")
+        except Exception as e:
+            print(f"[VOICE] Pygame mixer init failed: {e}")
+            if pyttsx3 is not None:
+                self.backend = "pyttsx3"
+                try:
+                    self.pyttsx3_engine = pyttsx3.init()
+                    self.pyttsx3_engine.setProperty('rate', 165)
+                    self.pyttsx3_engine.setProperty('volume', 1.0)
+                    print("[VOICE] Falling back to pyttsx3 backend")
+                except Exception as e2:
+                    print(f"[VOICE] pyttsx3 init also failed: {e2}")
+                    raise
+            else:
+                raise
+
+        self.thread = Thread(target=self._worker, daemon=True)
+        self.thread.start()
     
     def _worker(self):
         """Worker thread that processes voice messages"""
@@ -38,29 +63,45 @@ class VoiceSystem:
                 message_count += 1
                 
                 print(f"[VOICE WORKER] #{message_count}: Generating audio for: {text[:50]}...")
-                
-                # Generate speech file
-                tts = gTTS(text=text, lang='hi', slow=False)  # 'hi' for better Hindi support
-                audio_file = os.path.join(self.temp_dir, f"voice_{msg_id}.mp3")
-                tts.save(audio_file)
-                
-                print(f"[VOICE WORKER] #{message_count}: Playing audio...")
-                
-                # Play audio
-                pygame.mixer.music.load(audio_file)
-                pygame.mixer.music.play()
-                
-                # Wait for playback to finish
-                while pygame.mixer.music.get_busy():
-                    time.sleep(0.1)
-                
-                # Cleanup
-                try:
-                    os.remove(audio_file)
-                except:
-                    pass
-                
-                print(f"[VOICE WORKER] #{message_count}: Finished")
+                if self.backend == "gtts":
+                    try:
+                        # Generate speech file with gTTS
+                        tts = gTTS(text=text, lang='hi', slow=False)
+                        audio_file = os.path.join(self.temp_dir, f"voice_{msg_id}.mp3")
+                        tts.save(audio_file)
+                        print(f"[VOICE WORKER] #{message_count}: Playing audio (pygame)...")
+                        pygame.mixer.music.load(audio_file)
+                        pygame.mixer.music.play()
+                        while pygame.mixer.music.get_busy():
+                            time.sleep(0.1)
+                        try:
+                            os.remove(audio_file)
+                        except Exception:
+                            pass
+                        print(f"[VOICE WORKER] #{message_count}: Finished")
+                        continue
+                    except Exception as ge:
+                        print(f"[VOICE WORKER] gTTS/pygame error, switching to pyttsx3: {ge}")
+                        if pyttsx3 is not None:
+                            # Switch backend permanently for this session
+                            self.backend = "pyttsx3"
+                            if self.pyttsx3_engine is None:
+                                try:
+                                    self.pyttsx3_engine = pyttsx3.init()
+                                    self.pyttsx3_engine.setProperty('rate', 165)
+                                    self.pyttsx3_engine.setProperty('volume', 1.0)
+                                except Exception as e2:
+                                    print(f"[VOICE WORKER] pyttsx3 init failed: {e2}")
+                        else:
+                            traceback.print_exc()
+                # pyttsx3 fallback
+                if self.backend == "pyttsx3" and self.pyttsx3_engine is not None:
+                    try:
+                        self.pyttsx3_engine.say(text)
+                        self.pyttsx3_engine.runAndWait()
+                        print(f"[VOICE WORKER] #{message_count}: Finished (pyttsx3)")
+                    except Exception as e3:
+                        print(f"[VOICE WORKER] pyttsx3 error: {e3}")
                 
             except Exception as e:
                 print(f"[VOICE WORKER] Error: {e}")
@@ -107,7 +148,10 @@ class VoiceSystem:
         print("[VOICE] Stopping...")
         self.queue.put(None)
         self.thread.join(timeout=5)
-        pygame.mixer.quit()
+        try:
+            pygame.mixer.quit()
+        except Exception:
+            pass
         print("[VOICE] Stopped")
 
 

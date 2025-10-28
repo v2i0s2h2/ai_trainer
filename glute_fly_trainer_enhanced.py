@@ -7,11 +7,11 @@ import cv2
 import mediapipe as mp
 import numpy as np
 import time
-import pyttsx3
 import math
-from data_collector import DataCollector
-from posture_rules import PostureRules
-from ml_trainer import MLTrainer
+from training.data_collector import DataCollector
+from src.core.exercise_analyzer import PostureRules
+from training.ml_trainer import MLTrainer
+from src.core.voice_feedback import VoiceSystem
 
 # MediaPipe pose landmarks
 L_HIP = 23
@@ -52,22 +52,17 @@ def smooth(prev, new, alpha=0.3):
 def clamp(v, lo, hi):
     return max(lo, min(hi, v))
 
-# Voice feedback with rate limiting
-_last_say = 0.0
+# Voice feedback using gTTS + pygame backend
+voice = VoiceSystem()
 def say(text, min_interval=1.8):
-    """Rate-limit TTS so it doesn't spam."""
-    global _last_say
-    now = time.time()
-    if now - _last_say >= min_interval:
-        try:
-            engine = pyttsx3.init()
-            engine.setProperty('rate', 165)   # speaking speed
-            engine.setProperty('volume', 1.0)
-            engine.say(text)
-            engine.runAndWait()
-        except Exception as e:
-            print(f"❌ Voice error: {e}")
-        _last_say = now
+    # Map min_interval to priority for internal rate limiting
+    if min_interval <= 1.0:
+        priority = 'high'
+    elif min_interval <= 2.0:
+        priority = 'normal'
+    else:
+        priority = 'low'
+    voice.say(text, priority=priority, msg_type='trainer')
 
 class EnhancedGluteFlyTrainer:
     def __init__(self):

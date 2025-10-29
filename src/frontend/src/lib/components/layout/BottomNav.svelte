@@ -60,7 +60,10 @@
 		background-color: var(--bg-card);
 		border-top: 1px solid rgba(255, 255, 255, 0.1);
 		padding: 0.5rem 0;
+		padding-bottom: max(0.5rem, env(safe-area-inset-bottom));
 		z-index: 100;
+		backdrop-filter: blur(20px);
+		-webkit-backdrop-filter: blur(20px);
 	}
 	
 	.nav-container {
@@ -80,27 +83,43 @@
 		padding: 0.5rem 1rem;
 		color: var(--text-secondary);
 		text-decoration: none;
-		transition: color 0.2s;
+		transition: all 0.2s;
 		cursor: pointer;
+		border-radius: 0.5rem;
+		position: relative;
+	}
+	
+	.nav-item:hover {
+		background-color: rgba(255, 255, 255, 0.05);
 	}
 	
 	.nav-item.active {
 		color: var(--primary);
 	}
 	
+	.nav-item.active .icon-wrapper {
+		transform: scale(1.1);
+	}
+	
 	.icon-wrapper {
 		width: 24px;
 		height: 24px;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		transition: transform 0.2s;
 	}
 	
 	.icon {
 		width: 100%;
 		height: 100%;
+		stroke-width: 2;
 	}
 	
 	.nav-text {
 		font-size: 0.75rem;
 		font-weight: 500;
+		white-space: nowrap;
 	}
 </style>
 

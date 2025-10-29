@@ -1,4 +1,5 @@
 import { writable } from 'svelte/store';
+import { speak, initSpeech } from '$lib/utils/speech';
 
 export interface WorkoutFrame {
 	image: string;
@@ -37,6 +38,11 @@ function createWorkoutStore() {
 	
 	let ws: WebSocket | null = null;
 	let durationInterval: number | null = null;
+	let lastFeedback = '';
+	let lastReps = 0;
+	
+	// Initialize speech on first use
+	initSpeech();
 	
 	return {
 		subscribe,
@@ -86,12 +92,33 @@ function createWorkoutStore() {
 					console.log('[Workout Store] Message:', data.type);
 					
 					if (data.type === 'frame') {
+						const reps = data.reps || 0;
+						const feedback = data.feedback || '';
+						
+						// Voice feedback for rep completion
+						if (reps > lastReps) {
+							speak(`Rep ${reps} complete!`, 'high');
+							lastReps = reps;
+						}
+						
+						// Voice feedback for form corrections
+						if (feedback && feedback !== lastFeedback && feedback !== 'Good form - keep going!') {
+							// Only speak corrections, not the default good message
+							if (feedback.includes('Chest up') || 
+							    feedback.includes('knees') || 
+							    feedback.includes('Adjust') ||
+							    feedback.includes('Keep')) {
+								speak(feedback, 'normal');
+								lastFeedback = feedback;
+							}
+						}
+						
 						update(state => ({
 							...state,
 							currentFrame: {
 								image: data.image,
-								reps: data.reps || 0,
-								feedback: data.feedback || '',
+								reps: reps,
+								feedback: feedback,
 								angles: data.angles || {},
 								progress: data.progress || 0
 							}
@@ -101,6 +128,9 @@ function createWorkoutStore() {
 							...state,
 							error: data.message
 						}));
+					} else if (data.type === 'connected') {
+						// Speak welcome message
+						speak('Workout started. Begin when ready.', 'normal');
 					}
 				} catch (err) {
 					console.error('[Workout Store] Parse error:', err);

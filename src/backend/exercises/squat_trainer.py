@@ -14,10 +14,18 @@ try:
 except:
     VOICE_ENABLED = False
 
+# Import enhanced pose processor
+try:
+    from src.backend.core.pose_processor import EnhancedPoseProcessor
+    ENHANCED_PROCESSOR_AVAILABLE = True
+except ImportError:
+    ENHANCED_PROCESSOR_AVAILABLE = False
+    print("[WARNING] EnhancedPoseProcessor not available, using basic processing")
 
 mp_pose = mp.solutions.pose
 mp_drawing = mp.solutions.drawing_utils
 
+# Legacy functions for backward compatibility
 def get_xy(results, idx, w, h):
 	lm = results.pose_landmarks.landmark[idx]
 	return (lm.x * w, lm.y * h)
@@ -42,7 +50,7 @@ def say(text: str, min_interval: float = 1.8) -> None:
 
 
 class SquatTrainer:
-	def __init__(self) -> None:
+	def __init__(self, use_enhanced_processor: bool = True) -> None:
 		self.reps = 0
 		self.direction = 0  # 0 = up, 1 = down (for hysteresis)
 		self.knee_min_angle = 70.0   # target bottom angle
@@ -55,6 +63,16 @@ class SquatTrainer:
 		self.stance_width_px: Optional[float] = None
 		self.torso_upright_min_angle = 45.0  # torso vs vertical min (rough check)
 		self.current_feedback = ""  # Store current feedback message
+		
+		# Initialize enhanced pose processor if available
+		self.use_enhanced = use_enhanced_processor and ENHANCED_PROCESSOR_AVAILABLE
+		if self.use_enhanced:
+			self.processor = EnhancedPoseProcessor(use_mediapipe=True)
+			print("[SquatTrainer] ✅ Using EnhancedPoseProcessor for better accuracy")
+		else:
+			self.processor = None
+			if use_enhanced_processor:
+				print("[SquatTrainer] ⚠️ EnhancedPoseProcessor requested but not available, using basic processing")
 
 	def posture_guide(self) -> None:
 		say("Squat start karne se pehle sahi posture set karo.")
@@ -83,35 +101,50 @@ class SquatTrainer:
 			return False
 		return True
 
-	def compute_knee_angle(self, results, side: str, w: int, h: int) -> float:
-		if side == 'left':
-			HIP = mp_pose.PoseLandmark.LEFT_HIP.value
-			KNEE = mp_pose.PoseLandmark.LEFT_KNEE.value
-			ANKLE = mp_pose.PoseLandmark.LEFT_ANKLE.value
+	def compute_knee_angle(self, results, side: str, w: int, h: int) -> Optional[float]:
+		"""Compute knee angle with enhanced processing if available"""
+		if self.use_enhanced and self.processor:
+			# Use enhanced processor with confidence checking
+			landmarks = self.processor.get_key_landmarks(results, w, h, side)
+			angle = self.processor.compute_knee_angle_enhanced(landmarks)
+			return angle
 		else:
-			HIP = mp_pose.PoseLandmark.RIGHT_HIP.value
-			KNEE = mp_pose.PoseLandmark.RIGHT_KNEE.value
-			ANKLE = mp_pose.PoseLandmark.RIGHT_ANKLE.value
-		hip = get_xy(results, HIP, w, h)
-		knee = get_xy(results, KNEE, w, h)
-		ankle = get_xy(results, ANKLE, w, h)
-		return angle_deg(hip, knee, ankle)
+			# Fallback to basic calculation
+			if side == 'left':
+				HIP = mp_pose.PoseLandmark.LEFT_HIP.value
+				KNEE = mp_pose.PoseLandmark.LEFT_KNEE.value
+				ANKLE = mp_pose.PoseLandmark.LEFT_ANKLE.value
+			else:
+				HIP = mp_pose.PoseLandmark.RIGHT_HIP.value
+				KNEE = mp_pose.PoseLandmark.RIGHT_KNEE.value
+				ANKLE = mp_pose.PoseLandmark.RIGHT_ANKLE.value
+			hip = get_xy(results, HIP, w, h)
+			knee = get_xy(results, KNEE, w, h)
+			ankle = get_xy(results, ANKLE, w, h)
+			return angle_deg(hip, knee, ankle)
 
-	def compute_torso_angle_from_vertical(self, results, w: int, h: int) -> float:
-		# Angle between shoulder-hip vector and vertical axis
-		L_SH = mp_pose.PoseLandmark.LEFT_SHOULDER.value
-		R_SH = mp_pose.PoseLandmark.RIGHT_SHOULDER.value
-		L_HIP = mp_pose.PoseLandmark.LEFT_HIP.value
-		R_HIP = mp_pose.PoseLandmark.RIGHT_HIP.value
-		lsh = get_xy(results, L_SH, w, h)
-		rsh = get_xy(results, R_SH, w, h)
-		lhip = get_xy(results, L_HIP, w, h)
-		rhip = get_xy(results, R_HIP, w, h)
-		sh = ((lsh[0] + rsh[0]) / 2.0, (lsh[1] + rsh[1]) / 2.0)
-		hip = ((lhip[0] + rhip[0]) / 2.0, (lhip[1] + rhip[1]) / 2.0)
-		# vertical ref point below hip
-		vert = (hip[0], hip[1] + 100)
-		return angle_deg(sh, hip, vert)
+	def compute_torso_angle_from_vertical(self, results, w: int, h: int) -> Optional[float]:
+		"""Compute torso angle with enhanced processing if available"""
+		if self.use_enhanced and self.processor:
+			# Use enhanced processor with confidence checking
+			landmarks = self.processor.get_key_landmarks(results, w, h, side='left')
+			angle = self.processor.compute_torso_angle_enhanced(landmarks)
+			return angle
+		else:
+			# Fallback to basic calculation
+			L_SH = mp_pose.PoseLandmark.LEFT_SHOULDER.value
+			R_SH = mp_pose.PoseLandmark.RIGHT_SHOULDER.value
+			L_HIP = mp_pose.PoseLandmark.LEFT_HIP.value
+			R_HIP = mp_pose.PoseLandmark.RIGHT_HIP.value
+			lsh = get_xy(results, L_SH, w, h)
+			rsh = get_xy(results, R_SH, w, h)
+			lhip = get_xy(results, L_HIP, w, h)
+			rhip = get_xy(results, R_HIP, w, h)
+			sh = ((lsh[0] + rsh[0]) / 2.0, (lsh[1] + rsh[1]) / 2.0)
+			hip = ((lhip[0] + rhip[0]) / 2.0, (lhip[1] + rhip[1]) / 2.0)
+			# vertical ref point below hip
+			vert = (hip[0], hip[1] + 100)
+			return angle_deg(sh, hip, vert)
 	
 	def process_frame(self, results, w: int, h: int, side: str = 'left') -> Dict[str, Any]:
 		"""
@@ -136,14 +169,23 @@ class SquatTrainer:
 			else:
 				self.current_feedback = "Adjust stance to shoulder width"
 		
-		# Compute angles
+		# Compute angles (with enhanced processing if available)
 		knee_angle = self.compute_knee_angle(results, side, w, h)
 		torso_angle = self.compute_torso_angle_from_vertical(results, w, h)
+		
+		# Skip processing if angles are None (low confidence landmarks)
+		if knee_angle is None:
+			return {
+				"reps": self.reps,
+				"feedback": "Low confidence - adjust position for better detection",
+				"angles": {},
+				"progress": 0.0
+			}
 		
 		# Check form and provide corrections (with cooldown)
 		now = time.time()
 		if now - self.last_feedback_time > self.feedback_cooldown:
-			if torso_angle < self.torso_upright_min_angle:
+			if torso_angle is not None and torso_angle < self.torso_upright_min_angle:
 				feedback_messages.append("Chest up, back straight")
 				self.last_feedback_time = now
 			
@@ -186,8 +228,8 @@ class SquatTrainer:
 			"reps": self.reps,
 			"feedback": self.current_feedback,
 			"angles": {
-				"knee": round(knee_angle, 1),
-				"torso": round(torso_angle, 1)
+				"knee": round(knee_angle, 1) if knee_angle is not None else None,
+				"torso": round(torso_angle, 1) if torso_angle is not None else None
 			},
 			"progress": round(progress, 2)
 		}
@@ -204,13 +246,24 @@ class SquatTrainer:
 		self.posture_guide()
 		say("Ready? Start hone se pehle C press karke posture verify karo.")
 		
-		with mp_pose.Pose(
-			static_image_mode=False,
-			model_complexity=1,
-			enable_segmentation=False,
-			min_detection_confidence=0.5,
-			min_tracking_confidence=0.5
-		) as pose:
+		# Use enhanced processor's pose if available, otherwise use basic MediaPipe
+		pose_context = None
+		if self.use_enhanced and self.processor:
+			# Enhanced processor's pose is already initialized
+			pose = self.processor.pose
+			# No context manager needed for enhanced processor
+		else:
+			# Use basic MediaPipe with context manager
+			pose_context = mp_pose.Pose(
+				static_image_mode=False,
+				model_complexity=1,
+				enable_segmentation=False,
+				min_detection_confidence=0.5,
+				min_tracking_confidence=0.5
+			)
+			pose = pose_context.__enter__()
+		
+		try:
 			p_time = 0.0
 			fps_prev = 0.0
 			
@@ -234,13 +287,16 @@ class SquatTrainer:
 						else:
 							cv2.putText(img, "Adjust stance to shoulder width", (10, 80), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0,255,255), 2)
 						
-					# Rep logic based on knee angle on chosen side
+					# Rep logic based on knee angle on chosen side (with enhanced processing)
 					knee_angle = self.compute_knee_angle(results, side, w, h)
-					cv2.putText(img, f"Knee angle: {int(knee_angle)}", (10, 110), cv2.FONT_HERSHEY_SIMPLEX, 0.6, (255,255,255), 2)
+					if knee_angle is not None:
+						cv2.putText(img, f"Knee angle: {int(knee_angle)}°", (10, 110), cv2.FONT_HERSHEY_SIMPLEX, 0.6, (255,255,255), 2)
+					else:
+						cv2.putText(img, "Knee angle: Low confidence", (10, 110), cv2.FONT_HERSHEY_SIMPLEX, 0.6, (0,255,255), 2)
 					
 					# Corrections during movement
 					torso_angle = self.compute_torso_angle_from_vertical(results, w, h)
-					if torso_angle < self.torso_upright_min_angle:
+					if torso_angle is not None and torso_angle < self.torso_upright_min_angle:
 						say("Chest up rakho, back straight.", 1.0)
 					
 					# Knees tracking heuristic (knee vs ankle x distance)
@@ -255,14 +311,15 @@ class SquatTrainer:
 					if abs(lknee[0] - lank[0]) > 0.25 * w or abs(rknee[0] - rank[0]) > 0.25 * w:
 						say("Knees ko toes ke upar track karo, aage mat nikaalo.", 1.0)
 					
-					# Rep detection using hysteresis on knee angle
-					if knee_angle <= self.knee_min_angle and self.direction == 0:
-						self.direction = 1  # down achieved
-						say("Neeche jao, control ke saath.", 1.2)
-					elif knee_angle >= self.knee_up_angle and self.direction == 1:
-						self.direction = 0
-						self.reps += 1
-						say(f"Rep {self.reps} complete. Shabash!", 1.5)
+					# Rep detection using hysteresis on knee angle (only if angle is valid)
+					if knee_angle is not None:
+						if knee_angle <= self.knee_min_angle and self.direction == 0:
+							self.direction = 1  # down achieved
+							say("Neeche jao, control ke saath.", 1.2)
+						elif knee_angle >= self.knee_up_angle and self.direction == 1:
+							self.direction = 0
+							self.reps += 1
+							say(f"Rep {self.reps} complete. Shabash!", 1.5)
 					
 					# Periodic guidance if form is clean
 					now = time.time()
@@ -289,6 +346,16 @@ class SquatTrainer:
 				elif key == ord('l'):
 					side = 'right' if side == 'left' else 'left'
 					say(f"Ab {side} side.")
+		finally:
+			# Cleanup: only exit context manager for basic MediaPipe
+			if not self.use_enhanced:
+				try:
+					pose_context.__exit__(None, None, None)
+				except:
+					pass
+			# Reset enhanced processor if used
+			if self.use_enhanced and self.processor:
+				self.processor.reset()
 		
 		cap.release()
 		cv2.destroyAllWindows()

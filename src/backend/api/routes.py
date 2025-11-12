@@ -76,6 +76,105 @@ EXERCISES = [
         "reps": 10,
         "thumbnail": "/images/exercises/glute-fly.jpg",
         "description": "Glute fly exercise for hip mobility"
+    },
+    {
+        "id": "shoulder-press",
+        "name": "Shoulder Press",
+        "category": "shoulders",
+        "difficulty": "beginner",
+        "duration": 10,
+        "sets": 3,
+        "reps": 12,
+        "thumbnail": "/images/exercises/shoulder-press.jpg",
+        "description": "Shoulder press for shoulder strength"
+    },
+    {
+        "id": "bicep-curl",
+        "name": "Bicep Curls",
+        "category": "arms",
+        "difficulty": "beginner",
+        "duration": 8,
+        "sets": 3,
+        "reps": 15,
+        "thumbnail": "/images/exercises/bicep-curl.jpg",
+        "description": "Bicep curls for arm strength"
+    },
+    {
+        "id": "plank",
+        "name": "Plank",
+        "category": "core",
+        "difficulty": "intermediate",
+        "duration": 5,
+        "sets": 3,
+        "reps": 1,
+        "thumbnail": "/images/exercises/plank.jpg",
+        "description": "Plank hold for core strength"
+    },
+    {
+        "id": "row",
+        "name": "Rows",
+        "category": "back",
+        "difficulty": "beginner",
+        "duration": 10,
+        "sets": 3,
+        "reps": 12,
+        "thumbnail": "/images/exercises/row.jpg",
+        "description": "Row exercise for back strength"
+    },
+    {
+        "id": "pull-up",
+        "name": "Pull-ups",
+        "category": "back",
+        "difficulty": "advanced",
+        "duration": 8,
+        "sets": 3,
+        "reps": 8,
+        "thumbnail": "/images/exercises/pullup.jpg",
+        "description": "Pull-ups for upper body strength"
+    },
+    {
+        "id": "lunge",
+        "name": "Lunges",
+        "category": "legs",
+        "difficulty": "beginner",
+        "duration": 10,
+        "sets": 3,
+        "reps": 12,
+        "thumbnail": "/images/exercises/lunge.jpg",
+        "description": "Lunges for leg strength"
+    },
+    {
+        "id": "crunch",
+        "name": "Crunches",
+        "category": "core",
+        "difficulty": "beginner",
+        "duration": 8,
+        "sets": 3,
+        "reps": 15,
+        "thumbnail": "/images/exercises/crunch.jpg",
+        "description": "Crunches for core strength"
+    },
+    {
+        "id": "tricep-dip",
+        "name": "Tricep Dips",
+        "category": "arms",
+        "difficulty": "intermediate",
+        "duration": 8,
+        "sets": 3,
+        "reps": 10,
+        "thumbnail": "/images/exercises/tricep-dip.jpg",
+        "description": "Tricep dips for arm strength"
+    },
+    {
+        "id": "lateral-raise",
+        "name": "Lateral Raises",
+        "category": "shoulders",
+        "difficulty": "beginner",
+        "duration": 8,
+        "sets": 3,
+        "reps": 12,
+        "thumbnail": "/images/exercises/lateral-raise.jpg",
+        "description": "Lateral raises for shoulder strength"
     }
 ]
 

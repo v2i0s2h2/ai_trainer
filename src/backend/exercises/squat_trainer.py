@@ -211,6 +211,8 @@ class SquatTrainer:
 			self.direction = 0  # back up
 			self.reps += 1
 			feedback_messages.append(f"Rep {self.reps} complete! Good job")
+			# Voice announcement for rep count
+			say(f"Rep {self.reps} complete. Shabash!", 1.5)
 		
 		# Calculate progress (0-1 range based on knee angle)
 		progress = 0.0

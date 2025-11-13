@@ -484,37 +484,11 @@
 						</p>
 						
 						<div class="recipe-infographic">
-							<div class="ingredient-grid">
-								<div class="ingredient-item">
-									<div class="ingredient-icon">🫘</div>
-									<div class="ingredient-label">Powder Black Chana</div>
-									<div class="arrow arrow-1">↓</div>
-								</div>
-								
-								<div class="ingredient-item">
-									<div class="ingredient-icon">🌾</div>
-									<div class="ingredient-label">Wheat Flour</div>
-									<div class="arrow arrow-2">↓</div>
-								</div>
-								
-								<div class="ingredient-item">
-									<div class="ingredient-icon">🌿</div>
-									<div class="ingredient-label">Moringa Leaves</div>
-									<div class="arrow arrow-3">↙</div>
-								</div>
-								
-								<div class="ingredient-item">
-									<div class="ingredient-icon">🌾</div>
-									<div class="ingredient-label">Roasted & Powdered Flax Seed</div>
-									<div class="arrow arrow-4">↖</div>
-								</div>
-							</div>
-							
-							<div class="roti-result">
-								<div class="roti-icon">🍞</div>
-								<div class="roti-label">Nutritious Roti</div>
-								<p class="roti-benefit">All protein & nutrients in one meal!</p>
-							</div>
+							<img 
+								src="/images/diet/nutritious-roti-recipe.png" 
+								alt="Nutritious Roti Recipe - Ingredients: Powder Black Chana, Wheat Flour, Moringa Leaves, Powdered Flax Seed"
+								class="roti-recipe-image"
+							/>
 						</div>
 						
 						<div class="recipe-steps">
@@ -1108,101 +1082,19 @@
 		position: relative;
 		background: rgba(255, 255, 255, 0.03);
 		border-radius: 1rem;
-		padding: 2rem 1rem;
-		margin-bottom: 1.5rem;
-		min-height: 300px;
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-		justify-content: center;
-	}
-	
-	.ingredient-grid {
-		display: grid;
-		grid-template-columns: repeat(2, 1fr);
-		gap: 1.5rem;
-		width: 100%;
-		max-width: 500px;
-		margin-bottom: 2rem;
-	}
-	
-	.ingredient-item {
-		position: relative;
-		text-align: center;
 		padding: 1rem;
-		background: rgba(255, 255, 255, 0.05);
+		margin-bottom: 1.5rem;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+	}
+	
+	.roti-recipe-image {
+		width: 100%;
+		max-width: 600px;
+		height: auto;
 		border-radius: 0.75rem;
-	}
-	
-	.ingredient-icon {
-		font-size: 2.5rem;
-		margin-bottom: 0.5rem;
-	}
-	
-	.ingredient-label {
-		font-size: 0.875rem;
-		font-weight: 600;
-		color: var(--text-primary);
-		line-height: 1.3;
-	}
-	
-	.arrow {
-		position: absolute;
-		font-size: 1.5rem;
-		color: var(--primary);
-		font-weight: bold;
-		animation: pulse 2s infinite;
-	}
-	
-	.arrow-1 {
-		bottom: -1.5rem;
-		left: 50%;
-		transform: translateX(-50%);
-	}
-	
-	.arrow-2 {
-		bottom: -1.5rem;
-		left: 50%;
-		transform: translateX(-50%);
-	}
-	
-	.arrow-3 {
-		bottom: -1.5rem;
-		right: -0.5rem;
-		transform: rotate(-45deg);
-	}
-	
-	.arrow-4 {
-		top: -1.5rem;
-		right: -0.5rem;
-		transform: rotate(45deg);
-	}
-	
-	.roti-result {
-		text-align: center;
-		padding: 1.5rem;
-		background: rgba(var(--primary-rgb, 255, 100, 50), 0.1);
-		border-radius: 1rem;
-		border: 2px solid var(--primary);
-		min-width: 200px;
-	}
-	
-	.roti-icon {
-		font-size: 4rem;
-		margin-bottom: 0.5rem;
-	}
-	
-	.roti-label {
-		font-size: 1.25rem;
-		font-weight: 700;
-		color: var(--primary);
-		margin-bottom: 0.5rem;
-	}
-	
-	.roti-benefit {
-		font-size: 0.875rem;
-		color: var(--text-secondary);
-		font-style: italic;
+		box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
 	}
 	
 	.recipe-steps {
@@ -1243,18 +1135,12 @@
 	}
 	
 	@media (max-width: 768px) {
-		.ingredient-grid {
-			grid-template-columns: 1fr;
-			gap: 1rem;
-		}
-		
-		.arrow {
-			display: none;
-		}
-		
 		.recipe-infographic {
-			min-height: auto;
-			padding: 1.5rem 1rem;
+			padding: 0.5rem;
+		}
+		
+		.roti-recipe-image {
+			max-width: 100%;
 		}
 	}
 	

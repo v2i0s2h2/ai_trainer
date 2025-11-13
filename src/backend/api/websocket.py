@@ -100,16 +100,22 @@ class WorkoutStreamManager:
             available = "squat, push-ups, shoulder-press, bicep-curl, plank, row, pull-up, lunge, crunch, tricep-dip, lateral-raise, glute-fly"
             raise ValueError(f"Unknown exercise: {self.exercise}. Available: {available}")
     
-    async def stream_frames(self, websocket: WebSocket):
+    async def stream_frames(self, websocket: WebSocket, camera_device: str = "auto"):
         """Stream video frames with pose detection"""
         self.active = True
         self.trainer = self.get_trainer()
         
-        cap = cv2.VideoCapture(0)
+        # Get camera index (auto-detect external webcam by default)
+        from src.backend.core.camera_utils import get_camera_index
+        camera_idx = get_camera_index(camera_device)
+        
+        logger.info(f"Using camera device: {camera_device} (index: {camera_idx})")
+        
+        cap = cv2.VideoCapture(camera_idx)
         if not cap.isOpened():
             await websocket.send_json({
                 "type": "error",
-                "message": "Could not open webcam"
+                "message": f"Could not open webcam (index {camera_idx})"
             })
             return
         
@@ -193,13 +199,15 @@ class WorkoutStreamManager:
 @router.websocket("/ws/workout")
 async def workout_websocket(
     websocket: WebSocket,
-    exercise: str = Query(..., description="Exercise type (squat, glute-fly, etc)")
+    exercise: str = Query(..., description="Exercise type (squat, glute-fly, etc)"),
+    camera: str = Query("auto", description="Camera device (auto, 0, 1, etc)")
 ):
     """
     WebSocket endpoint for real-time workout streaming
     
     Query Parameters:
     - exercise: Type of exercise to perform
+    - camera: Camera device ID ("auto" for auto-detect external, or "0", "1", etc)
     
     Message Types:
     - frame: Video frame with pose detection
@@ -208,7 +216,7 @@ async def workout_websocket(
     - error: Error messages
     """
     await websocket.accept()
-    logger.info(f"WebSocket connected for exercise: {exercise}")
+    logger.info(f"WebSocket connected for exercise: {exercise}, camera: {camera}")
     
     manager = WorkoutStreamManager(exercise)
     
@@ -220,8 +228,8 @@ async def workout_websocket(
             "message": "Ready to start workout"
         })
         
-        # Start streaming frames
-        await manager.stream_frames(websocket)
+        # Start streaming frames with camera selection
+        await manager.stream_frames(websocket, camera_device=camera)
         
     except WebSocketDisconnect:
         logger.info("WebSocket disconnected")

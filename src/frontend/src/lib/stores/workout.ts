@@ -47,7 +47,7 @@ function createWorkoutStore() {
 	return {
 		subscribe,
 		
-		connect: (exercise: string) => {
+		connect: (exercise: string, cameraDevice: string = "auto") => {
 			if (ws) {
 				ws.close();
 			}
@@ -59,11 +59,11 @@ function createWorkoutStore() {
 				isConnected: false
 			}));
 			
-			// WebSocket URL
+			// WebSocket URL with camera device parameter
 			const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
-			const wsUrl = `${protocol}//${window.location.hostname}:8000/ws/workout?exercise=${exercise}`;
+			const wsUrl = `${protocol}//${window.location.hostname}:8000/ws/workout?exercise=${exercise}&camera=${cameraDevice}`;
 			
-			console.log('[Workout Store] Connecting to:', wsUrl);
+			console.log('[Workout Store] Connecting to:', wsUrl, 'with camera:', cameraDevice);
 			
 			ws = new WebSocket(wsUrl);
 			

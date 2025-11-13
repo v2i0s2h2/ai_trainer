@@ -225,6 +225,13 @@ async def get_exercise(exercise_id: str):
         raise HTTPException(status_code=404, detail="Exercise not found")
     return exercise
 
+@router.get("/cameras")
+async def get_cameras():
+    """Get list of available camera devices"""
+    from src.backend.core.camera_utils import list_cameras
+    cameras = list_cameras()
+    return {"cameras": cameras}
+
 @router.get("/stats/today", response_model=TodayStatsResponse)
 async def get_today_stats():
     """Get today's workout statistics"""

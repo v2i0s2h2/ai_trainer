@@ -12,6 +12,8 @@
 	let exerciseName = '';
 	let exerciseData: any = null;
 	let loading = true;
+	let cameras: any[] = [];
+	let selectedCamera = "auto"; // "auto" means auto-detect external webcam
 	
 	onMount(async () => {
 		try {
@@ -23,17 +25,33 @@
 			} else {
 				exerciseName = exercise.charAt(0).toUpperCase() + exercise.slice(1);
 			}
+			
+			// Fetch available cameras
+			const camRes = await fetch('/api/cameras');
+			if (camRes.ok) {
+				const camData = await camRes.json();
+				cameras = camData.cameras || [];
+				console.log('Available cameras:', cameras);
+			}
 		} catch (err) {
 			console.error('Failed to load exercise:', err);
 			exerciseName = exercise.charAt(0).toUpperCase() + exercise.slice(1);
 		}
 		
-		// Connect to WebSocket
+		// Connect to WebSocket with camera selection
 		setTimeout(() => {
-			workoutStore.connect(exercise);
+			workoutStore.connect(exercise, selectedCamera);
 			loading = false;
 		}, 500);
 	});
+	
+	function changeCamera(cameraId: string) {
+		selectedCamera = cameraId;
+		workoutStore.disconnect();
+		setTimeout(() => {
+			workoutStore.connect(exercise, selectedCamera);
+		}, 300);
+	}
 	
 	onDestroy(() => {
 		workoutStore.disconnect();
@@ -71,19 +89,39 @@
 						</div>
 					{/if}
 				</div>
-				{#if exerciseData.youtube_link}
-					<a 
-						href={exerciseData.youtube_link} 
-						target="_blank" 
-						rel="noopener noreferrer"
-						class="youtube-link-btn"
-					>
-						<svg fill="currentColor" viewBox="0 0 24 24" width="20" height="20">
-							<path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
-						</svg>
-						Watch Tutorial
-					</a>
-				{/if}
+				<div class="action-buttons">
+					{#if cameras.length > 1}
+						<div class="camera-selector">
+							<label for="camera-select">📹 Camera:</label>
+							<select 
+								id="camera-select"
+								bind:value={selectedCamera}
+								on:change={() => changeCamera(selectedCamera)}
+								class="camera-select"
+							>
+								<option value="auto">Auto (External Webcam)</option>
+								{#each cameras as cam}
+									<option value={cam.index.toString()}>
+										Camera {cam.index} {cam.index === 0 ? '(Laptop)' : '(External)'}
+									</option>
+								{/each}
+							</select>
+						</div>
+					{/if}
+					{#if exerciseData.youtube_link}
+						<a 
+							href={exerciseData.youtube_link} 
+							target="_blank" 
+							rel="noopener noreferrer"
+							class="youtube-link-btn"
+						>
+							<svg fill="currentColor" viewBox="0 0 24 24" width="20" height="20">
+								<path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+							</svg>
+							Watch Tutorial
+						</a>
+					{/if}
+				</div>
 			</div>
 		</div>
 	{/if}
@@ -164,6 +202,45 @@
 		align-items: center;
 		gap: 1rem;
 		flex-wrap: wrap;
+	}
+	
+	.action-buttons {
+		display: flex;
+		align-items: center;
+		gap: 1rem;
+		flex-wrap: wrap;
+	}
+	
+	.camera-selector {
+		display: flex;
+		align-items: center;
+		gap: 0.5rem;
+	}
+	
+	.camera-selector label {
+		font-size: 0.875rem;
+		color: var(--text-secondary);
+		font-weight: 500;
+	}
+	
+	.camera-select {
+		padding: 0.5rem 0.75rem;
+		background-color: var(--bg-card);
+		border: 1px solid rgba(255, 255, 255, 0.1);
+		border-radius: 0.5rem;
+		color: var(--text-primary);
+		font-size: 0.875rem;
+		cursor: pointer;
+		transition: border-color 0.2s;
+	}
+	
+	.camera-select:hover {
+		border-color: rgba(255, 255, 255, 0.2);
+	}
+	
+	.camera-select:focus {
+		outline: none;
+		border-color: var(--primary);
 	}
 	
 	.info-section h3 {

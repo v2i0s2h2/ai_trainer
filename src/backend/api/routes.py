@@ -22,6 +22,8 @@ class ExerciseResponse(BaseModel):
     reps: int
     thumbnail: Optional[str] = None
     description: Optional[str] = None
+    target_muscles: List[str] = []  # Target muscles for this exercise
+    youtube_link: Optional[str] = None  # YouTube tutorial video link
 
 class TodayStatsResponse(BaseModel):
     reps_today: int
@@ -53,7 +55,9 @@ EXERCISES = [
         "sets": 4,
         "reps": 15,
         "thumbnail": "/images/exercises/squat.jpg",
-        "description": "Basic squat exercise for legs"
+        "description": "Basic squat exercise for legs",
+        "target_muscles": ["Quadriceps", "Glutes", "Hamstrings", "Calves"],
+        "youtube_link": "https://www.youtube.com/watch?v=YaXPRqUwItQ"
     },
     {
         "id": "push-ups",
@@ -64,7 +68,9 @@ EXERCISES = [
         "sets": 3,
         "reps": 12,
         "thumbnail": "/images/exercises/pushup.jpg",
-        "description": "Classic push-up for chest and arms"
+        "description": "Classic push-up for chest and arms",
+        "target_muscles": ["Pectorals", "Triceps", "Anterior Deltoids", "Core"],
+        "youtube_link": "https://www.youtube.com/watch?v=IODxDxX7oi4"
     },
     {
         "id": "glute-fly",
@@ -75,7 +81,9 @@ EXERCISES = [
         "sets": 3,
         "reps": 10,
         "thumbnail": "/images/exercises/glute-fly.jpg",
-        "description": "Glute fly exercise for hip mobility"
+        "description": "Glute fly exercise for hip mobility",
+        "target_muscles": ["Glutes", "Hamstrings", "Hip Abductors"],
+        "youtube_link": "https://www.youtube.com/watch?v=4Y2ZdHCOXok"
     },
     {
         "id": "shoulder-press",
@@ -86,7 +94,9 @@ EXERCISES = [
         "sets": 3,
         "reps": 12,
         "thumbnail": "/images/exercises/shoulder-press.jpg",
-        "description": "Shoulder press for shoulder strength"
+        "description": "Shoulder press for shoulder strength",
+        "target_muscles": ["Anterior Deltoids", "Lateral Deltoids", "Triceps", "Upper Trapezius"],
+        "youtube_link": "https://www.youtube.com/watch?v=qEwKCR5JCog"
     },
     {
         "id": "bicep-curl",
@@ -97,7 +107,9 @@ EXERCISES = [
         "sets": 3,
         "reps": 15,
         "thumbnail": "/images/exercises/bicep-curl.jpg",
-        "description": "Bicep curls for arm strength"
+        "description": "Bicep curls for arm strength",
+        "target_muscles": ["Biceps Brachii", "Brachialis", "Brachioradialis"],
+        "youtube_link": "https://www.youtube.com/watch?v=ykJmrZ5v0Oo"
     },
     {
         "id": "plank",
@@ -108,7 +120,9 @@ EXERCISES = [
         "sets": 3,
         "reps": 1,
         "thumbnail": "/images/exercises/plank.jpg",
-        "description": "Plank hold for core strength"
+        "description": "Plank hold for core strength",
+        "target_muscles": ["Rectus Abdominis", "Transverse Abdominis", "Obliques", "Erector Spinae"],
+        "youtube_link": "https://www.youtube.com/watch?v=pSHjTRCQxIw"
     },
     {
         "id": "row",
@@ -119,7 +133,9 @@ EXERCISES = [
         "sets": 3,
         "reps": 12,
         "thumbnail": "/images/exercises/row.jpg",
-        "description": "Row exercise for back strength"
+        "description": "Row exercise for back strength",
+        "target_muscles": ["Latissimus Dorsi", "Rhomboids", "Middle Trapezius", "Rear Deltoids", "Biceps"],
+        "youtube_link": "https://www.youtube.com/watch?v=rep-qVOkqgk"
     },
     {
         "id": "pull-up",
@@ -130,7 +146,9 @@ EXERCISES = [
         "sets": 3,
         "reps": 8,
         "thumbnail": "/images/exercises/pullup.jpg",
-        "description": "Pull-ups for upper body strength"
+        "description": "Pull-ups for upper body strength",
+        "target_muscles": ["Latissimus Dorsi", "Rhomboids", "Biceps", "Rear Deltoids", "Teres Major"],
+        "youtube_link": "https://www.youtube.com/watch?v=eGo4IYlbE5g"
     },
     {
         "id": "lunge",
@@ -141,7 +159,9 @@ EXERCISES = [
         "sets": 3,
         "reps": 12,
         "thumbnail": "/images/exercises/lunge.jpg",
-        "description": "Lunges for leg strength"
+        "description": "Lunges for leg strength",
+        "target_muscles": ["Quadriceps", "Glutes", "Hamstrings", "Calves"],
+        "youtube_link": "https://www.youtube.com/watch?v=QOVaHwm-Q6U"
     },
     {
         "id": "crunch",
@@ -152,7 +172,9 @@ EXERCISES = [
         "sets": 3,
         "reps": 15,
         "thumbnail": "/images/exercises/crunch.jpg",
-        "description": "Crunches for core strength"
+        "description": "Crunches for core strength",
+        "target_muscles": ["Rectus Abdominis", "Obliques"],
+        "youtube_link": "https://www.youtube.com/watch?v=MKmrqcoCZ-M"
     },
     {
         "id": "tricep-dip",
@@ -163,7 +185,9 @@ EXERCISES = [
         "sets": 3,
         "reps": 10,
         "thumbnail": "/images/exercises/tricep-dip.jpg",
-        "description": "Tricep dips for arm strength"
+        "description": "Tricep dips for arm strength",
+        "target_muscles": ["Triceps", "Anterior Deltoids", "Pectorals"],
+        "youtube_link": "https://www.youtube.com/watch?v=6kALZikXxLc"
     },
     {
         "id": "lateral-raise",
@@ -174,7 +198,9 @@ EXERCISES = [
         "sets": 3,
         "reps": 12,
         "thumbnail": "/images/exercises/lateral-raise.jpg",
-        "description": "Lateral raises for shoulder strength"
+        "description": "Lateral raises for shoulder strength",
+        "target_muscles": ["Lateral Deltoids", "Anterior Deltoids", "Supraspinatus"],
+        "youtube_link": "https://www.youtube.com/watch?v=3VcKaXpzqRo"
     }
 ]
 

@@ -10,6 +10,7 @@
 	$: error = $workoutStore.error;
 	
 	let exerciseName = '';
+	let exerciseData: any = null;
 	let loading = true;
 	
 	onMount(async () => {
@@ -17,8 +18,8 @@
 			// Fetch exercise details
 			const res = await fetch(`/api/exercises/${exercise}`);
 			if (res.ok) {
-				const data = await res.json();
-				exerciseName = data.name;
+				exerciseData = await res.json();
+				exerciseName = exerciseData.name;
 			} else {
 				exerciseName = exercise.charAt(0).toUpperCase() + exercise.slice(1);
 			}
@@ -55,6 +56,35 @@
 			<button class="retry-btn" on:click={() => workoutStore.connect(exercise)}>
 				Retry
 			</button>
+		</div>
+	{/if}
+	
+	{#if exerciseData}
+		<div class="exercise-info-banner">
+			<div class="info-content">
+				<div class="info-section">
+					<h3>{exerciseData.name}</h3>
+					{#if exerciseData.target_muscles && exerciseData.target_muscles.length > 0}
+						<div class="target-muscles">
+							<span class="label">Target Muscles:</span>
+							<span class="muscles">{exerciseData.target_muscles.join(', ')}</span>
+						</div>
+					{/if}
+				</div>
+				{#if exerciseData.youtube_link}
+					<a 
+						href={exerciseData.youtube_link} 
+						target="_blank" 
+						rel="noopener noreferrer"
+						class="youtube-link-btn"
+					>
+						<svg fill="currentColor" viewBox="0 0 24 24" width="20" height="20">
+							<path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+						</svg>
+						Watch Tutorial
+					</a>
+				{/if}
+			</div>
 		</div>
 	{/if}
 	
@@ -118,6 +148,70 @@
 	
 	.retry-btn:hover {
 		background: rgba(239, 68, 68, 0.3);
+	}
+	
+	.exercise-info-banner {
+		background: var(--bg-card);
+		border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+		padding: 1rem 1.5rem;
+	}
+	
+	.info-content {
+		max-width: 1200px;
+		margin: 0 auto;
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		gap: 1rem;
+		flex-wrap: wrap;
+	}
+	
+	.info-section h3 {
+		font-size: 1.25rem;
+		font-weight: 600;
+		margin-bottom: 0.5rem;
+		color: var(--text-primary);
+	}
+	
+	.target-muscles {
+		font-size: 0.875rem;
+		color: var(--text-secondary);
+		display: flex;
+		gap: 0.5rem;
+		align-items: center;
+	}
+	
+	.target-muscles .label {
+		font-weight: 500;
+		opacity: 0.8;
+	}
+	
+	.target-muscles .muscles {
+		opacity: 0.9;
+	}
+	
+	.youtube-link-btn {
+		display: flex;
+		align-items: center;
+		gap: 0.5rem;
+		padding: 0.5rem 1rem;
+		background-color: #ff0000;
+		color: white;
+		border-radius: 0.5rem;
+		font-size: 0.875rem;
+		font-weight: 500;
+		text-decoration: none;
+		transition: background-color 0.2s, transform 0.2s;
+		white-space: nowrap;
+	}
+	
+	.youtube-link-btn:hover {
+		background-color: #cc0000;
+		transform: scale(1.05);
+	}
+	
+	.youtube-link-btn svg {
+		flex-shrink: 0;
 	}
 	
 	.video-section {

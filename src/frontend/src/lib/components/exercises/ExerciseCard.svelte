@@ -9,6 +9,8 @@
 		sets: number;
 		reps: number;
 		difficulty: 'beginner' | 'intermediate' | 'advanced';
+		target_muscles?: string[];
+		youtube_link?: string;
 	};
 	
 	const categoryColors: Record<string, string> = {
@@ -31,10 +33,33 @@
 				<span class="meta-item">⏱️ {exercise.duration} min</span>
 				<span class="meta-item">{exercise.sets} × {exercise.reps}</span>
 			</div>
+			{#if exercise.target_muscles && exercise.target_muscles.length > 0}
+				<div class="target-muscles">
+					<span class="muscles-label">Target: </span>
+					<span class="muscles-list">{exercise.target_muscles.slice(0, 2).join(', ')}{#if exercise.target_muscles.length > 2}...{/if}</span>
+				</div>
+			{/if}
 		</div>
-		<Badge variant={exercise.difficulty === 'beginner' ? 'success' : exercise.difficulty === 'intermediate' ? 'warning' : 'error'} size="sm">
-			{exercise.difficulty}
-		</Badge>
+		<div class="card-actions">
+			<Badge variant={exercise.difficulty === 'beginner' ? 'success' : exercise.difficulty === 'intermediate' ? 'warning' : 'error'} size="sm">
+				{exercise.difficulty}
+			</Badge>
+			{#if exercise.youtube_link}
+				<a 
+					href={exercise.youtube_link} 
+					target="_blank" 
+					rel="noopener noreferrer"
+					class="youtube-btn"
+					on:click|stopPropagation
+					on:click|preventDefault
+				>
+					<svg fill="currentColor" viewBox="0 0 24 24" width="16" height="16">
+						<path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+					</svg>
+					Tutorial
+				</a>
+			{/if}
+		</div>
 	</div>
 </a>
 
@@ -79,12 +104,58 @@
 		gap: 1rem;
 		font-size: 0.875rem;
 		color: var(--text-secondary);
+		margin-bottom: 0.5rem;
 	}
 	
 	.meta-item {
 		display: flex;
 		align-items: center;
 		gap: 0.25rem;
+	}
+	
+	.target-muscles {
+		font-size: 0.75rem;
+		color: var(--text-secondary);
+		margin-top: 0.5rem;
+		opacity: 0.8;
+	}
+	
+	.muscles-label {
+		font-weight: 500;
+	}
+	
+	.muscles-list {
+		opacity: 0.9;
+	}
+	
+	.card-actions {
+		display: flex;
+		flex-direction: column;
+		align-items: flex-end;
+		gap: 0.5rem;
+	}
+	
+	.youtube-btn {
+		display: flex;
+		align-items: center;
+		gap: 0.25rem;
+		padding: 0.375rem 0.75rem;
+		background-color: #ff0000;
+		color: white;
+		border-radius: 0.5rem;
+		font-size: 0.75rem;
+		font-weight: 500;
+		text-decoration: none;
+		transition: background-color 0.2s, transform 0.2s;
+	}
+	
+	.youtube-btn:hover {
+		background-color: #cc0000;
+		transform: scale(1.05);
+	}
+	
+	.youtube-btn svg {
+		flex-shrink: 0;
 	}
 </style>
 

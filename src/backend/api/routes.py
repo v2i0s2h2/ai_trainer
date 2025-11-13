@@ -5,9 +5,11 @@ Handles exercises, workouts, stats, and user data
 
 from fastapi import APIRouter, HTTPException, Depends
 from typing import List, Optional
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, date
 from pydantic import BaseModel
 from sqlalchemy.orm import Session
+from sqlalchemy import func
+from src.backend.database.db import get_db
 
 router = APIRouter()
 
@@ -43,6 +45,51 @@ class WorkoutResponse(BaseModel):
     duration: int
     reps: int
     calories: int
+
+# Diet tracking models
+class DietEntryCreate(BaseModel):
+    meal_name: str
+    food_item: str
+    protein: float = 0.0
+    carbs: float = 0.0
+    fats: float = 0.0
+    calories: float = 0.0
+    omega3: float = 0.0
+    magnesium: float = 0.0
+    vitamin_b1: float = 0.0
+    vitamin_d3: float = 0.0
+    zinc: float = 0.0
+    notes: Optional[str] = None
+
+class DietEntryResponse(BaseModel):
+    id: int
+    meal_name: str
+    food_item: str
+    date: datetime
+    protein: float
+    carbs: float
+    fats: float
+    calories: float
+    omega3: float
+    magnesium: float
+    vitamin_b1: float
+    vitamin_d3: float
+    zinc: float
+    notes: Optional[str] = None
+
+class DietStatsResponse(BaseModel):
+    date: date
+    total_protein: float
+    total_carbs: float
+    total_fats: float
+    total_calories: float
+    total_omega3: float
+    total_magnesium: float
+    total_vitamin_b1: float
+    total_vitamin_d3: float
+    total_zinc: float
+    protein_goal: float  # Based on user's body weight and age
+    entries_count: int
 
 # Mock data for now (will replace with database)
 EXERCISES = [
@@ -314,4 +361,115 @@ async def get_achievements():
         "total": 6,
         "unlocked_count": 3
     }
+
+@router.post("/diet/entries", response_model=DietEntryResponse)
+async def create_diet_entry(entry: DietEntryCreate, db: Session = Depends(get_db)):
+    """Add a new diet entry"""
+    from src.backend.database.models import DietEntry
+    
+    db_entry = DietEntry(
+        meal_name=entry.meal_name,
+        food_item=entry.food_item,
+        protein=entry.protein,
+        carbs=entry.carbs,
+        fats=entry.fats,
+        calories=entry.calories,
+        omega3=entry.omega3,
+        magnesium=entry.magnesium,
+        vitamin_b1=entry.vitamin_b1,
+        vitamin_d3=entry.vitamin_d3,
+        zinc=entry.zinc,
+        notes=entry.notes,
+        date=datetime.utcnow()
+    )
+    
+    db.add(db_entry)
+    db.commit()
+    db.refresh(db_entry)
+    
+    return db_entry
+
+@router.get("/diet/entries", response_model=List[DietEntryResponse])
+async def get_diet_entries(
+    start_date: Optional[str] = None,
+    end_date: Optional[str] = None,
+    db: Session = Depends(get_db)
+):
+    """Get diet entries for a date range (defaults to today)"""
+    from src.backend.database.models import DietEntry
+    
+    query = db.query(DietEntry)
+    
+    if start_date:
+        start = datetime.fromisoformat(start_date.replace('Z', '+00:00'))
+        query = query.filter(DietEntry.date >= start)
+    
+    if end_date:
+        end = datetime.fromisoformat(end_date.replace('Z', '+00:00'))
+        query = query.filter(DietEntry.date <= end)
+    
+    if not start_date and not end_date:
+        # Default to today
+        today_start = datetime.combine(date.today(), datetime.min.time())
+        today_end = datetime.combine(date.today(), datetime.max.time())
+        query = query.filter(DietEntry.date >= today_start, DietEntry.date <= today_end)
+    
+    entries = query.order_by(DietEntry.date.desc()).all()
+    return entries
+
+@router.get("/diet/stats", response_model=DietStatsResponse)
+async def get_diet_stats(
+    target_date: Optional[str] = None,
+    db: Session = Depends(get_db)
+):
+    """Get daily nutrition statistics"""
+    from src.backend.database.models import DietEntry
+    
+    if target_date:
+        target = datetime.fromisoformat(target_date.replace('Z', '+00:00')).date()
+    else:
+        target = date.today()
+    
+    start = datetime.combine(target, datetime.min.time())
+    end = datetime.combine(target, datetime.max.time())
+    
+    entries = db.query(DietEntry).filter(
+        DietEntry.date >= start,
+        DietEntry.date <= end
+    ).all()
+    
+    # Calculate totals
+    stats = {
+        "date": target,
+        "total_protein": sum(e.protein for e in entries),
+        "total_carbs": sum(e.carbs for e in entries),
+        "total_fats": sum(e.fats for e in entries),
+        "total_calories": sum(e.calories for e in entries),
+        "total_omega3": sum(e.omega3 for e in entries),
+        "total_magnesium": sum(e.magnesium for e in entries),
+        "total_vitamin_b1": sum(e.vitamin_b1 for e in entries),
+        "total_vitamin_d3": sum(e.vitamin_d3 for e in entries),
+        "total_zinc": sum(e.zinc for e in entries),
+        "entries_count": len(entries)
+    }
+    
+    # Calculate protein goal (default: 1.8g per kg, assuming 70kg = 126g)
+    # In future, this can be based on user profile (age, weight)
+    stats["protein_goal"] = 126.0  # 70kg * 1.8g/kg
+    
+    return stats
+
+@router.delete("/diet/entries/{entry_id}")
+async def delete_diet_entry(entry_id: int, db: Session = Depends(get_db)):
+    """Delete a diet entry"""
+    from src.backend.database.models import DietEntry
+    
+    entry = db.query(DietEntry).filter(DietEntry.id == entry_id).first()
+    if not entry:
+        raise HTTPException(status_code=404, detail="Diet entry not found")
+    
+    db.delete(entry)
+    db.commit()
+    
+    return {"message": "Diet entry deleted successfully"}
 

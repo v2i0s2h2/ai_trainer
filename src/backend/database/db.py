@@ -35,6 +35,8 @@ def get_db():
 
 def init_db():
     """Initialize database tables"""
+    # Import all models to ensure they're registered with Base
+    from src.backend.database import models
     Base.metadata.create_all(bind=engine)
     print(f"✅ Database initialized at {DATABASE_URL}")
 

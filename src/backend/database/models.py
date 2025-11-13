@@ -74,3 +74,29 @@ class UserAchievement(Base):
     user = relationship("User", back_populates="achievements")
     achievement = relationship("Achievement", back_populates="user_achievements")
 
+class DietEntry(Base):
+    __tablename__ = "diet_entries"
+    
+    id = Column(Integer, primary_key=True, index=True)
+    user_id = Column(Integer, ForeignKey("users.id"), default=1)  # Default user for now
+    meal_name = Column(String)  # e.g., "Breakfast", "Lunch", "Dinner", "Snack"
+    food_item = Column(String)  # e.g., "2 Eggs", "Chicken Breast 200g"
+    date = Column(DateTime, default=datetime.utcnow, index=True)
+    
+    # Macronutrients (in grams)
+    protein = Column(Float, default=0.0)
+    carbs = Column(Float, default=0.0)
+    fats = Column(Float, default=0.0)
+    calories = Column(Float, default=0.0)
+    
+    # Micronutrients (optional, in mg or IU)
+    omega3 = Column(Float, default=0.0)  # mg
+    magnesium = Column(Float, default=0.0)  # mg
+    vitamin_b1 = Column(Float, default=0.0)  # mg
+    vitamin_d3 = Column(Float, default=0.0)  # IU
+    zinc = Column(Float, default=0.0)  # mg
+    
+    notes = Column(String, nullable=True)
+    
+    created_at = Column(DateTime, default=datetime.utcnow)
+

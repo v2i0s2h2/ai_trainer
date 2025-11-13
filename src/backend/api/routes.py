@@ -14,6 +14,12 @@ from src.backend.database.db import get_db
 router = APIRouter()
 
 # Pydantic models for API requests/responses
+class CameraPosition(BaseModel):
+    distance: str  # e.g., "2 meters away"
+    angle: str  # e.g., "Side view", "Front view", "45° angle"
+    height: str  # e.g., "Waist level", "Knee level", "Shoulder level"
+    tips: List[str] = []  # Specific tips for camera setup
+
 class ExerciseResponse(BaseModel):
     id: str
     name: str
@@ -26,6 +32,7 @@ class ExerciseResponse(BaseModel):
     description: Optional[str] = None
     target_muscles: List[str] = []  # Target muscles for this exercise
     youtube_link: Optional[str] = None  # YouTube tutorial video link
+    camera_position: Optional[CameraPosition] = None  # Camera setup instructions
 
 class TodayStatsResponse(BaseModel):
     reps_today: int
@@ -104,7 +111,18 @@ EXERCISES = [
         "thumbnail": "/images/exercises/squat.jpg",
         "description": "Basic squat exercise for legs",
         "target_muscles": ["Quadriceps", "Glutes", "Hamstrings", "Calves"],
-        "youtube_link": "https://www.youtube.com/watch?v=YaXPRqUwItQ"
+        "youtube_link": "https://www.youtube.com/watch?v=YaXPRqUwItQ",
+        "camera_position": {
+            "distance": "2-3 meters away",
+            "angle": "Side view (90°)",
+            "height": "Waist to hip level",
+            "tips": [
+                "Place camera on your side to see full body profile",
+                "Ensure both feet and head are visible in frame",
+                "Keep camera stable (use tripod or prop against wall)",
+                "Good lighting helps with pose detection"
+            ]
+        }
     },
     {
         "id": "push-ups",
@@ -117,7 +135,18 @@ EXERCISES = [
         "thumbnail": "/images/exercises/pushup.jpg",
         "description": "Classic push-up for chest and arms",
         "target_muscles": ["Pectorals", "Triceps", "Anterior Deltoids", "Core"],
-        "youtube_link": "https://www.youtube.com/watch?v=IODxDxX7oi4"
+        "youtube_link": "https://www.youtube.com/watch?v=IODxDxX7oi4",
+        "camera_position": {
+            "distance": "1.5-2 meters away",
+            "angle": "Side view (90°)",
+            "height": "Ground level or slightly elevated",
+            "tips": [
+                "Place camera on your side to see body alignment",
+                "Camera should be at same level as your body (on floor or low surface)",
+                "Ensure full body from head to feet is visible",
+                "Make sure arms and shoulders are clearly visible"
+            ]
+        }
     },
     {
         "id": "glute-fly",
@@ -130,7 +159,18 @@ EXERCISES = [
         "thumbnail": "/images/exercises/glute-fly.jpg",
         "description": "Glute fly exercise for hip mobility",
         "target_muscles": ["Glutes", "Hamstrings", "Hip Abductors"],
-        "youtube_link": "https://www.youtube.com/watch?v=4Y2ZdHCOXok"
+        "youtube_link": "https://www.youtube.com/watch?v=4Y2ZdHCOXok",
+        "camera_position": {
+            "distance": "2-2.5 meters away",
+            "angle": "Side view (90°)",
+            "height": "Hip level",
+            "tips": [
+                "Place camera on your side to see leg movement",
+                "Ensure hips and legs are fully visible",
+                "Camera should capture full range of leg motion",
+                "Keep camera stable for consistent tracking"
+            ]
+        }
     },
     {
         "id": "shoulder-press",
@@ -143,7 +183,18 @@ EXERCISES = [
         "thumbnail": "/images/exercises/shoulder-press.jpg",
         "description": "Shoulder press for shoulder strength",
         "target_muscles": ["Anterior Deltoids", "Lateral Deltoids", "Triceps", "Upper Trapezius"],
-        "youtube_link": "https://www.youtube.com/watch?v=qEwKCR5JCog"
+        "youtube_link": "https://www.youtube.com/watch?v=qEwKCR5JCog",
+        "camera_position": {
+            "distance": "2-2.5 meters away",
+            "angle": "Front view (0°)",
+            "height": "Shoulder to chest level",
+            "tips": [
+                "Place camera directly in front of you",
+                "Ensure full upper body is visible (head to waist)",
+                "Keep arms and shoulders clearly in frame",
+                "Camera should capture full range of arm motion"
+            ]
+        }
     },
     {
         "id": "bicep-curl",
@@ -156,7 +207,18 @@ EXERCISES = [
         "thumbnail": "/images/exercises/bicep-curl.jpg",
         "description": "Bicep curls for arm strength",
         "target_muscles": ["Biceps Brachii", "Brachialis", "Brachioradialis"],
-        "youtube_link": "https://www.youtube.com/watch?v=ykJmrZ5v0Oo"
+        "youtube_link": "https://www.youtube.com/watch?v=ykJmrZ5v0Oo",
+        "camera_position": {
+            "distance": "1.5-2 meters away",
+            "angle": "Front view (0°) or 45° angle",
+            "height": "Chest to shoulder level",
+            "tips": [
+                "Place camera in front of you, slightly to the side if needed",
+                "Ensure both arms are fully visible",
+                "Camera should capture full range of arm curl motion",
+                "Keep elbows in frame for proper form tracking"
+            ]
+        }
     },
     {
         "id": "plank",
@@ -169,7 +231,18 @@ EXERCISES = [
         "thumbnail": "/images/exercises/plank.jpg",
         "description": "Plank hold for core strength",
         "target_muscles": ["Rectus Abdominis", "Transverse Abdominis", "Obliques", "Erector Spinae"],
-        "youtube_link": "https://www.youtube.com/watch?v=pSHjTRCQxIw"
+        "youtube_link": "https://www.youtube.com/watch?v=pSHjTRCQxIw",
+        "camera_position": {
+            "distance": "1.5-2 meters away",
+            "angle": "Side view (90°)",
+            "height": "Ground level or slightly elevated",
+            "tips": [
+                "Place camera on your side to see body alignment",
+                "Camera should be at ground level or slightly above",
+                "Ensure full body from head to feet is visible",
+                "Check that your body forms a straight line in frame"
+            ]
+        }
     },
     {
         "id": "row",
@@ -182,7 +255,18 @@ EXERCISES = [
         "thumbnail": "/images/exercises/row.jpg",
         "description": "Row exercise for back strength",
         "target_muscles": ["Latissimus Dorsi", "Rhomboids", "Middle Trapezius", "Rear Deltoids", "Biceps"],
-        "youtube_link": "https://www.youtube.com/watch?v=rep-qVOkqgk"
+        "youtube_link": "https://www.youtube.com/watch?v=rep-qVOkqgk",
+        "camera_position": {
+            "distance": "2-2.5 meters away",
+            "angle": "Side view (90°)",
+            "height": "Chest to shoulder level",
+            "tips": [
+                "Place camera on your side to see pulling motion",
+                "Ensure full upper body is visible",
+                "Camera should capture arm pull-back range",
+                "Keep back and shoulders clearly in frame"
+            ]
+        }
     },
     {
         "id": "pull-up",
@@ -195,7 +279,18 @@ EXERCISES = [
         "thumbnail": "/images/exercises/pullup.jpg",
         "description": "Pull-ups for upper body strength",
         "target_muscles": ["Latissimus Dorsi", "Rhomboids", "Biceps", "Rear Deltoids", "Teres Major"],
-        "youtube_link": "https://www.youtube.com/watch?v=eGo4IYlbE5g"
+        "youtube_link": "https://www.youtube.com/watch?v=eGo4IYlbE5g",
+        "camera_position": {
+            "distance": "2.5-3 meters away",
+            "angle": "Front view (0°)",
+            "height": "Chest to head level",
+            "tips": [
+                "Place camera directly in front of you",
+                "Ensure full body from head to feet is visible",
+                "Camera should capture full pull-up range (hanging to chin-over-bar)",
+                "Keep bar and full arm extension visible"
+            ]
+        }
     },
     {
         "id": "lunge",
@@ -208,7 +303,18 @@ EXERCISES = [
         "thumbnail": "/images/exercises/lunge.jpg",
         "description": "Lunges for leg strength",
         "target_muscles": ["Quadriceps", "Glutes", "Hamstrings", "Calves"],
-        "youtube_link": "https://www.youtube.com/watch?v=QOVaHwm-Q6U"
+        "youtube_link": "https://www.youtube.com/watch?v=QOVaHwm-Q6U",
+        "camera_position": {
+            "distance": "2-2.5 meters away",
+            "angle": "Side view (90°)",
+            "height": "Hip to waist level",
+            "tips": [
+                "Place camera on your side to see leg movement",
+                "Ensure both legs are fully visible in frame",
+                "Camera should capture full lunge depth",
+                "Keep torso upright and visible"
+            ]
+        }
     },
     {
         "id": "crunch",
@@ -221,7 +327,18 @@ EXERCISES = [
         "thumbnail": "/images/exercises/crunch.jpg",
         "description": "Crunches for core strength",
         "target_muscles": ["Rectus Abdominis", "Obliques"],
-        "youtube_link": "https://www.youtube.com/watch?v=MKmrqcoCZ-M"
+        "youtube_link": "https://www.youtube.com/watch?v=MKmrqcoCZ-M",
+        "camera_position": {
+            "distance": "1.5-2 meters away",
+            "angle": "Side view (90°)",
+            "height": "Ground level or slightly elevated",
+            "tips": [
+                "Place camera on your side to see torso curl",
+                "Camera should be at ground level or slightly above",
+                "Ensure upper body and core are visible",
+                "Keep head and shoulders in frame for rep counting"
+            ]
+        }
     },
     {
         "id": "tricep-dip",
@@ -234,7 +351,18 @@ EXERCISES = [
         "thumbnail": "/images/exercises/tricep-dip.jpg",
         "description": "Tricep dips for arm strength",
         "target_muscles": ["Triceps", "Anterior Deltoids", "Pectorals"],
-        "youtube_link": "https://www.youtube.com/watch?v=6kALZikXxLc"
+        "youtube_link": "https://www.youtube.com/watch?v=6kALZikXxLc",
+        "camera_position": {
+            "distance": "1.5-2 meters away",
+            "angle": "Side view (90°)",
+            "height": "Chest to shoulder level",
+            "tips": [
+                "Place camera on your side to see arm movement",
+                "Ensure full upper body is visible",
+                "Camera should capture full dip range (up to down)",
+                "Keep elbows and shoulders clearly in frame"
+            ]
+        }
     },
     {
         "id": "lateral-raise",
@@ -247,7 +375,18 @@ EXERCISES = [
         "thumbnail": "/images/exercises/lateral-raise.jpg",
         "description": "Lateral raises for shoulder strength",
         "target_muscles": ["Lateral Deltoids", "Anterior Deltoids", "Supraspinatus"],
-        "youtube_link": "https://www.youtube.com/watch?v=3VcKaXpzqRo"
+        "youtube_link": "https://www.youtube.com/watch?v=3VcKaXpzqRo",
+        "camera_position": {
+            "distance": "1.5-2 meters away",
+            "angle": "Front view (0°)",
+            "height": "Shoulder to chest level",
+            "tips": [
+                "Place camera directly in front of you",
+                "Ensure both arms are fully visible",
+                "Camera should capture full arm raise range (down to shoulder height)",
+                "Keep shoulders and arms clearly in frame"
+            ]
+        }
     }
 ]
 

@@ -11,6 +11,12 @@
 		difficulty: 'beginner' | 'intermediate' | 'advanced';
 		target_muscles?: string[];
 		youtube_link?: string;
+		camera_position?: {
+			distance: string;
+			angle: string;
+			height: string;
+			tips: string[];
+		};
 	};
 	
 	const categoryColors: Record<string, string> = {
@@ -37,6 +43,12 @@
 				<div class="target-muscles">
 					<span class="muscles-label">Target: </span>
 					<span class="muscles-list">{exercise.target_muscles.slice(0, 2).join(', ')}{#if exercise.target_muscles.length > 2}...{/if}</span>
+				</div>
+			{/if}
+			{#if exercise.camera_position}
+				<div class="camera-position-hint">
+					<span class="camera-icon">📹</span>
+					<span class="camera-text">{exercise.camera_position.angle} • {exercise.camera_position.distance}</span>
 				</div>
 			{/if}
 		</div>
@@ -126,6 +138,24 @@
 	
 	.muscles-list {
 		opacity: 0.9;
+	}
+	
+	.camera-position-hint {
+		display: flex;
+		align-items: center;
+		gap: 0.375rem;
+		font-size: 0.7rem;
+		color: var(--text-secondary);
+		margin-top: 0.5rem;
+		opacity: 0.85;
+	}
+	
+	.camera-icon {
+		font-size: 0.875rem;
+	}
+	
+	.camera-text {
+		font-weight: 500;
 	}
 	
 	.card-actions {

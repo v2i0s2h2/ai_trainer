@@ -14,6 +14,7 @@
 	let loading = true;
 	let cameras: any[] = [];
 	let selectedCamera = "auto"; // "auto" means auto-detect external webcam
+	let showCameraSetup = true; // Show camera setup guidance before workout starts
 	
 	onMount(async () => {
 		try {
@@ -38,16 +39,23 @@
 			exerciseName = exercise.charAt(0).toUpperCase() + exercise.slice(1);
 		}
 		
-		// Connect to WebSocket with camera selection
-		setTimeout(() => {
-			workoutStore.connect(exercise, selectedCamera);
-			loading = false;
-		}, 500);
+		// Don't auto-connect if camera setup is showing
+		// User will start workout after reading camera setup
+		loading = false;
 	});
 	
 	function changeCamera(cameraId: string) {
 		selectedCamera = cameraId;
-		workoutStore.disconnect();
+		if (!showCameraSetup) {
+			workoutStore.disconnect();
+			setTimeout(() => {
+				workoutStore.connect(exercise, selectedCamera);
+			}, 300);
+		}
+	}
+	
+	function startWorkout() {
+		showCameraSetup = false;
 		setTimeout(() => {
 			workoutStore.connect(exercise, selectedCamera);
 		}, 300);
@@ -121,6 +129,83 @@
 							Watch Tutorial
 						</a>
 					{/if}
+				</div>
+			</div>
+		</div>
+	{/if}
+	
+	{#if showCameraSetup && exerciseData?.camera_position}
+		<div class="camera-setup-overlay">
+			<div class="camera-setup-card">
+				<div class="setup-header">
+					<h2>📹 Camera Setup Guide</h2>
+					<p class="setup-subtitle">Position your camera correctly for best results</p>
+				</div>
+				
+				<div class="setup-content">
+					<!-- Visual Diagram -->
+					<div class="camera-diagram">
+						<div class="diagram-container">
+							<div class="person-icon">🧍</div>
+							<div class="angle-indicator">
+								{#if exerciseData.camera_position.angle.includes('Side')}
+									<div class="camera-icon-large side-camera">📹</div>
+									<span class="angle-text">90°</span>
+									<div class="angle-line side-view"></div>
+								{:else if exerciseData.camera_position.angle.includes('Front')}
+									<div class="camera-icon-large front-camera">📹</div>
+									<span class="angle-text">0°</span>
+									<div class="angle-line front-view"></div>
+								{:else if exerciseData.camera_position.angle.includes('45')}
+									<div class="camera-icon-large angle-45-camera">📹</div>
+									<span class="angle-text">45°</span>
+									<div class="angle-line angle-45"></div>
+								{/if}
+							</div>
+							<div class="distance-label">{exerciseData.camera_position.distance}</div>
+							<div class="height-label">{exerciseData.camera_position.height}</div>
+						</div>
+					</div>
+					
+					<!-- Instructions -->
+					<div class="setup-instructions">
+						<div class="instruction-item">
+							<span class="instruction-icon">📏</span>
+							<div class="instruction-content">
+								<strong>Distance:</strong> {exerciseData.camera_position.distance}
+							</div>
+						</div>
+						<div class="instruction-item">
+							<span class="instruction-icon">📐</span>
+							<div class="instruction-content">
+								<strong>Angle:</strong> {exerciseData.camera_position.angle}
+							</div>
+						</div>
+						<div class="instruction-item">
+							<span class="instruction-icon">⬆️</span>
+							<div class="instruction-content">
+								<strong>Height:</strong> {exerciseData.camera_position.height}
+							</div>
+						</div>
+					</div>
+					
+					<!-- Tips -->
+					{#if exerciseData.camera_position.tips && exerciseData.camera_position.tips.length > 0}
+						<div class="setup-tips">
+							<h4>💡 Tips:</h4>
+							<ul>
+								{#each exerciseData.camera_position.tips as tip}
+									<li>{tip}</li>
+								{/each}
+							</ul>
+						</div>
+					{/if}
+				</div>
+				
+				<div class="setup-actions">
+					<button class="start-workout-btn" on:click={startWorkout}>
+						Got it! Start Workout
+					</button>
 				</div>
 			</div>
 		</div>
@@ -304,6 +389,292 @@
 		margin: 0 auto;
 	}
 	
+	.camera-setup-overlay {
+		position: fixed;
+		top: 0;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		background: rgba(0, 0, 0, 0.85);
+		backdrop-filter: blur(4px);
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		z-index: 1000;
+		padding: 1rem;
+	}
+	
+	.camera-setup-card {
+		background: var(--bg-card);
+		border-radius: 1.5rem;
+		padding: 2rem;
+		max-width: 600px;
+		width: 100%;
+		max-height: 90vh;
+		overflow-y: auto;
+		box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+		border: 1px solid rgba(255, 255, 255, 0.1);
+	}
+	
+	.setup-header {
+		text-align: center;
+		margin-bottom: 2rem;
+	}
+	
+	.setup-header h2 {
+		font-size: 1.75rem;
+		font-weight: 700;
+		color: var(--text-primary);
+		margin-bottom: 0.5rem;
+	}
+	
+	.setup-subtitle {
+		color: var(--text-secondary);
+		font-size: 0.875rem;
+	}
+	
+	.setup-content {
+		display: flex;
+		flex-direction: column;
+		gap: 1.5rem;
+	}
+	
+	.camera-diagram {
+		background: rgba(255, 255, 255, 0.03);
+		border-radius: 1rem;
+		padding: 2rem;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		min-height: 250px;
+	}
+	
+	.diagram-container {
+		position: relative;
+		width: 100%;
+		max-width: 400px;
+		height: 250px;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+	}
+	
+	.person-icon {
+		font-size: 4rem;
+		position: absolute;
+		left: 50%;
+		top: 50%;
+		transform: translate(-50%, -50%);
+		z-index: 2;
+	}
+	
+	.camera-icon-large {
+		font-size: 3rem;
+		position: absolute;
+		z-index: 3;
+		animation: pulse-camera 2s infinite;
+	}
+	
+	.camera-icon-large.side-camera {
+		left: 10%;
+		top: 50%;
+		transform: translateY(-50%);
+	}
+	
+	.camera-icon-large.front-camera {
+		left: 50%;
+		top: 10%;
+		transform: translateX(-50%);
+	}
+	
+	.camera-icon-large.angle-45-camera {
+		left: 15%;
+		top: 15%;
+	}
+	
+	.angle-indicator {
+		position: absolute;
+		width: 100%;
+		height: 100%;
+		z-index: 1;
+	}
+	
+	.angle-text {
+		position: absolute;
+		font-size: 0.875rem;
+		font-weight: 600;
+		color: var(--primary);
+		background: rgba(0, 0, 0, 0.5);
+		padding: 0.25rem 0.5rem;
+		border-radius: 0.25rem;
+	}
+	
+	.angle-line {
+		position: absolute;
+		background: var(--primary);
+		opacity: 0.6;
+	}
+	
+	.angle-line.side-view {
+		width: 2px;
+		height: 80%;
+		left: 20%;
+		top: 10%;
+	}
+	
+	.angle-line.front-view {
+		width: 80%;
+		height: 2px;
+		left: 10%;
+		top: 20%;
+	}
+	
+	.angle-line.angle-45 {
+		width: 2px;
+		height: 60%;
+		left: 25%;
+		top: 20%;
+		transform: rotate(45deg);
+		transform-origin: top left;
+	}
+	
+	.distance-label {
+		position: absolute;
+		bottom: 1rem;
+		left: 50%;
+		transform: translateX(-50%);
+		font-size: 0.75rem;
+		color: var(--text-secondary);
+		background: rgba(0, 0, 0, 0.5);
+		padding: 0.25rem 0.5rem;
+		border-radius: 0.25rem;
+	}
+	
+	.height-label {
+		position: absolute;
+		right: 1rem;
+		top: 50%;
+		transform: translateY(-50%);
+		font-size: 0.75rem;
+		color: var(--text-secondary);
+		background: rgba(0, 0, 0, 0.5);
+		padding: 0.25rem 0.5rem;
+		border-radius: 0.25rem;
+		writing-mode: vertical-rl;
+		text-orientation: mixed;
+	}
+	
+	.setup-instructions {
+		display: flex;
+		flex-direction: column;
+		gap: 1rem;
+	}
+	
+	.instruction-item {
+		display: flex;
+		align-items: center;
+		gap: 1rem;
+		padding: 1rem;
+		background: rgba(255, 255, 255, 0.03);
+		border-radius: 0.75rem;
+		border-left: 3px solid var(--primary);
+	}
+	
+	.instruction-icon {
+		font-size: 1.5rem;
+		flex-shrink: 0;
+	}
+	
+	.instruction-content {
+		flex: 1;
+		color: var(--text-primary);
+		font-size: 0.875rem;
+		line-height: 1.5;
+	}
+	
+	.instruction-content strong {
+		color: var(--primary);
+		margin-right: 0.5rem;
+	}
+	
+	.setup-tips {
+		background: rgba(255, 255, 255, 0.03);
+		border-radius: 0.75rem;
+		padding: 1.25rem;
+	}
+	
+	.setup-tips h4 {
+		font-size: 1rem;
+		font-weight: 600;
+		color: var(--text-primary);
+		margin-bottom: 0.75rem;
+	}
+	
+	.setup-tips ul {
+		list-style: none;
+		padding: 0;
+		margin: 0;
+		display: flex;
+		flex-direction: column;
+		gap: 0.5rem;
+	}
+	
+	.setup-tips li {
+		font-size: 0.875rem;
+		color: var(--text-secondary);
+		line-height: 1.6;
+		padding-left: 1.5rem;
+		position: relative;
+	}
+	
+	.setup-tips li::before {
+		content: "•";
+		position: absolute;
+		left: 0;
+		color: var(--primary);
+		font-weight: bold;
+	}
+	
+	.setup-actions {
+		margin-top: 2rem;
+		display: flex;
+		justify-content: center;
+	}
+	
+	.start-workout-btn {
+		background: var(--primary);
+		color: white;
+		border: none;
+		padding: 1rem 2rem;
+		border-radius: 0.75rem;
+		font-size: 1rem;
+		font-weight: 600;
+		cursor: pointer;
+		transition: all 0.2s;
+		box-shadow: 0 4px 12px rgba(255, 100, 50, 0.3);
+	}
+	
+	.start-workout-btn:hover {
+		background: var(--primary-hover, #ff6b35);
+		transform: translateY(-2px);
+		box-shadow: 0 6px 16px rgba(255, 100, 50, 0.4);
+	}
+	
+	.start-workout-btn:active {
+		transform: translateY(0);
+	}
+	
+	@keyframes pulse-camera {
+		0%, 100% {
+			opacity: 1;
+			transform: scale(1);
+		}
+		50% {
+			opacity: 0.7;
+			transform: scale(1.1);
+		}
+	}
+	
 	@media (max-width: 640px) {
 		.video-section {
 			padding: 0.5rem;
@@ -311,6 +682,28 @@
 		
 		.workout-page {
 			padding-bottom: 140px;
+		}
+		
+		.camera-setup-card {
+			padding: 1.5rem;
+			max-height: 95vh;
+		}
+		
+		.setup-header h2 {
+			font-size: 1.5rem;
+		}
+		
+		.camera-diagram {
+			padding: 1.5rem;
+			min-height: 200px;
+		}
+		
+		.person-icon {
+			font-size: 3rem;
+		}
+		
+		.camera-icon-large {
+			font-size: 2.5rem;
 		}
 	}
 </style>

@@ -3,19 +3,15 @@
 	import ExerciseGrid from '$lib/components/exercises/ExerciseGrid.svelte';
 	
 	let allExercises: any[] = [];
-	let filteredExercises: any[] = [];
 	let loading = true;
 	let searchQuery = '';
-	let selectedCategory: string | null = null;
+	let selectedExerciseType: 'rehab' | 'basic' | 'advanced' | 'lifting' = 'basic';
 	
-	const categories = [
-		{ id: null, name: 'All', icon: '🏋️' },
-		{ id: 'legs', name: 'Legs', icon: '🦵' },
-		{ id: 'chest', name: 'Chest', icon: '💪' },
-		{ id: 'back', name: 'Back', icon: '🔙' },
-		{ id: 'shoulders', name: 'Shoulders', icon: '🤲' },
-		{ id: 'arms', name: 'Arms', icon: '💪' },
-		{ id: 'core', name: 'Core', icon: '🔥' }
+	const exerciseTypes = [
+		{ id: 'rehab', name: 'Rehab', icon: '🏥' },
+		{ id: 'basic', name: 'Basic', icon: '💪' },
+		{ id: 'advanced', name: 'Advanced', icon: '🔥' },
+		{ id: 'lifting', name: 'Lifting', icon: '🏋️' }
 	];
 	
 	onMount(async () => {
@@ -23,7 +19,6 @@
 			const res = await fetch('/api/exercises');
 			if (res.ok) {
 				allExercises = await res.json();
-				filteredExercises = allExercises;
 			}
 		} catch (err) {
 			console.error('Failed to load exercises:', err);
@@ -32,34 +27,30 @@
 		}
 	});
 	
-	function filterExercises() {
-		let filtered = allExercises;
-		
-		// Filter by category
-		if (selectedCategory) {
-			filtered = filtered.filter(ex => ex.category === selectedCategory);
-		}
+	function getExercisesByTypeAndCategory(type: string, category: 'upper' | 'lower') {
+		let filtered = allExercises.filter(ex => 
+			ex.exercise_type === type && ex.category === category
+		);
 		
 		// Filter by search query
 		if (searchQuery.trim()) {
 			const query = searchQuery.toLowerCase();
 			filtered = filtered.filter(ex => 
 				ex.name.toLowerCase().includes(query) ||
-				ex.category.toLowerCase().includes(query) ||
-				ex.difficulty.toLowerCase().includes(query)
+				ex.difficulty.toLowerCase().includes(query) ||
+				ex.target_muscles.some((m: string) => m.toLowerCase().includes(query))
 			);
 		}
 		
-		filteredExercises = filtered;
+		return filtered;
 	}
 	
-	function selectCategory(categoryId: string | null) {
-		selectedCategory = categoryId;
-		filterExercises();
+	function getUpperExercises(type: string) {
+		return getExercisesByTypeAndCategory(type, 'upper');
 	}
 	
-	$: {
-		filterExercises();
+	function getLowerExercises(type: string) {
+		return getExercisesByTypeAndCategory(type, 'lower');
 	}
 </script>
 
@@ -91,38 +82,62 @@
 		</div>
 	</div>
 	
-	<!-- Filter Chips -->
-	<div class="filters-section">
-		<div class="filter-chips">
-			{#each categories as category}
+	<!-- Exercise Type Tabs -->
+	<div class="tabs-section">
+		<div class="tabs">
+			{#each exerciseTypes as type}
 				<button
-					class="filter-chip"
-					class:active={selectedCategory === category.id}
-					on:click={() => selectCategory(category.id)}
+					class="tab-btn"
+					class:active={selectedExerciseType === type.id}
+					on:click={() => selectedExerciseType = type.id as any}
 				>
-					<span class="chip-icon">{category.icon}</span>
-					<span class="chip-label">{category.name}</span>
+					<span class="tab-icon">{type.icon}</span>
+					<span class="tab-label">{type.name}</span>
 				</button>
 			{/each}
 		</div>
 	</div>
 	
-	<!-- Exercise Grid -->
+	<!-- Exercise Content -->
 	{#if loading}
 		<div class="loading">
 			<div class="spinner"></div>
 			<p>Loading exercises...</p>
 		</div>
 	{:else}
-		<ExerciseGrid exercises={filteredExercises} />
-		{#if filteredExercises.length === 0 && !loading}
-			<div class="empty-state">
-				<svg fill="none" stroke="currentColor" viewBox="0 0 24 24" width="48" height="48">
-					<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-				</svg>
-				<p>No exercises found. Try a different search or filter.</p>
+		<div class="exercises-content">
+			<!-- Upper Body Section -->
+			<div class="section">
+				<h2 class="section-title">
+					<span class="section-icon">⬆️</span>
+					Upper Body
+				</h2>
+				{#if getUpperExercises(selectedExerciseType).length > 0}
+					<ExerciseGrid exercises={getUpperExercises(selectedExerciseType)} />
+				{:else}
+					<div class="empty-section">
+						<p>No upper body exercises available yet.</p>
+						<p class="coming-soon">More exercises coming soon! 🚀</p>
+					</div>
+				{/if}
 			</div>
-		{/if}
+			
+			<!-- Lower Body Section -->
+			<div class="section">
+				<h2 class="section-title">
+					<span class="section-icon">⬇️</span>
+					Lower Body
+				</h2>
+				{#if getLowerExercises(selectedExerciseType).length > 0}
+					<ExerciseGrid exercises={getLowerExercises(selectedExerciseType)} />
+				{:else}
+					<div class="empty-section">
+						<p>No lower body exercises available yet.</p>
+						<p class="coming-soon">More exercises coming soon! 🚀</p>
+					</div>
+				{/if}
+			</div>
+		</div>
 	{/if}
 </div>
 
@@ -214,48 +229,95 @@
 		color: var(--text-primary);
 	}
 	
-	.filters-section {
+	.tabs-section {
 		margin-bottom: 2rem;
 	}
 	
-	.filter-chips {
+	.tabs {
 		display: flex;
 		gap: 0.75rem;
-		flex-wrap: wrap;
+		overflow-x: auto;
+		padding-bottom: 0.5rem;
+		-webkit-overflow-scrolling: touch;
 	}
 	
-	.filter-chip {
+	.tab-btn {
 		display: flex;
 		align-items: center;
 		gap: 0.5rem;
-		padding: 0.5rem 1rem;
+		padding: 0.75rem 1.5rem;
 		background-color: var(--bg-card);
 		border: 1px solid rgba(255, 255, 255, 0.1);
-		border-radius: 9999px;
+		border-radius: 0.75rem;
 		color: var(--text-secondary);
 		font-size: 0.875rem;
 		font-weight: 500;
 		cursor: pointer;
 		transition: all 0.2s;
+		white-space: nowrap;
+		flex-shrink: 0;
 	}
 	
-	.filter-chip:hover {
+	.tab-btn:hover {
 		background-color: var(--bg-card-hover);
 		border-color: rgba(255, 255, 255, 0.2);
 	}
 	
-	.filter-chip.active {
+	.tab-btn.active {
 		background-color: var(--primary);
 		border-color: var(--primary);
 		color: white;
 	}
 	
-	.chip-icon {
-		font-size: 1rem;
+	.tab-icon {
+		font-size: 1.125rem;
 	}
 	
-	.chip-label {
-		white-space: nowrap;
+	.tab-label {
+		font-weight: 600;
+	}
+	
+	.exercises-content {
+		display: flex;
+		flex-direction: column;
+		gap: 3rem;
+	}
+	
+	.section {
+		display: flex;
+		flex-direction: column;
+		gap: 1.5rem;
+	}
+	
+	.section-title {
+		display: flex;
+		align-items: center;
+		gap: 0.75rem;
+		font-size: 1.5rem;
+		font-weight: 700;
+		color: var(--text-primary);
+		margin-bottom: 0.5rem;
+	}
+	
+	.section-icon {
+		font-size: 1.5rem;
+	}
+	
+	.empty-section {
+		text-align: center;
+		padding: 3rem 1rem;
+		background-color: var(--bg-card);
+		border-radius: 0.75rem;
+		color: var(--text-secondary);
+	}
+	
+	.empty-section p {
+		margin-bottom: 0.5rem;
+	}
+	
+	.coming-soon {
+		font-size: 0.875rem;
+		opacity: 0.7;
 	}
 	
 	.loading {
@@ -283,36 +345,26 @@
 		}
 	}
 	
-	.empty-state {
-		text-align: center;
-		padding: 3rem 1rem;
-		color: var(--text-secondary);
-	}
-	
-	.empty-state svg {
-		margin: 0 auto 1rem;
-		opacity: 0.5;
-	}
-	
-	.empty-state p {
-		font-size: 1rem;
-		margin-top: 0.5rem;
-	}
-	
 	@media (max-width: 640px) {
 		.exercises-container {
 			padding: 1.5rem 1rem;
 		}
 		
-		.filter-chips {
-			overflow-x: auto;
-			padding-bottom: 0.5rem;
-			-webkit-overflow-scrolling: touch;
+		.tabs {
+			gap: 0.5rem;
 		}
 		
-		.filter-chip {
-			flex-shrink: 0;
+		.tab-btn {
+			padding: 0.625rem 1.25rem;
+			font-size: 0.8125rem;
+		}
+		
+		.section-title {
+			font-size: 1.25rem;
+		}
+		
+		.exercises-content {
+			gap: 2rem;
 		}
 	}
 </style>
-

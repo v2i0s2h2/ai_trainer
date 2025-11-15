@@ -23,7 +23,8 @@ class CameraPosition(BaseModel):
 class ExerciseResponse(BaseModel):
     id: str
     name: str
-    category: str
+    exercise_type: str  # "rehab", "basic", "advanced", "lifting"
+    category: str  # "upper" or "lower" (body part classification)
     difficulty: str
     duration: int  # minutes
     sets: int
@@ -103,7 +104,8 @@ EXERCISES = [
     {
         "id": "squat",
         "name": "Squats",
-        "category": "legs",
+        "exercise_type": "basic",
+        "category": "lower",
         "difficulty": "beginner",
         "duration": 12,
         "sets": 4,
@@ -127,7 +129,8 @@ EXERCISES = [
     {
         "id": "push-ups",
         "name": "Push-ups",
-        "category": "chest",
+        "exercise_type": "basic",
+        "category": "upper",
         "difficulty": "beginner",
         "duration": 10,
         "sets": 3,
@@ -151,7 +154,8 @@ EXERCISES = [
     {
         "id": "glute-fly",
         "name": "Glute Fly",
-        "category": "legs",
+        "exercise_type": "rehab",
+        "category": "lower",
         "difficulty": "intermediate",
         "duration": 15,
         "sets": 3,
@@ -175,7 +179,8 @@ EXERCISES = [
     {
         "id": "shoulder-press",
         "name": "Shoulder Press",
-        "category": "shoulders",
+        "exercise_type": "basic",
+        "category": "upper",
         "difficulty": "beginner",
         "duration": 10,
         "sets": 3,
@@ -199,7 +204,8 @@ EXERCISES = [
     {
         "id": "bicep-curl",
         "name": "Bicep Curls",
-        "category": "arms",
+        "exercise_type": "basic",
+        "category": "upper",
         "difficulty": "beginner",
         "duration": 8,
         "sets": 3,
@@ -223,7 +229,8 @@ EXERCISES = [
     {
         "id": "plank",
         "name": "Plank",
-        "category": "core",
+        "exercise_type": "basic",
+        "category": "lower",
         "difficulty": "intermediate",
         "duration": 5,
         "sets": 3,
@@ -247,7 +254,8 @@ EXERCISES = [
     {
         "id": "row",
         "name": "Rows",
-        "category": "back",
+        "exercise_type": "basic",
+        "category": "upper",
         "difficulty": "beginner",
         "duration": 10,
         "sets": 3,
@@ -271,7 +279,8 @@ EXERCISES = [
     {
         "id": "pull-up",
         "name": "Pull-ups",
-        "category": "back",
+        "exercise_type": "basic",
+        "category": "upper",
         "difficulty": "advanced",
         "duration": 8,
         "sets": 3,
@@ -295,7 +304,8 @@ EXERCISES = [
     {
         "id": "lunge",
         "name": "Lunges",
-        "category": "legs",
+        "exercise_type": "basic",
+        "category": "lower",
         "difficulty": "beginner",
         "duration": 10,
         "sets": 3,
@@ -319,7 +329,8 @@ EXERCISES = [
     {
         "id": "crunch",
         "name": "Crunches",
-        "category": "core",
+        "exercise_type": "basic",
+        "category": "upper",
         "difficulty": "beginner",
         "duration": 8,
         "sets": 3,
@@ -343,7 +354,8 @@ EXERCISES = [
     {
         "id": "tricep-dip",
         "name": "Tricep Dips",
-        "category": "arms",
+        "exercise_type": "basic",
+        "category": "upper",
         "difficulty": "intermediate",
         "duration": 8,
         "sets": 3,
@@ -367,7 +379,8 @@ EXERCISES = [
     {
         "id": "lateral-raise",
         "name": "Lateral Raises",
-        "category": "shoulders",
+        "exercise_type": "basic",
+        "category": "upper",
         "difficulty": "beginner",
         "duration": 8,
         "sets": 3,

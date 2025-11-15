@@ -360,6 +360,98 @@
 				</div>
 			</section>
 			
+			<!-- Protein to Muscle Gain -->
+			<section class="edu-section">
+				<h2>💪 Protein to Muscle: The Real Truth</h2>
+				
+				<div class="info-card highlight">
+					<h3>🧪 How much muscle do you REALLY gain from 50g protein?</h3>
+					<p>
+						<strong>Direct and simple truth:</strong>
+					</p>
+					<ul class="truth-list">
+						<li>👉 <strong>50 grams protein = NOT 50 grams muscle gain</strong></li>
+						<li>👉 <strong>50g protein ⇒ approx 10–12g muscle potential</strong> (best-case)</li>
+						<li>👉 <strong>Actual muscle added per day = 3–5 grams only</strong></li>
+					</ul>
+				</div>
+				
+				<div class="info-card">
+					<h3>🧠 Why only 3–5 grams muscle?</h3>
+					
+					<h4>1️⃣ Protein does NOT convert 1:1 into muscle</h4>
+					<p>
+						Muscle = Water (~70%) + Protein (~20%) + Minerals + Glycogen
+					</p>
+					<p>
+						Jab tum 50g protein khate ho, body <strong>digestion, repair, energy, enzymes, hormones</strong> me 
+						bohot saara use kar leti hai. Muscle banane ke liye available protein <strong>kam hota hai</strong>.
+					</p>
+					
+					<h4>2️⃣ Human body ki daily muscle-building LIMIT</h4>
+					<p>
+						Even if you eat 200g protein daily… Body ek din me <strong>3–5 grams hi new muscle fibers</strong> 
+						bana sakti hai. Ye limit <strong>genetics, hormones, training intensity</strong> par depend karti hai.
+					</p>
+					
+					<h4>3️⃣ Workout ke bina protein → muscle nahi banega</h4>
+					<p>
+						Protein sirf raw material hai. Muscle banane ke liye <strong>training stimulus</strong> zaroori hai.
+					</p>
+				</div>
+				
+				<div class="info-card">
+					<h3>📊 Practical Calculation</h3>
+					<p>
+						Agar tum daily:
+					</p>
+					<ul>
+						<li>✅ <strong>120g protein</strong></li>
+						<li>✅ <strong>Good workout</strong></li>
+						<li>✅ <strong>Good sleep</strong></li>
+					</ul>
+					<p>
+						rakhte ho…
+					</p>
+					<ul>
+						<li>👉 <strong>Monthly muscle gain</strong> ~ <strong>250–450 grams (¼ to ½ kg)</strong></li>
+						<li>👉 <strong>Yearly</strong> ~ <strong>3–5 kg muscle</strong> (natural lifter ki maximum)</li>
+					</ul>
+				</div>
+				
+				<div class="info-card">
+					<h3>🍳 Your Example: 50g Protein</h3>
+					
+					<div class="example-cases">
+						<div class="case-item">
+							<h4>Case A – No workout:</h4>
+							<p>→ Muscle gain = <strong>almost zero</strong></p>
+							<p>→ Body repair + basic functions = protein use ho jaata hai.</p>
+						</div>
+						
+						<div class="case-item">
+							<h4>Case B – Light workout:</h4>
+							<p>→ Muscle gain = <strong>1–2 grams per day</strong></p>
+						</div>
+						
+						<div class="case-item highlight">
+							<h4>Case C – Strength Training (ideal):</h4>
+							<p>→ Muscle gain = <strong>3–5 grams per day</strong></p>
+						</div>
+					</div>
+				</div>
+				
+				<div class="info-card highlight">
+					<h3>💪 Summary (Easy Hinglish)</h3>
+					<ul class="summary-list">
+						<li>✅ <strong>50g protein</strong> khane se <strong>50g muscle nahi</strong> banta</li>
+						<li>✅ Body sirf <strong>3–5 grams muscle/day</strong> bana sakti hai</li>
+						<li>✅ Baaki protein <strong>repair, digestion, enzymes</strong> me use hota hai</li>
+						<li>✅ Muscle gain = <strong>training + protein + sleep</strong></li>
+					</ul>
+				</div>
+			</section>
+			
 			<!-- Micronutrients -->
 			<section class="edu-section">
 				<h2>🧩 Essential Micronutrients</h2>
@@ -948,6 +1040,56 @@
 	.info-card.highlight {
 		background: rgba(var(--primary-rgb, 255, 100, 50), 0.1);
 		border: 1px solid var(--primary);
+	}
+	
+	.info-card h4 {
+		font-size: 1rem;
+		font-weight: 600;
+		margin-top: 1rem;
+		margin-bottom: 0.5rem;
+		color: var(--text-primary);
+	}
+	
+	.truth-list,
+	.summary-list {
+		list-style: none;
+		padding-left: 0;
+	}
+	
+	.truth-list li,
+	.summary-list li {
+		margin-bottom: 0.75rem;
+		padding-left: 0.5rem;
+		line-height: 1.6;
+	}
+	
+	.example-cases {
+		display: flex;
+		flex-direction: column;
+		gap: 1rem;
+		margin-top: 1rem;
+	}
+	
+	.case-item {
+		padding: 1rem;
+		background: rgba(255, 255, 255, 0.03);
+		border-radius: 0.5rem;
+		border-left: 3px solid var(--primary);
+	}
+	
+	.case-item.highlight {
+		background: rgba(16, 185, 129, 0.1);
+		border-left-color: var(--accent-green);
+	}
+	
+	.case-item h4 {
+		margin-top: 0;
+		margin-bottom: 0.5rem;
+		color: var(--primary);
+	}
+	
+	.case-item p {
+		margin: 0.25rem 0;
 	}
 	
 	.table-container {

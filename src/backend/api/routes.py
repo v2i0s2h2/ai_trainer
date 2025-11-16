@@ -99,6 +99,32 @@ class DietStatsResponse(BaseModel):
     protein_goal: float  # Based on user's body weight and age
     entries_count: int
 
+# User Profile Models
+class UserStats(BaseModel):
+    total_workouts: int
+    current_streak: int
+    days_active: int
+    total_reps: int
+    total_muscle_gain: float  # Estimated: total_reps * 0.06
+
+class UserPreferences(BaseModel):
+    notifications_enabled: bool = True
+    units: str = "metric"  # "metric" or "imperial"
+    language: str = "en"
+
+class UserProfileResponse(BaseModel):
+    id: int
+    name: str
+    email: Optional[str]
+    stats: UserStats
+    preferences: UserPreferences
+    created_at: datetime
+
+class UpdateProfileRequest(BaseModel):
+    name: Optional[str] = None
+    email: Optional[str] = None
+    preferences: Optional[UserPreferences] = None
+
 # Mock data for now (will replace with database)
 EXERCISES = [
     {
@@ -624,4 +650,170 @@ async def delete_diet_entry(entry_id: int, db: Session = Depends(get_db)):
     db.commit()
     
     return {"message": "Diet entry deleted successfully"}
+
+@router.get("/user/profile", response_model=UserProfileResponse)
+async def get_user_profile(db: Session = Depends(get_db)):
+    """Get user profile with stats and preferences"""
+    from src.backend.database.models import User, Workout, UserAchievement
+    from datetime import datetime, timedelta
+    
+    # Get default user (user_id=1) for now
+    # In future, this will use authentication to get current user
+    user = db.query(User).filter(User.id == 1).first()
+    
+    if not user:
+        # Create default user if doesn't exist
+        user = User(id=1, name="Champion", email=None)
+        db.add(user)
+        db.commit()
+        db.refresh(user)
+    
+    # Calculate stats from workouts
+    workouts = db.query(Workout).filter(Workout.user_id == user.id).all()
+    
+    total_workouts = len(workouts)
+    total_reps = sum(w.reps_completed for w in workouts) if workouts else 0
+    total_muscle_gain = total_reps * 0.06  # Estimated muscle gain
+    
+    # Calculate days active (distinct workout dates)
+    workout_dates = set()
+    for workout in workouts:
+        workout_date = workout.date.date() if hasattr(workout.date, 'date') else workout.date
+        workout_dates.add(workout_date)
+    days_active = len(workout_dates)
+    
+    # Calculate current streak
+    current_streak = 0
+    if workouts:
+        # Sort workouts by date (most recent first)
+        sorted_workouts = sorted(workouts, key=lambda w: w.date, reverse=True)
+        today = datetime.now().date()
+        check_date = today
+        
+        for workout in sorted_workouts:
+            workout_date = workout.date.date() if hasattr(workout.date, 'date') else workout.date
+            if workout_date == check_date or workout_date == check_date - timedelta(days=1):
+                if workout_date == check_date:
+                    # Same day workout, continue
+                    pass
+                else:
+                    # Previous day workout, increment streak
+                    current_streak += 1
+                    check_date = workout_date
+            else:
+                # Gap found, break streak
+                break
+        
+        # If most recent workout is today, add 1 to streak
+        most_recent_date = sorted_workouts[0].date.date() if hasattr(sorted_workouts[0].date, 'date') else sorted_workouts[0].date
+        if most_recent_date == today:
+            current_streak += 1
+    
+    stats = UserStats(
+        total_workouts=total_workouts,
+        current_streak=current_streak,
+        days_active=days_active,
+        total_reps=total_reps,
+        total_muscle_gain=round(total_muscle_gain, 2)
+    )
+    
+    # Default preferences (in future, store in database)
+    preferences = UserPreferences(
+        notifications_enabled=True,
+        units="metric",
+        language="en"
+    )
+    
+    return UserProfileResponse(
+        id=user.id,
+        name=user.name or "Champion",
+        email=user.email,
+        stats=stats,
+        preferences=preferences,
+        created_at=user.created_at
+    )
+
+@router.put("/user/profile", response_model=UserProfileResponse)
+async def update_user_profile(
+    updates: UpdateProfileRequest,
+    db: Session = Depends(get_db)
+):
+    """Update user profile"""
+    from src.backend.database.models import User
+    
+    # Get default user (user_id=1) for now
+    user = db.query(User).filter(User.id == 1).first()
+    
+    if not user:
+        # Create user if doesn't exist
+        user = User(id=1, name="Champion", email=None)
+        db.add(user)
+    
+    # Update fields if provided
+    if updates.name is not None:
+        user.name = updates.name
+    if updates.email is not None:
+        user.email = updates.email
+    
+    db.commit()
+    db.refresh(user)
+    
+    # Get updated profile (reuse get_user_profile logic)
+    # For now, just return with updated name/email
+    # Preferences will be stored in database in future
+    from datetime import datetime
+    from src.backend.database.models import Workout
+    from datetime import timedelta
+    
+    workouts = db.query(Workout).filter(Workout.user_id == user.id).all()
+    total_workouts = len(workouts)
+    total_reps = sum(w.reps_completed for w in workouts) if workouts else 0
+    total_muscle_gain = total_reps * 0.06
+    
+    workout_dates = set()
+    for workout in workouts:
+        workout_date = workout.date.date() if hasattr(workout.date, 'date') else workout.date
+        workout_dates.add(workout_date)
+    days_active = len(workout_dates)
+    
+    current_streak = 0
+    if workouts:
+        sorted_workouts = sorted(workouts, key=lambda w: w.date, reverse=True)
+        today = datetime.now().date()
+        check_date = today
+        
+        for workout in sorted_workouts:
+            workout_date = workout.date.date() if hasattr(workout.date, 'date') else workout.date
+            if workout_date == check_date or workout_date == check_date - timedelta(days=1):
+                if workout_date == check_date:
+                    pass
+                else:
+                    current_streak += 1
+                    check_date = workout_date
+            else:
+                break
+        
+        most_recent_date = sorted_workouts[0].date.date() if hasattr(sorted_workouts[0].date, 'date') else sorted_workouts[0].date
+        if most_recent_date == today:
+            current_streak += 1
+    
+    stats = UserStats(
+        total_workouts=total_workouts,
+        current_streak=current_streak,
+        days_active=days_active,
+        total_reps=total_reps,
+        total_muscle_gain=round(total_muscle_gain, 2)
+    )
+    
+    # Use updated preferences if provided, otherwise default
+    preferences = updates.preferences if updates.preferences else UserPreferences()
+    
+    return UserProfileResponse(
+        id=user.id,
+        name=user.name or "Champion",
+        email=user.email,
+        stats=stats,
+        preferences=preferences,
+        created_at=user.created_at
+    )
 

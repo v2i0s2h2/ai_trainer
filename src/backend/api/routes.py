@@ -44,7 +44,7 @@ class WorkoutCreate(BaseModel):
     exercise_id: str
     duration: int  # seconds
     reps_completed: int
-    calories_burned: int
+    calories_burned: int = 0  # Not used, kept for backward compatibility
 
 class WorkoutResponse(BaseModel):
     id: int
@@ -458,87 +458,233 @@ async def get_cameras():
     return {"cameras": cameras}
 
 @router.get("/stats/today", response_model=TodayStatsResponse)
-async def get_today_stats():
+async def get_today_stats(db: Session = Depends(get_db)):
     """Get today's workout statistics"""
-    # Mock data - will replace with database query
+    from src.backend.database.models import Workout
+    from datetime import datetime, timedelta, date
+    
+    # Get today's date
+    today = datetime.now().date()
+    today_start = datetime.combine(today, datetime.min.time())
+    today_end = datetime.combine(today, datetime.max.time())
+    
+    # Query today's workouts
+    today_workouts = db.query(Workout).filter(
+        Workout.user_id == 1,
+        Workout.date >= today_start,
+        Workout.date <= today_end
+    ).all()
+    
+    # Calculate reps today
+    reps_today = sum(w.reps_completed for w in today_workouts) if today_workouts else 0
+    
+    # Calculate streak (reuse logic from profile endpoint)
+    all_workouts = db.query(Workout).filter(Workout.user_id == 1).all()
+    current_streak = 0
+    
+    if all_workouts:
+        # Sort workouts by date (most recent first)
+        sorted_workouts = sorted(all_workouts, key=lambda w: w.date, reverse=True)
+        check_date = today
+        
+        for workout in sorted_workouts:
+            workout_date = workout.date.date() if hasattr(workout.date, 'date') else workout.date
+            if workout_date == check_date or workout_date == check_date - timedelta(days=1):
+                if workout_date == check_date:
+                    # Same day workout, continue
+                    pass
+                else:
+                    # Previous day workout, increment streak
+                    current_streak += 1
+                    check_date = workout_date
+            else:
+                # Gap found, break streak
+                break
+        
+        # If most recent workout is today, add 1 to streak
+        most_recent_date = sorted_workouts[0].date.date() if hasattr(sorted_workouts[0].date, 'date') else sorted_workouts[0].date
+        if most_recent_date == today:
+            current_streak += 1
+    
     return {
-        "reps_today": 247,
-        "streak": 12,
-        "calories": 1245
+        "reps_today": reps_today,
+        "streak": current_streak,
+        "calories": 0  # Not used, set to 0
     }
 
 @router.get("/stats/weekly")
-async def get_weekly_stats():
-    """Get weekly workout statistics"""
-    # Mock data
+async def get_weekly_stats(db: Session = Depends(get_db)):
+    """Get weekly workout statistics for last 7 days (Mon-Sun)"""
+    from src.backend.database.models import Workout
+    from datetime import datetime, timedelta, date
+    
+    # Get today and calculate start of week (Monday)
+    today = datetime.now().date()
+    # Get Monday of current week
+    days_since_monday = today.weekday()  # 0 = Monday, 6 = Sunday
+    monday = today - timedelta(days=days_since_monday)
+    
+    # Calculate date range (Monday to Sunday)
+    week_start = datetime.combine(monday, datetime.min.time())
+    week_end = datetime.combine(monday + timedelta(days=6), datetime.max.time())
+    
+    # Query workouts for this week
+    week_workouts = db.query(Workout).filter(
+        Workout.user_id == 1,
+        Workout.date >= week_start,
+        Workout.date <= week_end
+    ).all()
+    
+    # Initialize reps per day array (Mon=0, Sun=6)
+    days = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
+    reps_per_day = [0] * 7
+    
+    # Group workouts by day and sum reps
+    for workout in week_workouts:
+        workout_date = workout.date.date() if hasattr(workout.date, 'date') else workout.date
+        day_index = (workout_date - monday).days
+        if 0 <= day_index < 7:
+            reps_per_day[day_index] += workout.reps_completed
+    
+    # Calculate totals
+    total_reps = sum(reps_per_day)
+    workouts_completed = len(week_workouts)
+    
     return {
-        "reps_per_day": [120, 145, 95, 165, 185, 200, 155],
-        "days": ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
-        "total_reps": 1065,
-        "total_calories": 4050,
-        "workouts_completed": 7
+        "reps_per_day": reps_per_day,
+        "days": days,
+        "total_reps": total_reps,
+        "total_calories": 0,  # Not used, set to 0
+        "workouts_completed": workouts_completed
     }
 
 @router.post("/workouts", response_model=dict)
-async def save_workout(workout: WorkoutCreate):
-    """Save a completed workout"""
-    # Will implement database save later
+async def save_workout(workout: WorkoutCreate, db: Session = Depends(get_db)):
+    """Save a completed workout to database"""
+    from src.backend.database.models import Workout, User
+    
+    # Get or create default user (user_id=1)
+    user = db.query(User).filter(User.id == 1).first()
+    if not user:
+        user = User(id=1, name="Champion", email=None)
+        db.add(user)
+        db.commit()
+        db.refresh(user)
+    
+    # Create workout record
+    db_workout = Workout(
+        user_id=user.id,
+        exercise_id=workout.exercise_id,
+        date=datetime.utcnow(),
+        duration_seconds=workout.duration,
+        reps_completed=workout.reps_completed,
+        calories_burned=0  # Not used, set to 0
+    )
+    
+    db.add(db_workout)
+    db.commit()
+    db.refresh(db_workout)
+    
     return {
         "success": True,
-        "workout_id": 123,
+        "workout_id": db_workout.id,
         "message": "Workout saved successfully"
     }
 
 @router.get("/workouts/history", response_model=List[WorkoutResponse])
-async def get_workout_history(limit: int = 10):
-    """Get workout history"""
-    # Mock data
-    return [
-        {
-            "id": 1,
-            "exercise_name": "Squats",
-            "date": datetime.now() - timedelta(days=1),
-            "duration": 720,
-            "reps": 67,
-            "calories": 180
-        }
-    ]
+async def get_workout_history(limit: int = 10, db: Session = Depends(get_db)):
+    """Get workout history - list of past workouts user completed"""
+    from src.backend.database.models import Workout, Exercise
+    
+    # Query workouts with exercise details
+    workouts = db.query(Workout, Exercise).join(
+        Exercise, Workout.exercise_id == Exercise.id
+    ).filter(
+        Workout.user_id == 1  # Default user for now
+    ).order_by(
+        Workout.date.desc()
+    ).limit(limit).all()
+    
+    # Format response
+    history = []
+    for workout, exercise in workouts:
+        history.append({
+            "id": workout.id,
+            "exercise_name": exercise.name,
+            "date": workout.date,
+            "duration": workout.duration_seconds,
+            "reps": workout.reps_completed,
+            "calories": 0  # Not used, set to 0
+        })
+    
+    return history
 
 @router.get("/achievements")
-async def get_achievements():
-    """Get user achievements"""
-    return {
-        "unlocked": [
-            {
-                "id": "100-reps",
-                "name": "100 Reps Club",
-                "icon": "💪",
-                "date": "Oct 10"
-            },
-            {
-                "id": "7-day-streak",
-                "name": "7-Day Streak",
-                "icon": "🔥",
-                "date": "Oct 12"
-            },
-            {
-                "id": "early-bird",
-                "name": "Early Bird",
-                "icon": "🌅",
-                "date": "Oct 8"
+async def get_achievements(db: Session = Depends(get_db)):
+    """Get user achievements with category filtering (rehab/basic/advanced/lifting)"""
+    from src.backend.database.models import Achievement, UserAchievement
+    
+    try:
+        # Get all achievements
+        all_achievements = db.query(Achievement).all()
+        
+        # Get unlocked achievements for user_id = 1
+        unlocked_achievement_ids = set()
+        unlocked_with_dates = {}
+        
+        user_achievements = db.query(UserAchievement).filter(
+            UserAchievement.user_id == 1
+        ).all()
+        
+        for ua in user_achievements:
+            unlocked_achievement_ids.add(ua.achievement_id)
+            unlocked_with_dates[ua.achievement_id] = ua.unlocked_at
+        
+        # Separate into unlocked and locked
+        unlocked = []
+        locked = []
+        
+        for achievement in all_achievements:
+            # Handle category field - might not exist in old database
+            category = getattr(achievement, 'category', None) or "basic"
+            
+            achievement_data = {
+                "id": achievement.id,
+                "name": achievement.name,
+                "icon": achievement.icon or "🏆",
+                "category": category
             }
-        ],
-        "locked": [
-            {
-                "id": "14-day-streak",
-                "name": "14-Day Streak",
-                "icon": "🔥",
-                "requirement": "Maintain 14-day workout streak"
-            }
-        ],
-        "total": 6,
-        "unlocked_count": 3
-    }
+            
+            if achievement.id in unlocked_achievement_ids:
+                # Format date
+                unlock_date = unlocked_with_dates[achievement.id]
+                if unlock_date:
+                    date_str = unlock_date.strftime("%b %d") if hasattr(unlock_date, 'strftime') else str(unlock_date)
+                else:
+                    date_str = ""
+                achievement_data["date"] = date_str
+                unlocked.append(achievement_data)
+            else:
+                achievement_data["requirement"] = achievement.requirement or ""
+                locked.append(achievement_data)
+        
+        return {
+            "unlocked": unlocked,
+            "locked": locked,
+            "total": len(all_achievements),
+            "unlocked_count": len(unlocked)
+        }
+    except Exception as e:
+        # Return empty structure if there's any error (table doesn't exist, etc.)
+        import traceback
+        print(f"Error loading achievements: {e}")
+        print(traceback.format_exc())
+        return {
+            "unlocked": [],
+            "locked": [],
+            "total": 0,
+            "unlocked_count": 0
+        }
 
 @router.post("/diet/entries", response_model=DietEntryResponse)
 async def create_diet_entry(entry: DietEntryCreate, db: Session = Depends(get_db)):

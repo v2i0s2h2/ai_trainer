@@ -58,6 +58,7 @@ class Achievement(Base):
     description = Column(String)
     icon = Column(String)  # emoji or icon name
     requirement = Column(String)  # Description of how to unlock
+    category = Column(String, default="basic")  # "rehab", "basic", "advanced", "lifting"
     
     # Relationships
     user_achievements = relationship("UserAchievement", back_populates="achievement")

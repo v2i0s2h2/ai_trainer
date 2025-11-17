@@ -233,15 +233,17 @@
 		</div>
 		
 		<!-- Achievements -->
-		{#if achievements}
-			<div class="achievements-card">
-				<h2 class="section-title">
-					Achievements
+		<div class="achievements-card">
+			<h2 class="section-title">
+				Achievements
+				{#if achievements}
 					<span class="achievement-count">
 						{achievements.unlocked_count} / {achievements.total}
 					</span>
-				</h2>
-				
+				{/if}
+			</h2>
+			
+			{#if achievements && (achievements.unlocked.length > 0 || achievements.locked.length > 0)}
 				{#if achievements.unlocked.length > 0}
 					<div class="achievements-section">
 						<h3 class="achievements-subtitle">Unlocked 🎉</h3>
@@ -275,8 +277,12 @@
 						</div>
 					</div>
 				{/if}
-			</div>
-		{/if}
+			{:else if achievements && achievements.total === 0}
+				<div class="empty-state">
+					<p>No achievements available yet. Complete workouts to unlock achievements! 🏆</p>
+				</div>
+			{/if}
+		</div>
 	{/if}
 </div>
 

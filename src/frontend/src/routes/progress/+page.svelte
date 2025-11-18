@@ -44,6 +44,49 @@
 	function getBarHeight(reps: number, maxReps: number): number {
 		return (reps / maxReps) * 100;
 	}
+	
+	// Weight progression data processing
+	$: weightProgressionData = (() => {
+		if (!workoutHistory || workoutHistory.length === 0) return null;
+		
+		// Filter workouts with weight data and group by exercise
+		const exercisesWithWeight: Record<string, Array<{date: string, weight: number}>> = {};
+		
+		workoutHistory.forEach(workout => {
+			if (workout.weight_lbs && workout.weight_lbs > 0) {
+				if (!exercisesWithWeight[workout.exercise_name]) {
+					exercisesWithWeight[workout.exercise_name] = [];
+				}
+				exercisesWithWeight[workout.exercise_name].push({
+					date: workout.date,
+					weight: workout.weight_lbs
+				});
+			}
+		});
+		
+		// Sort by date for each exercise
+		Object.keys(exercisesWithWeight).forEach(exercise => {
+			exercisesWithWeight[exercise].sort((a, b) => 
+				new Date(a.date).getTime() - new Date(b.date).getTime()
+			);
+		});
+		
+		return Object.keys(exercisesWithWeight).length > 0 ? exercisesWithWeight : null;
+	})();
+	
+	function getMaxWeight(exerciseData: Array<{date: string, weight: number}>): number {
+		const weights = exerciseData.map(d => d.weight);
+		return Math.max(...weights, 1);
+	}
+	
+	function getWeightBarHeight(weight: number, maxWeight: number): number {
+		return (weight / maxWeight) * 100;
+	}
+	
+	function formatWeightDate(dateString: string): string {
+		const date = new Date(dateString);
+		return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+	}
 </script>
 
 <svelte:head>
@@ -202,6 +245,52 @@
 			</div>
 		{/if}
 		
+		<!-- Weight Progression Chart -->
+		{#if weightProgressionData}
+			<div class="weight-progression-card">
+				<h2 class="section-title">⚖️ Weight Progression</h2>
+				<p class="chart-subtitle">Track your strength gains over time</p>
+				
+				{#each Object.entries(weightProgressionData) as [exerciseName, data]}
+					{@const maxWeight = getMaxWeight(data)}
+					<div class="exercise-progression">
+						<h3 class="exercise-name-small">{exerciseName}</h3>
+						<div class="weight-chart-container">
+							<div class="weight-chart-bars">
+								{#each data as point, index}
+									{@const height = getWeightBarHeight(point.weight, maxWeight)}
+									<div class="weight-bar-wrapper">
+										<div class="weight-bar" style="height: {height}%">
+											<span class="weight-value">{point.weight} lbs</span>
+										</div>
+										<div class="weight-date">{formatWeightDate(point.date)}</div>
+									</div>
+								{/each}
+							</div>
+							<div class="weight-stats">
+								<div class="weight-stat">
+									<span class="stat-label">Start:</span>
+									<span class="stat-value">{data[0].weight} lbs</span>
+								</div>
+								<div class="weight-stat">
+									<span class="stat-label">Current:</span>
+									<span class="stat-value">{data[data.length - 1].weight} lbs</span>
+								</div>
+								{#if data.length > 1}
+									<div class="weight-stat">
+										<span class="stat-label">Gain:</span>
+										<span class="stat-value positive">
+											+{(data[data.length - 1].weight - data[0].weight).toFixed(1)} lbs
+										</span>
+									</div>
+								{/if}
+							</div>
+						</div>
+					</div>
+				{/each}
+			</div>
+		{/if}
+		
 		<!-- Workout History -->
 		<div class="history-card">
 			<h2 class="section-title">Recent Workouts</h2>
@@ -216,10 +305,16 @@
 									<span>{formatDate(workout.date)}</span>
 									<span>•</span>
 									<span>{workout.reps} reps</span>
+									{#if workout.weight_lbs}
+										<span>•</span>
+										<span>⚖️ {workout.weight_lbs} lbs</span>
+									{/if}
+									{#if workout.sets_completed && workout.reps_per_set}
+										<span>•</span>
+										<span>{workout.sets_completed}×{workout.reps_per_set}</span>
+									{/if}
 									<span>•</span>
 									<span>{formatDuration(workout.duration)}</span>
-									<span>•</span>
-									<span>~{Math.round(workout.reps * 0.06)}g muscle*</span>
 								</div>
 							</div>
 						</div>
@@ -562,6 +657,129 @@
 		margin-top: 0.75rem;
 		font-style: italic;
 		opacity: 0.8;
+	}
+	
+	/* Weight Progression Chart */
+	.weight-progression-card {
+		background-color: var(--bg-card);
+		border-radius: 0.75rem;
+		padding: 1.5rem;
+		margin-bottom: 2rem;
+		border: 1px solid rgba(255, 255, 255, 0.1);
+	}
+	
+	.chart-subtitle {
+		color: var(--text-secondary);
+		font-size: 0.875rem;
+		margin-bottom: 1.5rem;
+	}
+	
+	.exercise-progression {
+		margin-bottom: 2rem;
+		padding-bottom: 2rem;
+		border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+	}
+	
+	.exercise-progression:last-child {
+		margin-bottom: 0;
+		padding-bottom: 0;
+		border-bottom: none;
+	}
+	
+	.exercise-name-small {
+		font-size: 1rem;
+		font-weight: 600;
+		color: var(--text-primary);
+		margin-bottom: 1rem;
+	}
+	
+	.weight-chart-container {
+		display: flex;
+		flex-direction: column;
+		gap: 1rem;
+	}
+	
+	.weight-chart-bars {
+		display: flex;
+		align-items: flex-end;
+		gap: 0.75rem;
+		min-height: 200px;
+		padding: 1rem;
+		background: rgba(255, 255, 255, 0.02);
+		border-radius: 0.5rem;
+	}
+	
+	.weight-bar-wrapper {
+		flex: 1;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: 0.5rem;
+		min-width: 60px;
+	}
+	
+	.weight-bar {
+		width: 100%;
+		background: linear-gradient(180deg, var(--primary), var(--accent-orange));
+		border-radius: 0.5rem 0.5rem 0 0;
+		min-height: 20px;
+		display: flex;
+		align-items: flex-start;
+		justify-content: center;
+		padding-top: 0.5rem;
+		position: relative;
+		transition: all 0.3s ease;
+		box-shadow: 0 2px 8px rgba(255, 100, 50, 0.2);
+	}
+	
+	.weight-bar:hover {
+		transform: translateY(-2px);
+		box-shadow: 0 4px 12px rgba(255, 100, 50, 0.3);
+	}
+	
+	.weight-value {
+		font-size: 0.75rem;
+		font-weight: 600;
+		color: white;
+		text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+	}
+	
+	.weight-date {
+		font-size: 0.7rem;
+		color: var(--text-secondary);
+		text-align: center;
+		white-space: nowrap;
+	}
+	
+	.weight-stats {
+		display: flex;
+		justify-content: space-around;
+		gap: 1rem;
+		padding: 1rem;
+		background: rgba(255, 255, 255, 0.03);
+		border-radius: 0.5rem;
+	}
+	
+	.weight-stat {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: 0.25rem;
+	}
+	
+	.weight-stat .stat-label {
+		font-size: 0.75rem;
+		color: var(--text-secondary);
+	}
+	
+	.weight-stat .stat-value {
+		font-size: 1rem;
+		font-weight: 600;
+		color: var(--text-primary);
+	}
+	
+	.weight-stat .stat-value.positive {
+		color: var(--accent-green);
 	}
 	
 	/* Workout History */

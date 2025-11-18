@@ -229,6 +229,138 @@ def seed_achievements():
                 "icon": "🦾",
                 "requirement": "Complete 100 lifting workouts",
                 "category": "lifting"
+            },
+            
+            # WEIGHT MILESTONE Achievements (across all categories)
+            {
+                "id": "weight-5lbs",
+                "name": "5 lbs Club",
+                "description": "Reach 5 lbs weight on any exercise",
+                "icon": "⚖️",
+                "requirement": "Use 5 lbs weight in any workout",
+                "category": "basic"
+            },
+            {
+                "id": "weight-10lbs",
+                "name": "10 lbs Milestone",
+                "description": "Reach 10 lbs weight on any exercise",
+                "icon": "💪",
+                "requirement": "Use 10 lbs weight in any workout",
+                "category": "basic"
+            },
+            {
+                "id": "weight-15lbs",
+                "name": "15 lbs Strong",
+                "description": "Reach 15 lbs weight on any exercise",
+                "icon": "🔥",
+                "requirement": "Use 15 lbs weight in any workout",
+                "category": "advanced"
+            },
+            {
+                "id": "weight-20lbs",
+                "name": "20 lbs Warrior",
+                "description": "Reach 20 lbs weight on any exercise",
+                "icon": "⚔️",
+                "requirement": "Use 20 lbs weight in any workout",
+                "category": "advanced"
+            },
+            {
+                "id": "weight-25lbs",
+                "name": "25 lbs Beast",
+                "description": "Reach 25 lbs weight on any exercise",
+                "icon": "🦾",
+                "requirement": "Use 25 lbs weight in any workout",
+                "category": "lifting"
+            },
+            {
+                "id": "weight-30lbs",
+                "name": "30 lbs Champion",
+                "description": "Reach 30 lbs weight on any exercise",
+                "icon": "👑",
+                "requirement": "Use 30 lbs weight in any workout",
+                "category": "lifting"
+            },
+            {
+                "id": "weight-progression-master",
+                "name": "Progression Master",
+                "description": "Progress from 0 to 20+ lbs on any exercise",
+                "icon": "📈",
+                "requirement": "Progress from bodyweight/0lbs to 20+ lbs on any exercise",
+                "category": "advanced"
+            },
+            
+            # DIET Achievements
+            {
+                "id": "diet-first-entry",
+                "name": "Nutrition Starter",
+                "description": "Log your first meal",
+                "icon": "🍎",
+                "requirement": "Log your first meal entry",
+                "category": "basic"
+            },
+            {
+                "id": "diet-protein-goal-1",
+                "name": "Protein Power",
+                "description": "Meet daily protein goal once",
+                "icon": "🥩",
+                "requirement": "Meet daily protein goal (126g) once",
+                "category": "basic"
+            },
+            {
+                "id": "diet-protein-goal-7",
+                "name": "Protein Week",
+                "description": "Meet protein goal for 7 days",
+                "icon": "💪",
+                "requirement": "Meet daily protein goal for 7 consecutive days",
+                "category": "advanced"
+            },
+            {
+                "id": "diet-protein-goal-30",
+                "name": "Protein Month",
+                "description": "Meet protein goal for 30 days",
+                "icon": "🏆",
+                "requirement": "Meet daily protein goal for 30 days",
+                "category": "lifting"
+            },
+            {
+                "id": "diet-meal-logger",
+                "name": "Meal Logger",
+                "description": "Log 10 meals",
+                "icon": "📝",
+                "requirement": "Log 10 meal entries",
+                "category": "basic"
+            },
+            {
+                "id": "diet-consistency-7",
+                "name": "7-Day Nutrition",
+                "description": "Log meals for 7 consecutive days",
+                "icon": "📊",
+                "requirement": "Log meals for 7 consecutive days",
+                "category": "basic"
+            },
+            {
+                "id": "diet-consistency-30",
+                "name": "30-Day Nutrition",
+                "description": "Log meals for 30 days",
+                "icon": "📈",
+                "requirement": "Log meals for 30 days",
+                "category": "advanced"
+            },
+            {
+                "id": "diet-macro-balance",
+                "name": "Macro Master",
+                "description": "Balance protein, carbs, and fats for 7 days",
+                "icon": "⚖️",
+                "requirement": "Maintain balanced macros (protein/carbs/fats) for 7 days",
+                "category": "advanced"
+            },
+            {
+                "id": "diet-complete-nutrition",
+                "name": "Complete Nutrition",
+                "description": "Track all macros and micronutrients for 7 days",
+                "icon": "🌟",
+                "requirement": "Track complete nutrition (macros + micronutrients) for 7 days",
+                "category": "lifting"
             }
         ]
         

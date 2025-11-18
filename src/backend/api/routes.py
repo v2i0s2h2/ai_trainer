@@ -20,6 +20,11 @@ class CameraPosition(BaseModel):
     height: str  # e.g., "Waist level", "Knee level", "Shoulder level"
     tips: List[str] = []  # Specific tips for camera setup
 
+class WeightProgression(BaseModel):
+    starting_weight_lbs: float  # Starting weight recommendation
+    progression_range: str  # e.g., "5-10 lbs", "10-20 lbs"
+    progression_notes: Optional[str] = None  # Tips for progression
+
 class ExerciseResponse(BaseModel):
     id: str
     name: str
@@ -34,6 +39,7 @@ class ExerciseResponse(BaseModel):
     target_muscles: List[str] = []  # Target muscles for this exercise
     youtube_link: Optional[str] = None  # YouTube tutorial video link
     camera_position: Optional[CameraPosition] = None  # Camera setup instructions
+    weight_progression: Optional[WeightProgression] = None  # Weight progression guidance
 
 class TodayStatsResponse(BaseModel):
     reps_today: int
@@ -45,6 +51,9 @@ class WorkoutCreate(BaseModel):
     duration: int  # seconds
     reps_completed: int
     calories_burned: int = 0  # Not used, kept for backward compatibility
+    weight_lbs: Optional[float] = None  # Weight used in lbs
+    sets_completed: int = 2  # Number of sets (2-3)
+    reps_per_set: int = 15  # Reps per set (15-20)
 
 class WorkoutResponse(BaseModel):
     id: int
@@ -53,6 +62,9 @@ class WorkoutResponse(BaseModel):
     duration: int
     reps: int
     calories: int
+    weight_lbs: Optional[float] = None
+    sets_completed: int = 2
+    reps_per_set: int = 15
 
 # Diet tracking models
 class DietEntryCreate(BaseModel):
@@ -137,9 +149,14 @@ EXERCISES = [
         "sets": 4,
         "reps": 15,
         "thumbnail": "/images/exercises/squat.jpg",
-        "description": "Basic squat exercise for legs",
+        "description": "Basic squat exercise for legs. Start with bodyweight, then progress to weighted squats with dumbbells or barbell.",
         "target_muscles": ["Quadriceps", "Glutes", "Hamstrings", "Calves"],
         "youtube_link": "https://www.youtube.com/watch?v=YaXPRqUwItQ",
+        "weight_progression": {
+            "starting_weight_lbs": 0.0,
+            "progression_range": "0-20 lbs",
+            "progression_notes": "Start with bodyweight. Add 5-10 lbs dumbbells when form is perfect. Progress to 15-20 lbs as strength improves."
+        },
         "camera_position": {
             "distance": "2-3 meters away",
             "angle": "Side view (90°)",
@@ -187,9 +204,14 @@ EXERCISES = [
         "sets": 3,
         "reps": 10,
         "thumbnail": "/images/exercises/glute-fly.jpg",
-        "description": "Glute fly exercise for hip mobility",
+        "description": "Glute fly exercise for hip mobility and glute activation. Start with bodyweight or light resistance band, then progress to ankle weights.",
         "target_muscles": ["Glutes", "Hamstrings", "Hip Abductors"],
         "youtube_link": "https://www.youtube.com/watch?v=4Y2ZdHCOXok",
+        "weight_progression": {
+            "starting_weight_lbs": 0.0,
+            "progression_range": "0-5 lbs",
+            "progression_notes": "Start with bodyweight or 2-3 lbs ankle weight. Increase to 5 lbs when range of motion improves and form is correct. Focus on glute medius/minimus activation."
+        },
         "camera_position": {
             "distance": "2-2.5 meters away",
             "angle": "Side view (90°)",
@@ -212,9 +234,14 @@ EXERCISES = [
         "sets": 3,
         "reps": 12,
         "thumbnail": "/images/exercises/shoulder-press.jpg",
-        "description": "Shoulder press for shoulder strength",
+        "description": "Shoulder press for shoulder strength. Use dumbbells or resistance bands.",
         "target_muscles": ["Anterior Deltoids", "Lateral Deltoids", "Triceps", "Upper Trapezius"],
         "youtube_link": "https://www.youtube.com/watch?v=qEwKCR5JCog",
+        "weight_progression": {
+            "starting_weight_lbs": 5.0,
+            "progression_range": "5-15 lbs",
+            "progression_notes": "Start with 5 lbs per arm. Increase by 2.5-5 lbs when you can complete all sets with perfect form. Focus on controlled movement."
+        },
         "camera_position": {
             "distance": "2-2.5 meters away",
             "angle": "Front view (0°)",
@@ -237,9 +264,14 @@ EXERCISES = [
         "sets": 3,
         "reps": 15,
         "thumbnail": "/images/exercises/bicep-curl.jpg",
-        "description": "Bicep curls for arm strength",
+        "description": "Bicep curls for arm strength. Use dumbbells or resistance bands.",
         "target_muscles": ["Biceps Brachii", "Brachialis", "Brachioradialis"],
         "youtube_link": "https://www.youtube.com/watch?v=ykJmrZ5v0Oo",
+        "weight_progression": {
+            "starting_weight_lbs": 5.0,
+            "progression_range": "5-15 lbs",
+            "progression_notes": "Start with 5 lbs per arm. Progress to 7.5-10 lbs when form is consistent. Increase to 12-15 lbs as strength builds."
+        },
         "camera_position": {
             "distance": "1.5-2 meters away",
             "angle": "Front view (0°) or 45° angle",
@@ -287,9 +319,14 @@ EXERCISES = [
         "sets": 3,
         "reps": 12,
         "thumbnail": "/images/exercises/row.jpg",
-        "description": "Row exercise for back strength",
+        "description": "Row exercise for back strength. Use dumbbells or resistance bands.",
         "target_muscles": ["Latissimus Dorsi", "Rhomboids", "Middle Trapezius", "Rear Deltoids", "Biceps"],
         "youtube_link": "https://www.youtube.com/watch?v=rep-qVOkqgk",
+        "weight_progression": {
+            "starting_weight_lbs": 8.0,
+            "progression_range": "8-20 lbs",
+            "progression_notes": "Start with 8-10 lbs per arm. Progress to 12-15 lbs when back muscles are stronger. Focus on squeezing shoulder blades together."
+        },
         "camera_position": {
             "distance": "2-2.5 meters away",
             "angle": "Side view (90°)",
@@ -412,9 +449,14 @@ EXERCISES = [
         "sets": 3,
         "reps": 12,
         "thumbnail": "/images/exercises/lateral-raise.jpg",
-        "description": "Lateral raises for shoulder strength",
+        "description": "Lateral raises for shoulder strength. Use light dumbbells.",
         "target_muscles": ["Lateral Deltoids", "Anterior Deltoids", "Supraspinatus"],
         "youtube_link": "https://www.youtube.com/watch?v=3VcKaXpzqRo",
+        "weight_progression": {
+            "starting_weight_lbs": 3.0,
+            "progression_range": "3-10 lbs",
+            "progression_notes": "Start with 3-5 lbs per arm. Lateral deltoids are small muscles, so use lighter weights. Progress to 7-10 lbs gradually."
+        },
         "camera_position": {
             "distance": "1.5-2 meters away",
             "angle": "Front view (0°)",
@@ -578,7 +620,10 @@ async def save_workout(workout: WorkoutCreate, db: Session = Depends(get_db)):
         date=datetime.utcnow(),
         duration_seconds=workout.duration,
         reps_completed=workout.reps_completed,
-        calories_burned=0  # Not used, set to 0
+        calories_burned=0,  # Not used, set to 0
+        weight_lbs=workout.weight_lbs,
+        sets_completed=workout.sets_completed,
+        reps_per_set=workout.reps_per_set
     )
     
     db.add(db_workout)
@@ -614,7 +659,10 @@ async def get_workout_history(limit: int = 10, db: Session = Depends(get_db)):
             "date": workout.date,
             "duration": workout.duration_seconds,
             "reps": workout.reps_completed,
-            "calories": 0  # Not used, set to 0
+            "calories": 0,  # Not used, set to 0
+            "weight_lbs": workout.weight_lbs,
+            "sets_completed": workout.sets_completed or 2,
+            "reps_per_set": workout.reps_per_set or 15
         })
     
     return history

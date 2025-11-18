@@ -45,6 +45,9 @@ class Workout(Base):
     duration_seconds = Column(Integer)  # Total workout duration
     reps_completed = Column(Integer)
     calories_burned = Column(Integer)
+    weight_lbs = Column(Float, nullable=True)  # Weight used in lbs (for progression tracking)
+    sets_completed = Column(Integer, default=2)  # Number of sets completed (2-3)
+    reps_per_set = Column(Integer, default=15)  # Reps per set (15-20)
     
     # Relationships
     user = relationship("User", back_populates="workouts")

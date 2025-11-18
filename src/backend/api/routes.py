@@ -204,13 +204,13 @@ EXERCISES = [
         "sets": 3,
         "reps": 10,
         "thumbnail": "/images/exercises/glute-fly.jpg",
-        "description": "Glute fly exercise for hip mobility and glute activation. Start with bodyweight or light resistance band, then progress to ankle weights.",
-        "target_muscles": ["Glutes", "Hamstrings", "Hip Abductors"],
-        "youtube_link": "https://www.youtube.com/watch?v=4Y2ZdHCOXok",
+        "description": "Glute fly exercise for hip mobility and glute activation. Start with bodyweight or light resistance band, then progress to ankle weights. Focus on glute medius activation in the dimple/half-moon area.",
+        "target_muscles": ["Glute Medius", "Glute Minimus", "Hip Abductors"],
+        "youtube_link": "https://youtu.be/ogXvRPqlj8s?si=j6vintQy_kABVj5W",
         "weight_progression": {
             "starting_weight_lbs": 0.0,
-            "progression_range": "0-5 lbs",
-            "progression_notes": "Start with bodyweight or 2-3 lbs ankle weight. Increase to 5 lbs when range of motion improves and form is correct. Focus on glute medius/minimus activation."
+            "progression_range": "0-6 lbs",
+            "progression_notes": "Start with bodyweight, hold 30 seconds. Add 5-6 lbs weight when correct muscle firing is achieved. Keep movement short and compact. Focus on glute medius dimple activation."
         },
         "camera_position": {
             "distance": "2-2.5 meters away",
@@ -221,6 +221,126 @@ EXERCISES = [
                 "Ensure hips and legs are fully visible",
                 "Camera should capture full range of leg motion",
                 "Keep camera stable for consistent tracking"
+            ]
+        }
+    },
+    {
+        "id": "knee-drop",
+        "name": "Knee Drop",
+        "exercise_type": "rehab",
+        "category": "lower",
+        "difficulty": "intermediate",
+        "duration": 15,
+        "sets": 3,
+        "reps": 15,
+        "thumbnail": "/images/exercises/knee-drop.jpg",
+        "description": "Knee drop exercise for glute minimus and medius activation. Performed in sideline position with controlled up-down knee movement. Focus on slow, controlled motion with emphasis on down phase.",
+        "target_muscles": ["Glute Minimus", "Glute Medius", "Hip Abductors"],
+        "youtube_link": "https://youtu.be/ogXvRPqlj8s?si=j6vintQy_kABVj5W",
+        "weight_progression": {
+            "starting_weight_lbs": 0.0,
+            "progression_range": "0-8 lbs",
+            "progression_notes": "Start without weight, use 2-inch pad/towel under knee. Progress to 5-8 lbs ankle weight or dumbbell when form is perfect. Focus on down phase for minimus activation. No hip or compensation movement."
+        },
+        "camera_position": {
+            "distance": "2-2.5 meters away",
+            "angle": "Side view (90°)",
+            "height": "Hip to knee level",
+            "tips": [
+                "Place camera on your side to see knee movement",
+                "Ensure heel alignment with butt center is visible",
+                "Camera should capture knee up-down range",
+                "Keep knees stacked and visible in frame"
+            ]
+        }
+    },
+    {
+        "id": "hamstring-medial-bridge",
+        "name": "Hamstring Medial Bridge",
+        "exercise_type": "rehab",
+        "category": "lower",
+        "difficulty": "intermediate",
+        "duration": 12,
+        "sets": 3,
+        "reps": 15,
+        "thumbnail": "/images/exercises/hamstring-medial-bridge.jpg",
+        "description": "Hamstring medial bridge for medial hamstring (semimembranosus) activation. Lie on back, lift hips with glute squeeze. Focus on inner hamstring tension, not high lift. Avoid back pressure.",
+        "target_muscles": ["Medial Hamstring", "Semimembranosus", "Glutes"],
+        "youtube_link": "https://youtu.be/ogXvRPqlj8s?si=j6vintQy_kABVj5W",
+        "weight_progression": {
+            "starting_weight_lbs": 0.0,
+            "progression_range": "0-10 lbs",
+            "progression_notes": "Start with bodyweight, focus on medial hamstring feel. Don't lift too high, just enough for inner hamstring tension. Progress to single leg (advanced) after mastering both legs."
+        },
+        "camera_position": {
+            "distance": "2-2.5 meters away",
+            "angle": "Side view (90°)",
+            "height": "Hip to knee level",
+            "tips": [
+                "Place camera on your side to see hip lift",
+                "Ensure full body from head to feet is visible",
+                "Camera should capture hip bridge range",
+                "Keep ankles at 90-degree angle visible"
+            ]
+        }
+    },
+    {
+        "id": "ball-squeeze",
+        "name": "Ball Squeeze",
+        "exercise_type": "rehab",
+        "category": "lower",
+        "difficulty": "beginner",
+        "duration": 10,
+        "sets": 3,
+        "reps": 20,
+        "thumbnail": "/images/exercises/ball-squeeze.jpg",
+        "description": "Ball squeeze exercise for adductor chain activation. Butterfly position with medicine ball or football between knees. Squeeze and relax, focus on groin/adductor activation. Keep back arch for better activation.",
+        "target_muscles": ["Adductors", "Hip Flexors", "Groin"],
+        "youtube_link": "https://youtu.be/ogXvRPqlj8s?si=j6vintQy_kABVj5W",
+        "weight_progression": {
+            "starting_weight_lbs": 0.0,
+            "progression_range": "N/A (ball size)",
+            "progression_notes": "Start with smaller ball, progress to larger medicine ball. Focus on adductor (groin) feel, not hip flexor pinch. If adductors don't fire, do other exercises first for 3-4 weeks."
+        },
+        "camera_position": {
+            "distance": "1.5-2 meters away",
+            "angle": "Front view (0°) or 45° angle",
+            "height": "Hip to knee level",
+            "tips": [
+                "Place camera in front or slightly to side",
+                "Ensure ball and knee position are visible",
+                "Camera should capture squeeze motion",
+                "Keep butterfly position clearly in frame"
+            ]
+        }
+    },
+    {
+        "id": "quad-stretch",
+        "name": "Quad Stretch / Safe Extension",
+        "exercise_type": "rehab",
+        "category": "lower",
+        "difficulty": "beginner",
+        "duration": 10,
+        "sets": 3,
+        "reps": 15,
+        "thumbnail": "/images/exercises/quad-stretch.jpg",
+        "description": "Quad stretch and safe extension for knee rehab. Lie on back, one heel at butt line, other leg extended. Gentle quad stretch with toe up. Start with light weight (2.5-5 kg), work within available range.",
+        "target_muscles": ["Quadriceps", "Hip Flexors"],
+        "youtube_link": "https://youtu.be/ogXvRPqlj8s?si=j6vintQy_kABVj5W",
+        "weight_progression": {
+            "starting_weight_lbs": 0.0,
+            "progression_range": "0-11 lbs (5 kg)",
+            "progression_notes": "Start with bodyweight, gentle stretch. Add 2.5-5 kg (5.5-11 lbs) ankle weight when comfortable. Healthy side can use more weight. Work within available range, don't force. Range improves gradually."
+        },
+        "camera_position": {
+            "distance": "2-2.5 meters away",
+            "angle": "Side view (90°)",
+            "height": "Hip to knee level",
+            "tips": [
+                "Place camera on your side to see leg extension",
+                "Ensure heel-to-butt alignment is visible",
+                "Camera should capture quad stretch range",
+                "Keep toe position and knee angle visible"
             ]
         }
     },

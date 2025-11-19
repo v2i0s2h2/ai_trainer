@@ -426,6 +426,53 @@ EXERCISES = [
         }
     },
     {
+        "id": "depression-row",
+        "name": "Depression Row",
+        "exercise_type": "rehab",
+        "category": "upper",
+        "difficulty": "intermediate",
+        "duration": 12,
+        "sets": 3,
+        "reps": 12,
+        "thumbnail": "/images/exercises/depression-row.jpg",
+        "description": "Depression row for winged scapula, labrum tears, and shoulder instability. Focus on scapula depression with shoulder slightly forward, chest lifted, and elbow at 45-degree angle. Key is depression movement, not rowing motion. Avoid rolling shoulder back - keep it forward with chest high for proper scapula flat position.",
+        "target_muscles": ["Teres Major", "Teres Minor", "Infraspinatus", "Scapula Stabilizers", "Lower Trapezius"],
+        "youtube_link": "https://youtu.be/45uGOybW-Ys?si=bTAo23bUEw6Jvj8e",
+        "weight_progression": {
+            "starting_weight_lbs": 0.0,
+            "progression_range": "0-15 lbs",
+            "progression_notes": "Start with light resistance band or cable. Focus on proper depression technique - shoulder forward, chest lifted, elbow at 45-degree angle. Progress slowly - depression angle improves about 1/4 inch per month with correct form. Master depression before adding advanced exercises."
+        },
+        "equipment": [
+            {
+                "name": "Exercise Bands",
+                "required": True,
+                "description": "Resistance band or cable for depression row. Start with light resistance, focus on form over weight.",
+                "image": None,
+                "link": "https://example.com/buy/exercise-bands"
+            },
+            {
+                "name": "Cable Machine",
+                "required": False,
+                "description": "Alternative to bands - use cable machine if available",
+                "image": None,
+                "link": "https://example.com/buy/cable-machine"
+            }
+        ],
+        "camera_position": {
+            "distance": "2-2.5 meters away",
+            "angle": "Side view (90°) or 45° angle",
+            "height": "Shoulder to chest level",
+            "tips": [
+                "Place camera on your side to see scapula movement",
+                "Ensure full upper body and shoulder blade are visible",
+                "Camera should capture scapula depression range",
+                "Keep chest lift and shoulder position clearly in frame",
+                "Watch for winged scapula correction during depression"
+            ]
+        }
+    },
+    {
         "id": "shoulder-press",
         "name": "Shoulder Press",
         "exercise_type": "basic",

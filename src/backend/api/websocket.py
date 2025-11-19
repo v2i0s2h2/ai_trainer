@@ -142,6 +142,28 @@ class QuadStretchTrainer:
             "progress": 0.0
         }
 
+class DepressionRowTrainer:
+    """Wrapper for Depression Row exercise - uses basic processing for now"""
+    def __init__(self):
+        self.reps = 0
+        self.current_feedback = "Depression Row - Shoulder forward, chest lifted, elbow at 45°"
+        print("[DepressionRowTrainer] Using basic processing (full trainer coming soon)")
+    
+    def process_frame(self, results, w: int, h: int, side: str = 'left'):
+        if not results.pose_landmarks:
+            return {
+                "reps": self.reps,
+                "feedback": "No pose detected - step into frame",
+                "angles": {},
+                "progress": 0.0
+            }
+        return {
+            "reps": self.reps,
+            "feedback": "Depression Row - Focus on scapula depression, not rowing. Keep shoulder forward, chest high.",
+            "angles": {},
+            "progress": 0.0
+        }
+
 class WorkoutStreamManager:
     """Manages workout video streaming via WebSocket"""
     
@@ -212,8 +234,15 @@ class WorkoutStreamManager:
             except Exception as e:
                 logger.error(f"Error initializing QuadStretchTrainer: {e}")
                 raise ValueError(f"Quad Stretch trainer not available: {e}")
+        elif "depressionrow" in exercise_lower or ("depression" in exercise_lower and "row" in exercise_lower):
+            # Depression Row trainer
+            try:
+                return DepressionRowTrainer()
+            except Exception as e:
+                logger.error(f"Error initializing DepressionRowTrainer: {e}")
+                raise ValueError(f"Depression Row trainer not available: {e}")
         else:
-            available = "squat, push-ups, shoulder-press, bicep-curl, plank, row, pull-up, lunge, crunch, tricep-dip, lateral-raise, glute-fly, knee-drop, hamstring-medial-bridge, ball-squeeze, quad-stretch"
+            available = "squat, push-ups, shoulder-press, bicep-curl, plank, row, pull-up, lunge, crunch, tricep-dip, lateral-raise, glute-fly, knee-drop, hamstring-medial-bridge, ball-squeeze, quad-stretch, depression-row"
             raise ValueError(f"Unknown exercise: {self.exercise}. Available: {available}")
     
     async def stream_frames(self, websocket: WebSocket, camera_device: str = "auto"):

@@ -192,31 +192,6 @@ EXERCISES = [
         }
     },
     {
-        "id": "push-ups",
-        "name": "Push-ups",
-        "exercise_type": "basic",
-        "category": "upper",
-        "difficulty": "beginner",
-        "duration": 10,
-        "sets": 3,
-        "reps": 12,
-        "thumbnail": "/images/exercises/pushup.jpg",
-        "description": "Classic push-up for chest and arms",
-        "target_muscles": ["Pectorals", "Triceps", "Anterior Deltoids", "Core"],
-        "youtube_link": "https://www.youtube.com/watch?v=IODxDxX7oi4",
-        "camera_position": {
-            "distance": "1.5-2 meters away",
-            "angle": "Side view (90°)",
-            "height": "Ground level or slightly elevated",
-            "tips": [
-                "Place camera on your side to see body alignment",
-                "Camera should be at same level as your body (on floor or low surface)",
-                "Ensure full body from head to feet is visible",
-                "Make sure arms and shoulders are clearly visible"
-            ]
-        }
-    },
-    {
         "id": "glute-fly",
         "name": "Glute Fly",
         "exercise_type": "rehab",
@@ -473,98 +448,6 @@ EXERCISES = [
         }
     },
     {
-        "id": "shoulder-press",
-        "name": "Shoulder Press",
-        "exercise_type": "basic",
-        "category": "upper",
-        "difficulty": "beginner",
-        "duration": 10,
-        "sets": 3,
-        "reps": 12,
-        "thumbnail": "/images/exercises/shoulder-press.jpg",
-        "description": "Shoulder press for shoulder strength. Use dumbbells or resistance bands.",
-        "target_muscles": ["Anterior Deltoids", "Lateral Deltoids", "Triceps", "Upper Trapezius"],
-        "youtube_link": "https://www.youtube.com/watch?v=qEwKCR5JCog",
-        "weight_progression": {
-            "starting_weight_lbs": 5.0,
-            "progression_range": "5-15 lbs",
-            "progression_notes": "Start with 5 lbs per arm. Increase by 2.5-5 lbs when you can complete all sets with perfect form. Focus on controlled movement."
-        },
-        "equipment": [
-            {
-                "name": "5-15 lbs Dumbbells",
-                "required": True,
-                "description": "One dumbbell per arm, or use resistance bands as alternative",
-                "image": None,
-                "link": "https://example.com/buy/dumbbells"
-            },
-            {
-                "name": "Exercise Bands",
-                "required": False,
-                "description": "Alternative to dumbbells - use resistance bands for shoulder press",
-                "image": None,
-                "link": "https://example.com/buy/exercise-bands"
-            }
-        ],
-        "camera_position": {
-            "distance": "2-2.5 meters away",
-            "angle": "Front view (0°)",
-            "height": "Shoulder to chest level",
-            "tips": [
-                "Place camera directly in front of you",
-                "Ensure full upper body is visible (head to waist)",
-                "Keep arms and shoulders clearly in frame",
-                "Camera should capture full range of arm motion"
-            ]
-        }
-    },
-    {
-        "id": "bicep-curl",
-        "name": "Bicep Curls",
-        "exercise_type": "basic",
-        "category": "upper",
-        "difficulty": "beginner",
-        "duration": 8,
-        "sets": 3,
-        "reps": 15,
-        "thumbnail": "/images/exercises/bicep-curl.jpg",
-        "description": "Bicep curls for arm strength. Use dumbbells or resistance bands.",
-        "target_muscles": ["Biceps Brachii", "Brachialis", "Brachioradialis"],
-        "youtube_link": "https://www.youtube.com/watch?v=ykJmrZ5v0Oo",
-        "weight_progression": {
-            "starting_weight_lbs": 5.0,
-            "progression_range": "5-15 lbs",
-            "progression_notes": "Start with 5 lbs per arm. Progress to 7.5-10 lbs when form is consistent. Increase to 12-15 lbs as strength builds."
-        },
-        "equipment": [
-            {
-                "name": "5-15 lbs Dumbbells",
-                "required": True,
-                "description": "One dumbbell per arm, or use resistance bands as alternative",
-                "image": None,
-                "link": "https://example.com/buy/dumbbells"
-            },
-            {
-                "name": "Exercise Bands",
-                "required": False,
-                "description": "Alternative to dumbbells - use resistance bands for bicep curls",
-                "image": None,
-                "link": "https://example.com/buy/exercise-bands"
-            }
-        ],
-        "camera_position": {
-            "distance": "1.5-2 meters away",
-            "angle": "Front view (0°) or 45° angle",
-            "height": "Chest to shoulder level",
-            "tips": [
-                "Place camera in front of you, slightly to the side if needed",
-                "Ensure both arms are fully visible",
-                "Camera should capture full range of arm curl motion",
-                "Keep elbows in frame for proper form tracking"
-            ]
-        }
-    },
-    {
         "id": "plank",
         "name": "Plank",
         "exercise_type": "basic",
@@ -590,77 +473,6 @@ EXERCISES = [
         }
     },
     {
-        "id": "row",
-        "name": "Rows",
-        "exercise_type": "basic",
-        "category": "upper",
-        "difficulty": "beginner",
-        "duration": 10,
-        "sets": 3,
-        "reps": 12,
-        "thumbnail": "/images/exercises/row.jpg",
-        "description": "Row exercise for back strength. Use dumbbells or resistance bands.",
-        "target_muscles": ["Latissimus Dorsi", "Rhomboids", "Middle Trapezius", "Rear Deltoids", "Biceps"],
-        "youtube_link": "https://www.youtube.com/watch?v=rep-qVOkqgk",
-        "weight_progression": {
-            "starting_weight_lbs": 8.0,
-            "progression_range": "8-20 lbs",
-            "progression_notes": "Start with 8-10 lbs per arm. Progress to 12-15 lbs when back muscles are stronger. Focus on squeezing shoulder blades together."
-        },
-        "equipment": [
-            {
-                "name": "8-20 lbs Dumbbells",
-                "required": True,
-                "description": "One dumbbell per arm, or use resistance bands with door anchor",
-                "image": None,
-                "link": "https://example.com/buy/dumbbells"
-            },
-            {
-                "name": "Exercise Bands",
-                "required": False,
-                "description": "Alternative to dumbbells - use resistance bands with door anchor for rows",
-                "image": None,
-                "link": "https://example.com/buy/exercise-bands"
-            }
-        ],
-        "camera_position": {
-            "distance": "2-2.5 meters away",
-            "angle": "Side view (90°)",
-            "height": "Chest to shoulder level",
-            "tips": [
-                "Place camera on your side to see pulling motion",
-                "Ensure full upper body is visible",
-                "Camera should capture arm pull-back range",
-                "Keep back and shoulders clearly in frame"
-            ]
-        }
-    },
-    {
-        "id": "pull-up",
-        "name": "Pull-ups",
-        "exercise_type": "basic",
-        "category": "upper",
-        "difficulty": "advanced",
-        "duration": 8,
-        "sets": 3,
-        "reps": 8,
-        "thumbnail": "/images/exercises/pullup.jpg",
-        "description": "Pull-ups for upper body strength",
-        "target_muscles": ["Latissimus Dorsi", "Rhomboids", "Biceps", "Rear Deltoids", "Teres Major"],
-        "youtube_link": "https://www.youtube.com/watch?v=eGo4IYlbE5g",
-        "camera_position": {
-            "distance": "2.5-3 meters away",
-            "angle": "Front view (0°)",
-            "height": "Chest to head level",
-            "tips": [
-                "Place camera directly in front of you",
-                "Ensure full body from head to feet is visible",
-                "Camera should capture full pull-up range (hanging to chin-over-bar)",
-                "Keep bar and full arm extension visible"
-            ]
-        }
-    },
-    {
         "id": "lunge",
         "name": "Lunges",
         "exercise_type": "basic",
@@ -682,70 +494,6 @@ EXERCISES = [
                 "Ensure both legs are fully visible in frame",
                 "Camera should capture full lunge depth",
                 "Keep torso upright and visible"
-            ]
-        }
-    },
-    {
-        "id": "crunch",
-        "name": "Crunches",
-        "exercise_type": "basic",
-        "category": "upper",
-        "difficulty": "beginner",
-        "duration": 8,
-        "sets": 3,
-        "reps": 15,
-        "thumbnail": "/images/exercises/crunch.jpg",
-        "description": "Crunches for core strength",
-        "target_muscles": ["Rectus Abdominis", "Obliques"],
-        "youtube_link": "https://www.youtube.com/watch?v=MKmrqcoCZ-M",
-        "camera_position": {
-            "distance": "1.5-2 meters away",
-            "angle": "Side view (90°)",
-            "height": "Ground level or slightly elevated",
-            "tips": [
-                "Place camera on your side to see torso curl",
-                "Camera should be at ground level or slightly above",
-                "Ensure upper body and core are visible",
-                "Keep head and shoulders in frame for rep counting"
-            ]
-        }
-    },
-    {
-        "id": "tricep-dip",
-        "name": "Tricep Dips",
-        "exercise_type": "basic",
-        "category": "upper",
-        "difficulty": "intermediate",
-        "duration": 8,
-        "sets": 3,
-        "reps": 10,
-        "thumbnail": "/images/exercises/tricep-dip.jpg",
-        "description": "Tricep dips for arm strength. Use a bench, chair, or elevated surface.",
-        "target_muscles": ["Triceps", "Anterior Deltoids", "Pectorals"],
-        "youtube_link": "https://www.youtube.com/watch?v=6kALZikXxLc",
-        "weight_progression": {
-            "starting_weight_lbs": 0.0,
-            "progression_range": "Bodyweight",
-            "progression_notes": "Start with bodyweight. Progress by adding weight on lap or using weighted vest as you get stronger."
-        },
-        "equipment": [
-            {
-                "name": "Bench or Chair",
-                "required": True,
-                "description": "Use a sturdy bench, chair, or elevated surface for tricep dips",
-                "image": None,
-                "link": "https://example.com/buy/bench"
-            }
-        ],
-        "camera_position": {
-            "distance": "1.5-2 meters away",
-            "angle": "Side view (90°)",
-            "height": "Chest to shoulder level",
-            "tips": [
-                "Place camera on your side to see arm movement",
-                "Ensure full upper body is visible",
-                "Camera should capture full dip range (up to down)",
-                "Keep elbows and shoulders clearly in frame"
             ]
         }
     },
@@ -887,45 +635,6 @@ EXERCISES = [
                 "Camera should capture 90-degree arm angle and short range movement",
                 "Keep infraspinatus region and shoulder blade position in frame",
                 "Watch for controlled movement without compensation"
-            ]
-        }
-    },
-    {
-        "id": "lateral-raise",
-        "name": "Lateral Raises",
-        "exercise_type": "basic",
-        "category": "upper",
-        "difficulty": "beginner",
-        "duration": 8,
-        "sets": 3,
-        "reps": 12,
-        "thumbnail": "/images/exercises/lateral-raise.jpg",
-        "description": "Lateral raises for shoulder strength. Use light dumbbells.",
-        "target_muscles": ["Lateral Deltoids", "Anterior Deltoids", "Supraspinatus"],
-        "youtube_link": "https://www.youtube.com/watch?v=3VcKaXpzqRo",
-        "weight_progression": {
-            "starting_weight_lbs": 3.0,
-            "progression_range": "3-10 lbs",
-            "progression_notes": "Start with 3-5 lbs per arm. Lateral deltoids are small muscles, so use lighter weights. Progress to 7-10 lbs gradually."
-        },
-        "equipment": [
-            {
-                "name": "3-10 lbs Light Dumbbells",
-                "required": True,
-                "description": "Light weights per arm - lateral deltoids are small muscles",
-                "image": None,
-                "link": "https://example.com/buy/dumbbells"
-            }
-        ],
-        "camera_position": {
-            "distance": "1.5-2 meters away",
-            "angle": "Front view (0°)",
-            "height": "Shoulder to chest level",
-            "tips": [
-                "Place camera directly in front of you",
-                "Ensure both arms are fully visible",
-                "Camera should capture full arm raise range (down to shoulder height)",
-                "Keep shoulders and arms clearly in frame"
             ]
         }
     }

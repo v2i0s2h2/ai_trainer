@@ -251,7 +251,7 @@ class WorkoutStreamManager:
                 logger.error(f"Error initializing DepressionRowTrainer: {e}")
                 raise ValueError(f"Depression Row trainer not available: {e}")
         else:
-            available = "wall-squat, rear-delt-raise, pant-pull, pad-cuff, glute-fly, knee-drop, hamstring-medial-bridge, ball-squeeze, quad-stretch, depression-row"
+            available = "wall-squat, plank, rear-delt-raise, pant-pull, pad-cuff, glute-fly, knee-drop, hamstring-medial-bridge, ball-squeeze, quad-stretch, depression-row"
             raise ValueError(f"Unknown exercise: {self.exercise}. Available: {available}")
     
     async def stream_frames(self, websocket: WebSocket, camera_device: str = "auto"):

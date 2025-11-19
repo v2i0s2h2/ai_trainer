@@ -188,6 +188,46 @@ EXERCISES = [
         }
     },
     {
+        "id": "plank",
+        "name": "Plank",
+        "exercise_type": "basic",
+        "category": "lower",
+        "difficulty": "beginner",
+        "duration": 5,
+        "sets": 3,
+        "reps": 1,
+        "thumbnail": "/images/exercises/plank.jpg",
+        "description": "Exercise starts in video.",
+        "target_muscles": ["Rectus Abdominis", "Transverse Abdominis", "Obliques", "Erector Spinae", "Core Stabilizers"],
+        "youtube_link": "https://youtu.be/xijbLirwKtc?si=P0iazX0cJwvvbmcQ",
+        "weight_progression": {
+            "starting_weight_lbs": 0.0,
+            "progression_range": "Bodyweight",
+            "progression_notes": "Bodyweight only exercise. Focus on proper core engagement - actively squeeze abs and tighten butt. Keep feet slightly back so shoulders align with elbows. When plank becomes difficult, drop to knees and continue holding. Progress by increasing hold duration gradually. Regular practice improves pelvis control, posture, and core strength."
+        },
+        "equipment": [
+            {
+                "name": "Exercise Mat",
+                "required": False,
+                "description": "Optional - use mat for comfort on hard surfaces",
+                "image": None,
+                "link": "https://example.com/buy/exercise-mat"
+            }
+        ],
+        "camera_position": {
+            "distance": "1.5-2 meters away",
+            "angle": "Side view (90°)",
+            "height": "Ground level or slightly elevated",
+            "tips": [
+                "Place camera on your side to see body alignment",
+                "Camera should be at ground level or slightly above",
+                "Ensure full body from head to feet is visible",
+                "Check that your body forms a straight line in frame",
+                "Watch for proper core engagement and butt squeeze"
+            ]
+        }
+    },
+    {
         "id": "glute-fly",
         "name": "Glute Fly",
         "exercise_type": "rehab",

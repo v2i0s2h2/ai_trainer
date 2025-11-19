@@ -797,6 +797,53 @@ EXERCISES = [
         }
     },
     {
+        "id": "pant-pull",
+        "name": "Pant Pull",
+        "exercise_type": "basic",
+        "category": "upper",
+        "difficulty": "beginner",
+        "duration": 8,
+        "sets": 3,
+        "reps": 15,
+        "thumbnail": "/images/exercises/pant-pull.jpg",
+        "description": "Pant pull exercise for scapular strengthening and fixing winged scapula. Standing or slight bend forward stance with arms pulled back like pulling pants waistband. Focus on scapular retraction - squeeze shoulder blades together without shrugging up. Controlled movement to activate scapular stabilizers (rhomboids, rear delts, lower traps). Daily practice recommended to retrain scapular muscles and build strong movement pattern.",
+        "target_muscles": ["Rhomboids", "Rear Deltoids", "Lower Trapezius", "Scapular Stabilizers", "Middle Trapezius"],
+        "youtube_link": "https://youtu.be/T70OdD3ckcI?si=gTgATcsIuuhWOzT_",
+        "weight_progression": {
+            "starting_weight_lbs": 0.0,
+            "progression_range": "Bodyweight",
+            "progression_notes": "Start with bodyweight. Focus on proper scapular retraction and controlled movement. Can progress to using resistance bands or light weights once form is perfect. Daily practice is beneficial for scapular stability improvement."
+        },
+        "equipment": [
+            {
+                "name": "None (Bodyweight)",
+                "required": False,
+                "description": "Can be done with bodyweight only",
+                "image": None,
+                "link": None
+            },
+            {
+                "name": "Exercise Bands",
+                "required": False,
+                "description": "Optional - add resistance bands for progression once form is perfect",
+                "image": None,
+                "link": "https://example.com/buy/exercise-bands"
+            }
+        ],
+        "camera_position": {
+            "distance": "2-2.5 meters away",
+            "angle": "Side view (90°) or 45° angle",
+            "height": "Shoulder to chest level",
+            "tips": [
+                "Place camera on your side to see scapular movement",
+                "Ensure full upper body and shoulder blades are visible",
+                "Camera should capture scapular retraction range",
+                "Keep arms and shoulder blade position clearly in frame",
+                "Watch for controlled movement without shoulder shrugging"
+            ]
+        }
+    },
+    {
         "id": "lateral-raise",
         "name": "Lateral Raises",
         "exercise_type": "basic",

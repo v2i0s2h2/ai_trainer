@@ -157,7 +157,7 @@ EXERCISES = [
         "sets": 5,
         "reps": 5,
         "thumbnail": "/images/exercises/wall-squat.jpg",
-        "description": "Wall squat exercise for mobility and squat depth improvement. Works on hip external rotation and posterior pelvic expansion. Stand one foot away from wall, feet shoulder-width apart, toes pointed out at 45-degree angle. Weight balanced on inside heel, big toe base, and PSIS (posterior superior iliac spine). Keep back slightly arched, chest lifted. Squat down quarter-way or as deep as comfortable, maintaining contact points. Focus on breathing: quietly inhale through nose and soft breath out through mouth. Do 5 sets of 5 deep breaths, twice daily for 2-4 weeks. Works in 0-60 degree hip flexion range to expand posterior upper pelvis. Essential for deep squat - hip external rotation progressively drives flexion. Focus on control, breath, and alignment, not momentum or speed. Sacrum tips backward slightly, pelvis bones rotate forward and outward for proper hip external rotation. Keep knees pointed correctly, chest elevated, arms stable. Lower hips relaxed with back arch. Exercise starts at 12th minute in video.",
+        "description": "Exercise starts at 12th minute in video.",
         "target_muscles": ["Hip External Rotators", "Posterior Pelvis", "Quadriceps", "Glutes", "Hip Flexors"],
         "youtube_link": "https://youtu.be/6-VSoQnIEnA?si=ZVbenydW41nl8OFF&t=720",
         "weight_progression": {

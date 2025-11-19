@@ -60,7 +60,6 @@
 			{/if}
 			{#if exercise.equipment && exercise.equipment.length > 0}
 				<div class="equipment-preview">
-					<span class="equipment-icon">🛒</span>
 					<div class="equipment-items">
 						{#each exercise.equipment.slice(0, 3) as item}
 							<div class="equipment-item-mini" title={item.name}>

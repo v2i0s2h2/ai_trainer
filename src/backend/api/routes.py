@@ -844,6 +844,53 @@ EXERCISES = [
         }
     },
     {
+        "id": "pad-cuff",
+        "name": "Pad Cuff",
+        "exercise_type": "basic",
+        "category": "upper",
+        "difficulty": "beginner",
+        "duration": 10,
+        "sets": 3,
+        "reps": 15,
+        "thumbnail": "/images/exercises/pad-cuff.jpg",
+        "description": "Pad cuff exercise for shoulder rehab focusing on infraspinatus region. Elbow at hip center line, arm at 90-degree angle. Short range controlled movement with light pressure (5% push down). Goal is to feel tension in infraspinatus region, not front/side shoulder or rear delt. Start with light weight (1-3 kg / 2-6 lbs). Slow and controlled reps, avoid over-stressing shoulder. Focus on mind-muscle connection to infraspinatus region. Perform 2x per week for recovery, avoid high frequency if technique not perfect.",
+        "target_muscles": ["Infraspinatus", "Teres Minor", "Rotator Cuff", "Posterior Deltoids"],
+        "youtube_link": "https://youtu.be/FLGcoOxTaR4?si=FQBMRtrCKpFHWsac",
+        "weight_progression": {
+            "starting_weight_lbs": 2.0,
+            "progression_range": "2-6 lbs",
+            "progression_notes": "Start with very light weight (1-3 kg / 2-6 lbs). Too much weight can irritate shoulder. Focus on proper form and infraspinatus activation over weight. Progress weight only when technique is perfect and you can consistently feel tension in infraspinatus region. Avoid compensation from other muscles."
+        },
+        "equipment": [
+            {
+                "name": "Pad or Towel",
+                "required": True,
+                "description": "2-inch pad or towel for support during exercise",
+                "image": None,
+                "link": "https://example.com/buy/pad-towel"
+            },
+            {
+                "name": "Light Dumbbell",
+                "required": True,
+                "description": "Very light dumbbell (1-3 kg / 2-6 lbs) - start low to avoid shoulder irritation",
+                "image": None,
+                "link": "https://example.com/buy/dumbbells"
+            }
+        ],
+        "camera_position": {
+            "distance": "2-2.5 meters away",
+            "angle": "Side view (90°) or 45° angle",
+            "height": "Shoulder to chest level",
+            "tips": [
+                "Place camera on your side to see shoulder and arm position",
+                "Ensure elbow position at hip center line is clearly visible",
+                "Camera should capture 90-degree arm angle and short range movement",
+                "Keep infraspinatus region and shoulder blade position in frame",
+                "Watch for controlled movement without compensation"
+            ]
+        }
+    },
+    {
         "id": "lateral-raise",
         "name": "Lateral Raises",
         "exercise_type": "basic",

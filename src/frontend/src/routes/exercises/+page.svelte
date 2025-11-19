@@ -56,7 +56,15 @@
 
 <div class="exercises-container">
 	<header class="page-header">
-		<h1>Exercise Library</h1>
+		<div class="header-top">
+			<h1>Exercise Library</h1>
+			<a href="/equipment" class="equipment-link-btn">
+				<svg fill="none" stroke="currentColor" viewBox="0 0 24 24" width="18" height="18">
+					<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path>
+				</svg>
+				Equipment
+			</a>
+		</div>
 		<p class="subtitle">Choose your next challenge</p>
 	</header>
 	
@@ -164,11 +172,46 @@
 		margin-bottom: 2rem;
 	}
 	
+	.header-top {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		margin-bottom: 0.5rem;
+		gap: 1rem;
+	}
+	
 	.page-header h1 {
 		font-size: 2rem;
 		font-weight: 700;
-		margin-bottom: 0.5rem;
+		margin: 0;
 		color: var(--text-primary);
+	}
+	
+	.equipment-link-btn {
+		display: flex;
+		align-items: center;
+		gap: 0.5rem;
+		padding: 0.625rem 1rem;
+		background-color: var(--bg-card);
+		border: 1px solid rgba(255, 255, 255, 0.1);
+		border-radius: 0.5rem;
+		color: var(--text-primary);
+		text-decoration: none;
+		font-size: 0.875rem;
+		font-weight: 500;
+		transition: all 0.2s;
+		white-space: nowrap;
+	}
+	
+	.equipment-link-btn:hover {
+		background-color: var(--bg-card-hover);
+		border-color: var(--primary);
+		color: var(--primary);
+		transform: translateY(-2px);
+	}
+	
+	.equipment-link-btn svg {
+		flex-shrink: 0;
 	}
 	
 	.subtitle {

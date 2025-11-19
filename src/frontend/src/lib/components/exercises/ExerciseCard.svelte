@@ -1,5 +1,6 @@
 <script lang="ts">
 	import Badge from '$lib/components/ui/Badge.svelte';
+	import { getEquipmentImage } from '$lib/utils/equipment';
 	
 	export let exercise: {
 		id: string;
@@ -11,6 +12,12 @@
 		difficulty: 'beginner' | 'intermediate' | 'advanced';
 		target_muscles?: string[];
 		youtube_link?: string;
+		equipment?: Array<{
+			name: string;
+			required: boolean;
+			description?: string;
+			image?: string;
+		}>;
 		camera_position?: {
 			distance: string;
 			angle: string;
@@ -49,6 +56,26 @@
 				<div class="camera-position-hint">
 					<span class="camera-icon">📹</span>
 					<span class="camera-text">{exercise.camera_position.angle} • {exercise.camera_position.distance}</span>
+				</div>
+			{/if}
+			{#if exercise.equipment && exercise.equipment.length > 0}
+				<div class="equipment-preview">
+					<div class="equipment-items">
+						{#each exercise.equipment.slice(0, 3) as item}
+							<div class="equipment-item-mini" title={item.name}>
+								<img 
+									src={item.image || getEquipmentImage(item.name)} 
+									alt={item.name}
+									on:error={(e) => {
+										e.currentTarget.src = '/images/equipments/dumbbells.jpg';
+									}}
+								/>
+							</div>
+						{/each}
+						{#if exercise.equipment.length > 3}
+							<div class="equipment-more">+{exercise.equipment.length - 3}</div>
+						{/if}
+					</div>
 				</div>
 			{/if}
 		</div>
@@ -156,6 +183,52 @@
 	
 	.camera-text {
 		font-weight: 500;
+	}
+	
+	.equipment-preview {
+		display: flex;
+		align-items: center;
+		gap: 0.5rem;
+		margin-top: 0.75rem;
+		padding-top: 0.75rem;
+		border-top: 1px solid rgba(255, 255, 255, 0.05);
+	}
+	
+	.equipment-icon {
+		font-size: 0.875rem;
+		flex-shrink: 0;
+	}
+	
+	.equipment-items {
+		display: flex;
+		align-items: center;
+		gap: 0.375rem;
+		flex: 1;
+	}
+	
+	.equipment-item-mini {
+		width: 28px;
+		height: 28px;
+		border-radius: 0.375rem;
+		overflow: hidden;
+		background: rgba(255, 255, 255, 0.05);
+		border: 1px solid rgba(255, 255, 255, 0.1);
+		flex-shrink: 0;
+	}
+	
+	.equipment-item-mini img {
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+	}
+	
+	.equipment-more {
+		font-size: 0.7rem;
+		color: var(--text-secondary);
+		font-weight: 600;
+		padding: 0.25rem 0.5rem;
+		background: rgba(255, 255, 255, 0.05);
+		border-radius: 0.25rem;
 	}
 	
 	.card-actions {

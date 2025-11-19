@@ -28,7 +28,7 @@ from src.backend.exercises.crunch_trainer import CrunchTrainer
 from src.backend.exercises.tricep_dip_trainer import TricepDipTrainer
 from src.backend.exercises.lateral_raise_trainer import LateralRaiseTrainer
 
-# Glute Fly wrapper (glute_fly.py is script-based, so we'll create a simple wrapper)
+# Rehab exercise wrappers (basic processing for now, full trainers coming soon)
 class GluteFlyTrainer:
     """Wrapper for Glute Fly exercise - uses basic processing for now"""
     def __init__(self):
@@ -50,6 +50,116 @@ class GluteFlyTrainer:
         return {
             "reps": self.reps,
             "feedback": "Glute Fly exercise - Full trainer coming soon",
+            "angles": {},
+            "progress": 0.0
+        }
+
+class KneeDropTrainer:
+    """Wrapper for Knee Drop exercise - uses basic processing for now"""
+    def __init__(self):
+        self.reps = 0
+        self.current_feedback = "Knee Drop - Position yourself in sideline position"
+        print("[KneeDropTrainer] Using basic processing (full trainer coming soon)")
+    
+    def process_frame(self, results, w: int, h: int, side: str = 'left'):
+        if not results.pose_landmarks:
+            return {
+                "reps": self.reps,
+                "feedback": "No pose detected - step into frame",
+                "angles": {},
+                "progress": 0.0
+            }
+        return {
+            "reps": self.reps,
+            "feedback": "Knee Drop exercise - Focus on slow, controlled down phase",
+            "angles": {},
+            "progress": 0.0
+        }
+
+class HamstringMedialBridgeTrainer:
+    """Wrapper for Hamstring Medial Bridge exercise - uses basic processing for now"""
+    def __init__(self):
+        self.reps = 0
+        self.current_feedback = "Hamstring Medial Bridge - Lie on back, lift hips"
+        print("[HamstringMedialBridgeTrainer] Using basic processing (full trainer coming soon)")
+    
+    def process_frame(self, results, w: int, h: int, side: str = 'left'):
+        if not results.pose_landmarks:
+            return {
+                "reps": self.reps,
+                "feedback": "No pose detected - step into frame",
+                "angles": {},
+                "progress": 0.0
+            }
+        return {
+            "reps": self.reps,
+            "feedback": "Hamstring Medial Bridge - Focus on inner hamstring tension",
+            "angles": {},
+            "progress": 0.0
+        }
+
+class BallSqueezeTrainer:
+    """Wrapper for Ball Squeeze exercise - uses basic processing for now"""
+    def __init__(self):
+        self.reps = 0
+        self.current_feedback = "Ball Squeeze - Butterfly position with ball between knees"
+        print("[BallSqueezeTrainer] Using basic processing (full trainer coming soon)")
+    
+    def process_frame(self, results, w: int, h: int, side: str = 'left'):
+        if not results.pose_landmarks:
+            return {
+                "reps": self.reps,
+                "feedback": "No pose detected - step into frame",
+                "angles": {},
+                "progress": 0.0
+            }
+        return {
+            "reps": self.reps,
+            "feedback": "Ball Squeeze - Focus on adductor (groin) activation",
+            "angles": {},
+            "progress": 0.0
+        }
+
+class QuadStretchTrainer:
+    """Wrapper for Quad Stretch exercise - uses basic processing for now"""
+    def __init__(self):
+        self.reps = 0
+        self.current_feedback = "Quad Stretch - Lie on back, extend leg gently"
+        print("[QuadStretchTrainer] Using basic processing (full trainer coming soon)")
+    
+    def process_frame(self, results, w: int, h: int, side: str = 'left'):
+        if not results.pose_landmarks:
+            return {
+                "reps": self.reps,
+                "feedback": "No pose detected - step into frame",
+                "angles": {},
+                "progress": 0.0
+            }
+        return {
+            "reps": self.reps,
+            "feedback": "Quad Stretch - Work within available range, don't force",
+            "angles": {},
+            "progress": 0.0
+        }
+
+class DepressionRowTrainer:
+    """Wrapper for Depression Row exercise - uses basic processing for now"""
+    def __init__(self):
+        self.reps = 0
+        self.current_feedback = "Depression Row - Shoulder forward, chest lifted, elbow at 45°"
+        print("[DepressionRowTrainer] Using basic processing (full trainer coming soon)")
+    
+    def process_frame(self, results, w: int, h: int, side: str = 'left'):
+        if not results.pose_landmarks:
+            return {
+                "reps": self.reps,
+                "feedback": "No pose detected - step into frame",
+                "angles": {},
+                "progress": 0.0
+            }
+        return {
+            "reps": self.reps,
+            "feedback": "Depression Row - Focus on scapula depression, not rowing. Keep shoulder forward, chest high.",
             "angles": {},
             "progress": 0.0
         }
@@ -89,15 +199,50 @@ class WorkoutStreamManager:
             return TricepDipTrainer()
         elif "lateral" in exercise_lower or "raise" in exercise_lower:
             return LateralRaiseTrainer()
-        elif exercise_lower == "glutefly" or exercise_lower == "glute" or "glute" in exercise_lower:
+        elif exercise_lower == "glutefly" or (exercise_lower == "glute" and "fly" in exercise_lower):
             # Glute Fly trainer wrapper
             try:
                 return GluteFlyTrainer()
             except Exception as e:
                 logger.error(f"Error initializing GluteFlyTrainer: {e}")
                 raise ValueError(f"Glute Fly trainer not available: {e}")
+        elif "kneedrop" in exercise_lower or ("knee" in exercise_lower and "drop" in exercise_lower):
+            # Knee Drop trainer
+            try:
+                return KneeDropTrainer()
+            except Exception as e:
+                logger.error(f"Error initializing KneeDropTrainer: {e}")
+                raise ValueError(f"Knee Drop trainer not available: {e}")
+        elif "hamstring" in exercise_lower and ("medial" in exercise_lower or "bridge" in exercise_lower):
+            # Hamstring Medial Bridge trainer
+            try:
+                return HamstringMedialBridgeTrainer()
+            except Exception as e:
+                logger.error(f"Error initializing HamstringMedialBridgeTrainer: {e}")
+                raise ValueError(f"Hamstring Medial Bridge trainer not available: {e}")
+        elif "ballsqueeze" in exercise_lower or ("ball" in exercise_lower and "squeeze" in exercise_lower):
+            # Ball Squeeze trainer
+            try:
+                return BallSqueezeTrainer()
+            except Exception as e:
+                logger.error(f"Error initializing BallSqueezeTrainer: {e}")
+                raise ValueError(f"Ball Squeeze trainer not available: {e}")
+        elif "quadstretch" in exercise_lower or ("quad" in exercise_lower and ("stretch" in exercise_lower or "extension" in exercise_lower)):
+            # Quad Stretch trainer
+            try:
+                return QuadStretchTrainer()
+            except Exception as e:
+                logger.error(f"Error initializing QuadStretchTrainer: {e}")
+                raise ValueError(f"Quad Stretch trainer not available: {e}")
+        elif "depressionrow" in exercise_lower or ("depression" in exercise_lower and "row" in exercise_lower):
+            # Depression Row trainer
+            try:
+                return DepressionRowTrainer()
+            except Exception as e:
+                logger.error(f"Error initializing DepressionRowTrainer: {e}")
+                raise ValueError(f"Depression Row trainer not available: {e}")
         else:
-            available = "squat, push-ups, shoulder-press, bicep-curl, plank, row, pull-up, lunge, crunch, tricep-dip, lateral-raise, glute-fly"
+            available = "squat, push-ups, shoulder-press, bicep-curl, plank, row, pull-up, lunge, crunch, tricep-dip, lateral-raise, glute-fly, knee-drop, hamstring-medial-bridge, ball-squeeze, quad-stretch, depression-row"
             raise ValueError(f"Unknown exercise: {self.exercise}. Available: {available}")
     
     async def stream_frames(self, websocket: WebSocket, camera_device: str = "auto"):

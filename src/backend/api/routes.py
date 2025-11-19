@@ -20,6 +20,18 @@ class CameraPosition(BaseModel):
     height: str  # e.g., "Waist level", "Knee level", "Shoulder level"
     tips: List[str] = []  # Specific tips for camera setup
 
+class WeightProgression(BaseModel):
+    starting_weight_lbs: float  # Starting weight recommendation
+    progression_range: str  # e.g., "5-10 lbs", "10-20 lbs"
+    progression_notes: Optional[str] = None  # Tips for progression
+
+class EquipmentItem(BaseModel):
+    name: str  # e.g., "5 lbs Ankle Weights"
+    required: bool = True  # Required or optional
+    description: Optional[str] = None  # Additional details
+    image: Optional[str] = None  # Equipment image URL
+    link: Optional[str] = None  # Link to buy/purchase equipment
+
 class ExerciseResponse(BaseModel):
     id: str
     name: str
@@ -34,6 +46,8 @@ class ExerciseResponse(BaseModel):
     target_muscles: List[str] = []  # Target muscles for this exercise
     youtube_link: Optional[str] = None  # YouTube tutorial video link
     camera_position: Optional[CameraPosition] = None  # Camera setup instructions
+    weight_progression: Optional[WeightProgression] = None  # Weight progression guidance
+    equipment: List[EquipmentItem] = []  # Required equipment for this exercise
 
 class TodayStatsResponse(BaseModel):
     reps_today: int
@@ -44,7 +58,10 @@ class WorkoutCreate(BaseModel):
     exercise_id: str
     duration: int  # seconds
     reps_completed: int
-    calories_burned: int
+    calories_burned: int = 0  # Not used, kept for backward compatibility
+    weight_lbs: Optional[float] = None  # Weight used in lbs
+    sets_completed: int = 2  # Number of sets (2-3)
+    reps_per_set: int = 15  # Reps per set (15-20)
 
 class WorkoutResponse(BaseModel):
     id: int
@@ -53,6 +70,9 @@ class WorkoutResponse(BaseModel):
     duration: int
     reps: int
     calories: int
+    weight_lbs: Optional[float] = None
+    sets_completed: int = 2
+    reps_per_set: int = 15
 
 # Diet tracking models
 class DietEntryCreate(BaseModel):
@@ -137,9 +157,28 @@ EXERCISES = [
         "sets": 4,
         "reps": 15,
         "thumbnail": "/images/exercises/squat.jpg",
-        "description": "Basic squat exercise for legs",
+        "description": "Basic squat exercise for legs. Start with bodyweight, then progress to weighted squats with dumbbells or barbell.",
         "target_muscles": ["Quadriceps", "Glutes", "Hamstrings", "Calves"],
         "youtube_link": "https://www.youtube.com/watch?v=YaXPRqUwItQ",
+        "weight_progression": {
+            "starting_weight_lbs": 0.0,
+            "progression_range": "0-20 lbs",
+            "progression_notes": "Start with bodyweight. Add 5-10 lbs dumbbells when form is perfect. Progress to 15-20 lbs as strength improves."
+        },
+        "equipment": [
+            {
+                "name": "None (Bodyweight)",
+                "required": False,
+                "description": "Can be done with bodyweight only"
+            },
+            {
+                "name": "5-20 lbs Dumbbells",
+                "required": False,
+                "description": "Optional - for weighted progression",
+                "image": None,
+                "link": "https://example.com/buy/dumbbells"
+            }
+        ],
         "camera_position": {
             "distance": "2-3 meters away",
             "angle": "Side view (90°)",
@@ -187,9 +226,30 @@ EXERCISES = [
         "sets": 3,
         "reps": 10,
         "thumbnail": "/images/exercises/glute-fly.jpg",
-        "description": "Glute fly exercise for hip mobility",
-        "target_muscles": ["Glutes", "Hamstrings", "Hip Abductors"],
-        "youtube_link": "https://www.youtube.com/watch?v=4Y2ZdHCOXok",
+        "description": "Glute fly exercise for hip mobility and glute activation. Start with bodyweight or light resistance band, then progress to ankle weights. Focus on glute medius activation in the dimple/half-moon area.",
+        "target_muscles": ["Glute Medius", "Glute Minimus", "Hip Abductors"],
+        "youtube_link": "https://youtu.be/ogXvRPqlj8s?si=j6vintQy_kABVj5W",
+        "weight_progression": {
+            "starting_weight_lbs": 0.0,
+            "progression_range": "0-6 lbs",
+            "progression_notes": "Start with bodyweight, hold 30 seconds. Add 5-6 lbs weight when correct muscle firing is achieved. Keep movement short and compact. Focus on glute medius dimple activation."
+        },
+        "equipment": [
+            {
+                "name": "2-inch Pad or Towel",
+                "required": True,
+                "description": "Place under knee for support",
+                "image": None,
+                "link": "https://example.com/buy/yoga-block"
+            },
+            {
+                "name": "5-6 lbs Ankle Weight or Dumbbell",
+                "required": False,
+                "description": "Optional - start with bodyweight, add weight when form is correct",
+                "image": None,
+                "link": "https://example.com/buy/ankle-weights"
+            }
+        ],
         "camera_position": {
             "distance": "2-2.5 meters away",
             "angle": "Side view (90°)",
@@ -203,6 +263,216 @@ EXERCISES = [
         }
     },
     {
+        "id": "knee-drop",
+        "name": "Knee Drop",
+        "exercise_type": "rehab",
+        "category": "lower",
+        "difficulty": "intermediate",
+        "duration": 15,
+        "sets": 3,
+        "reps": 15,
+        "thumbnail": "/images/exercises/knee-drop.jpg",
+        "description": "Knee drop exercise for glute minimus and medius activation. Performed in sideline position with controlled up-down knee movement. Focus on slow, controlled motion with emphasis on down phase.",
+        "target_muscles": ["Glute Minimus", "Glute Medius", "Hip Abductors"],
+        "youtube_link": "https://youtu.be/ogXvRPqlj8s?si=j6vintQy_kABVj5W",
+        "weight_progression": {
+            "starting_weight_lbs": 0.0,
+            "progression_range": "0-8 lbs",
+            "progression_notes": "Start without weight, use 2-inch pad/towel under knee. Progress to 5-8 lbs ankle weight or dumbbell when form is perfect. Focus on down phase for minimus activation. No hip or compensation movement."
+        },
+        "equipment": [
+            {
+                "name": "2-inch Pad or Towel",
+                "required": True,
+                "description": "Place under knee for medial rotation support",
+                "image": None,
+                "link": "https://example.com/buy/yoga-block"
+            },
+            {
+                "name": "5-8 lbs Ankle Weight or Dumbbell",
+                "required": False,
+                "description": "Optional - add when form is perfect",
+                "image": None,
+                "link": "https://example.com/buy/ankle-weights"
+            }
+        ],
+        "camera_position": {
+            "distance": "2-2.5 meters away",
+            "angle": "Side view (90°)",
+            "height": "Hip to knee level",
+            "tips": [
+                "Place camera on your side to see knee movement",
+                "Ensure heel alignment with butt center is visible",
+                "Camera should capture knee up-down range",
+                "Keep knees stacked and visible in frame"
+            ]
+        }
+    },
+    {
+        "id": "hamstring-medial-bridge",
+        "name": "Hamstring Medial Bridge",
+        "exercise_type": "rehab",
+        "category": "lower",
+        "difficulty": "intermediate",
+        "duration": 12,
+        "sets": 3,
+        "reps": 15,
+        "thumbnail": "/images/exercises/hamstring-medial-bridge.jpg",
+        "description": "Hamstring medial bridge for medial hamstring (semimembranosus) activation. Lie on back, lift hips with glute squeeze. Focus on inner hamstring tension, not high lift. Avoid back pressure.",
+        "target_muscles": ["Medial Hamstring", "Semimembranosus", "Glutes"],
+        "youtube_link": "https://youtu.be/ogXvRPqlj8s?si=j6vintQy_kABVj5W",
+        "weight_progression": {
+            "starting_weight_lbs": 0.0,
+            "progression_range": "0-10 lbs",
+            "progression_notes": "Start with bodyweight, focus on medial hamstring feel. Don't lift too high, just enough for inner hamstring tension. Progress to single leg (advanced) after mastering both legs."
+        },
+        "equipment": [
+            {
+                "name": "Bench",
+                "required": True,
+                "description": "Use a bench for hamstring medial bridge",
+                "image": None,
+                "link": "https://example.com/buy/bench"
+            }
+        ],
+        "camera_position": {
+            "distance": "2-2.5 meters away",
+            "angle": "Side view (90°)",
+            "height": "Hip to knee level",
+            "tips": [
+                "Place camera on your side to see hip lift",
+                "Ensure full body from head to feet is visible",
+                "Camera should capture hip bridge range",
+                "Keep ankles at 90-degree angle visible"
+            ]
+        }
+    },
+    {
+        "id": "ball-squeeze",
+        "name": "Ball Squeeze",
+        "exercise_type": "rehab",
+        "category": "lower",
+        "difficulty": "beginner",
+        "duration": 10,
+        "sets": 3,
+        "reps": 20,
+        "thumbnail": "/images/exercises/ball-squeeze.jpg",
+        "description": "Ball squeeze exercise for adductor chain activation. Butterfly position with medicine ball or football between knees. Squeeze and relax, focus on groin/adductor activation. Keep back arch for better activation.",
+        "target_muscles": ["Adductors", "Hip Flexors", "Groin"],
+        "youtube_link": "https://youtu.be/ogXvRPqlj8s?si=j6vintQy_kABVj5W",
+        "weight_progression": {
+            "starting_weight_lbs": 0.0,
+            "progression_range": "N/A (ball size)",
+            "progression_notes": "Start with smaller ball, progress to larger medicine ball. Focus on adductor (groin) feel, not hip flexor pinch. If adductors don't fire, do other exercises first for 3-4 weeks."
+        },
+        "equipment": [
+            {
+                "name": "Medicine Ball or Football",
+                "required": True,
+                "description": "Start with smaller ball, progress to larger size",
+                "image": None,
+                "link": "https://example.com/buy/medicine-ball"
+            }
+        ],
+        "camera_position": {
+            "distance": "1.5-2 meters away",
+            "angle": "Front view (0°) or 45° angle",
+            "height": "Hip to knee level",
+            "tips": [
+                "Place camera in front or slightly to side",
+                "Ensure ball and knee position are visible",
+                "Camera should capture squeeze motion",
+                "Keep butterfly position clearly in frame"
+            ]
+        }
+    },
+    {
+        "id": "quad-stretch",
+        "name": "Quad Stretch / Safe Extension",
+        "exercise_type": "rehab",
+        "category": "lower",
+        "difficulty": "beginner",
+        "duration": 10,
+        "sets": 3,
+        "reps": 15,
+        "thumbnail": "/images/exercises/quad-stretch.jpg",
+        "description": "Quad stretch and safe extension for knee rehab. Lie on back, one heel at butt line, other leg extended. Gentle quad stretch with toe up. Start with light weight (2.5-5 kg), work within available range.",
+        "target_muscles": ["Quadriceps", "Hip Flexors"],
+        "youtube_link": "https://youtu.be/ogXvRPqlj8s?si=j6vintQy_kABVj5W",
+        "weight_progression": {
+            "starting_weight_lbs": 0.0,
+            "progression_range": "0-11 lbs (5 kg)",
+            "progression_notes": "Start with bodyweight, gentle stretch. Add 2.5-5 kg (5.5-11 lbs) ankle weight when comfortable. Healthy side can use more weight. Work within available range, don't force. Range improves gradually."
+        },
+        "equipment": [
+            {
+                "name": "2.5-5 kg (5.5-11 lbs) Ankle Weight",
+                "required": True,
+                "description": "Ankle weight for quad stretch and safe extension",
+                "image": None,
+                "link": "https://example.com/buy/ankle-weights"
+            }
+        ],
+        "camera_position": {
+            "distance": "2-2.5 meters away",
+            "angle": "Side view (90°)",
+            "height": "Hip to knee level",
+            "tips": [
+                "Place camera on your side to see leg extension",
+                "Ensure heel-to-butt alignment is visible",
+                "Camera should capture quad stretch range",
+                "Keep toe position and knee angle visible"
+            ]
+        }
+    },
+    {
+        "id": "depression-row",
+        "name": "Depression Row",
+        "exercise_type": "rehab",
+        "category": "upper",
+        "difficulty": "intermediate",
+        "duration": 12,
+        "sets": 3,
+        "reps": 12,
+        "thumbnail": "/images/exercises/depression-row.jpg",
+        "description": "Depression row for winged scapula, labrum tears, and shoulder instability. Focus on scapula depression with shoulder slightly forward, chest lifted, and elbow at 45-degree angle. Key is depression movement, not rowing motion. Avoid rolling shoulder back - keep it forward with chest high for proper scapula flat position.",
+        "target_muscles": ["Teres Major", "Teres Minor", "Infraspinatus", "Scapula Stabilizers", "Lower Trapezius"],
+        "youtube_link": "https://youtu.be/45uGOybW-Ys?si=bTAo23bUEw6Jvj8e",
+        "weight_progression": {
+            "starting_weight_lbs": 0.0,
+            "progression_range": "0-15 lbs",
+            "progression_notes": "Start with light resistance band or cable. Focus on proper depression technique - shoulder forward, chest lifted, elbow at 45-degree angle. Progress slowly - depression angle improves about 1/4 inch per month with correct form. Master depression before adding advanced exercises."
+        },
+        "equipment": [
+            {
+                "name": "Exercise Bands",
+                "required": True,
+                "description": "Resistance band or cable for depression row. Start with light resistance, focus on form over weight.",
+                "image": None,
+                "link": "https://example.com/buy/exercise-bands"
+            },
+            {
+                "name": "Cable Machine",
+                "required": False,
+                "description": "Alternative to bands - use cable machine if available",
+                "image": None,
+                "link": "https://example.com/buy/cable-machine"
+            }
+        ],
+        "camera_position": {
+            "distance": "2-2.5 meters away",
+            "angle": "Side view (90°) or 45° angle",
+            "height": "Shoulder to chest level",
+            "tips": [
+                "Place camera on your side to see scapula movement",
+                "Ensure full upper body and shoulder blade are visible",
+                "Camera should capture scapula depression range",
+                "Keep chest lift and shoulder position clearly in frame",
+                "Watch for winged scapula correction during depression"
+            ]
+        }
+    },
+    {
         "id": "shoulder-press",
         "name": "Shoulder Press",
         "exercise_type": "basic",
@@ -212,9 +482,30 @@ EXERCISES = [
         "sets": 3,
         "reps": 12,
         "thumbnail": "/images/exercises/shoulder-press.jpg",
-        "description": "Shoulder press for shoulder strength",
+        "description": "Shoulder press for shoulder strength. Use dumbbells or resistance bands.",
         "target_muscles": ["Anterior Deltoids", "Lateral Deltoids", "Triceps", "Upper Trapezius"],
         "youtube_link": "https://www.youtube.com/watch?v=qEwKCR5JCog",
+        "weight_progression": {
+            "starting_weight_lbs": 5.0,
+            "progression_range": "5-15 lbs",
+            "progression_notes": "Start with 5 lbs per arm. Increase by 2.5-5 lbs when you can complete all sets with perfect form. Focus on controlled movement."
+        },
+        "equipment": [
+            {
+                "name": "5-15 lbs Dumbbells",
+                "required": True,
+                "description": "One dumbbell per arm, or use resistance bands as alternative",
+                "image": None,
+                "link": "https://example.com/buy/dumbbells"
+            },
+            {
+                "name": "Exercise Bands",
+                "required": False,
+                "description": "Alternative to dumbbells - use resistance bands for shoulder press",
+                "image": None,
+                "link": "https://example.com/buy/exercise-bands"
+            }
+        ],
         "camera_position": {
             "distance": "2-2.5 meters away",
             "angle": "Front view (0°)",
@@ -237,9 +528,30 @@ EXERCISES = [
         "sets": 3,
         "reps": 15,
         "thumbnail": "/images/exercises/bicep-curl.jpg",
-        "description": "Bicep curls for arm strength",
+        "description": "Bicep curls for arm strength. Use dumbbells or resistance bands.",
         "target_muscles": ["Biceps Brachii", "Brachialis", "Brachioradialis"],
         "youtube_link": "https://www.youtube.com/watch?v=ykJmrZ5v0Oo",
+        "weight_progression": {
+            "starting_weight_lbs": 5.0,
+            "progression_range": "5-15 lbs",
+            "progression_notes": "Start with 5 lbs per arm. Progress to 7.5-10 lbs when form is consistent. Increase to 12-15 lbs as strength builds."
+        },
+        "equipment": [
+            {
+                "name": "5-15 lbs Dumbbells",
+                "required": True,
+                "description": "One dumbbell per arm, or use resistance bands as alternative",
+                "image": None,
+                "link": "https://example.com/buy/dumbbells"
+            },
+            {
+                "name": "Exercise Bands",
+                "required": False,
+                "description": "Alternative to dumbbells - use resistance bands for bicep curls",
+                "image": None,
+                "link": "https://example.com/buy/exercise-bands"
+            }
+        ],
         "camera_position": {
             "distance": "1.5-2 meters away",
             "angle": "Front view (0°) or 45° angle",
@@ -287,9 +599,30 @@ EXERCISES = [
         "sets": 3,
         "reps": 12,
         "thumbnail": "/images/exercises/row.jpg",
-        "description": "Row exercise for back strength",
+        "description": "Row exercise for back strength. Use dumbbells or resistance bands.",
         "target_muscles": ["Latissimus Dorsi", "Rhomboids", "Middle Trapezius", "Rear Deltoids", "Biceps"],
         "youtube_link": "https://www.youtube.com/watch?v=rep-qVOkqgk",
+        "weight_progression": {
+            "starting_weight_lbs": 8.0,
+            "progression_range": "8-20 lbs",
+            "progression_notes": "Start with 8-10 lbs per arm. Progress to 12-15 lbs when back muscles are stronger. Focus on squeezing shoulder blades together."
+        },
+        "equipment": [
+            {
+                "name": "8-20 lbs Dumbbells",
+                "required": True,
+                "description": "One dumbbell per arm, or use resistance bands with door anchor",
+                "image": None,
+                "link": "https://example.com/buy/dumbbells"
+            },
+            {
+                "name": "Exercise Bands",
+                "required": False,
+                "description": "Alternative to dumbbells - use resistance bands with door anchor for rows",
+                "image": None,
+                "link": "https://example.com/buy/exercise-bands"
+            }
+        ],
         "camera_position": {
             "distance": "2-2.5 meters away",
             "angle": "Side view (90°)",
@@ -387,9 +720,23 @@ EXERCISES = [
         "sets": 3,
         "reps": 10,
         "thumbnail": "/images/exercises/tricep-dip.jpg",
-        "description": "Tricep dips for arm strength",
+        "description": "Tricep dips for arm strength. Use a bench, chair, or elevated surface.",
         "target_muscles": ["Triceps", "Anterior Deltoids", "Pectorals"],
         "youtube_link": "https://www.youtube.com/watch?v=6kALZikXxLc",
+        "weight_progression": {
+            "starting_weight_lbs": 0.0,
+            "progression_range": "Bodyweight",
+            "progression_notes": "Start with bodyweight. Progress by adding weight on lap or using weighted vest as you get stronger."
+        },
+        "equipment": [
+            {
+                "name": "Bench or Chair",
+                "required": True,
+                "description": "Use a sturdy bench, chair, or elevated surface for tricep dips",
+                "image": None,
+                "link": "https://example.com/buy/bench"
+            }
+        ],
         "camera_position": {
             "distance": "1.5-2 meters away",
             "angle": "Side view (90°)",
@@ -412,9 +759,23 @@ EXERCISES = [
         "sets": 3,
         "reps": 12,
         "thumbnail": "/images/exercises/lateral-raise.jpg",
-        "description": "Lateral raises for shoulder strength",
+        "description": "Lateral raises for shoulder strength. Use light dumbbells.",
         "target_muscles": ["Lateral Deltoids", "Anterior Deltoids", "Supraspinatus"],
         "youtube_link": "https://www.youtube.com/watch?v=3VcKaXpzqRo",
+        "weight_progression": {
+            "starting_weight_lbs": 3.0,
+            "progression_range": "3-10 lbs",
+            "progression_notes": "Start with 3-5 lbs per arm. Lateral deltoids are small muscles, so use lighter weights. Progress to 7-10 lbs gradually."
+        },
+        "equipment": [
+            {
+                "name": "3-10 lbs Light Dumbbells",
+                "required": True,
+                "description": "Light weights per arm - lateral deltoids are small muscles",
+                "image": None,
+                "link": "https://example.com/buy/dumbbells"
+            }
+        ],
         "camera_position": {
             "distance": "1.5-2 meters away",
             "angle": "Front view (0°)",
@@ -458,87 +819,239 @@ async def get_cameras():
     return {"cameras": cameras}
 
 @router.get("/stats/today", response_model=TodayStatsResponse)
-async def get_today_stats():
+async def get_today_stats(db: Session = Depends(get_db)):
     """Get today's workout statistics"""
-    # Mock data - will replace with database query
+    from src.backend.database.models import Workout
+    from datetime import datetime, timedelta, date
+    
+    # Get today's date
+    today = datetime.now().date()
+    today_start = datetime.combine(today, datetime.min.time())
+    today_end = datetime.combine(today, datetime.max.time())
+    
+    # Query today's workouts
+    today_workouts = db.query(Workout).filter(
+        Workout.user_id == 1,
+        Workout.date >= today_start,
+        Workout.date <= today_end
+    ).all()
+    
+    # Calculate reps today
+    reps_today = sum(w.reps_completed for w in today_workouts) if today_workouts else 0
+    
+    # Calculate streak (reuse logic from profile endpoint)
+    all_workouts = db.query(Workout).filter(Workout.user_id == 1).all()
+    current_streak = 0
+    
+    if all_workouts:
+        # Sort workouts by date (most recent first)
+        sorted_workouts = sorted(all_workouts, key=lambda w: w.date, reverse=True)
+        check_date = today
+        
+        for workout in sorted_workouts:
+            workout_date = workout.date.date() if hasattr(workout.date, 'date') else workout.date
+            if workout_date == check_date or workout_date == check_date - timedelta(days=1):
+                if workout_date == check_date:
+                    # Same day workout, continue
+                    pass
+                else:
+                    # Previous day workout, increment streak
+                    current_streak += 1
+                    check_date = workout_date
+            else:
+                # Gap found, break streak
+                break
+        
+        # If most recent workout is today, add 1 to streak
+        most_recent_date = sorted_workouts[0].date.date() if hasattr(sorted_workouts[0].date, 'date') else sorted_workouts[0].date
+        if most_recent_date == today:
+            current_streak += 1
+    
     return {
-        "reps_today": 247,
-        "streak": 12,
-        "calories": 1245
+        "reps_today": reps_today,
+        "streak": current_streak,
+        "calories": 0  # Not used, set to 0
     }
 
 @router.get("/stats/weekly")
-async def get_weekly_stats():
-    """Get weekly workout statistics"""
-    # Mock data
+async def get_weekly_stats(db: Session = Depends(get_db)):
+    """Get weekly workout statistics for last 7 days (Mon-Sun)"""
+    from src.backend.database.models import Workout
+    from datetime import datetime, timedelta, date
+    
+    # Get today and calculate start of week (Monday)
+    today = datetime.now().date()
+    # Get Monday of current week
+    days_since_monday = today.weekday()  # 0 = Monday, 6 = Sunday
+    monday = today - timedelta(days=days_since_monday)
+    
+    # Calculate date range (Monday to Sunday)
+    week_start = datetime.combine(monday, datetime.min.time())
+    week_end = datetime.combine(monday + timedelta(days=6), datetime.max.time())
+    
+    # Query workouts for this week
+    week_workouts = db.query(Workout).filter(
+        Workout.user_id == 1,
+        Workout.date >= week_start,
+        Workout.date <= week_end
+    ).all()
+    
+    # Initialize reps per day array (Mon=0, Sun=6)
+    days = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
+    reps_per_day = [0] * 7
+    
+    # Group workouts by day and sum reps
+    for workout in week_workouts:
+        workout_date = workout.date.date() if hasattr(workout.date, 'date') else workout.date
+        day_index = (workout_date - monday).days
+        if 0 <= day_index < 7:
+            reps_per_day[day_index] += workout.reps_completed
+    
+    # Calculate totals
+    total_reps = sum(reps_per_day)
+    workouts_completed = len(week_workouts)
+    
     return {
-        "reps_per_day": [120, 145, 95, 165, 185, 200, 155],
-        "days": ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
-        "total_reps": 1065,
-        "total_calories": 4050,
-        "workouts_completed": 7
+        "reps_per_day": reps_per_day,
+        "days": days,
+        "total_reps": total_reps,
+        "total_calories": 0,  # Not used, set to 0
+        "workouts_completed": workouts_completed
     }
 
 @router.post("/workouts", response_model=dict)
-async def save_workout(workout: WorkoutCreate):
-    """Save a completed workout"""
-    # Will implement database save later
+async def save_workout(workout: WorkoutCreate, db: Session = Depends(get_db)):
+    """Save a completed workout to database"""
+    from src.backend.database.models import Workout, User
+    
+    # Get or create default user (user_id=1)
+    user = db.query(User).filter(User.id == 1).first()
+    if not user:
+        user = User(id=1, name="Champion", email=None)
+        db.add(user)
+        db.commit()
+        db.refresh(user)
+    
+    # Create workout record
+    db_workout = Workout(
+        user_id=user.id,
+        exercise_id=workout.exercise_id,
+        date=datetime.utcnow(),
+        duration_seconds=workout.duration,
+        reps_completed=workout.reps_completed,
+        calories_burned=0,  # Not used, set to 0
+        weight_lbs=workout.weight_lbs,
+        sets_completed=workout.sets_completed,
+        reps_per_set=workout.reps_per_set
+    )
+    
+    db.add(db_workout)
+    db.commit()
+    db.refresh(db_workout)
+    
     return {
         "success": True,
-        "workout_id": 123,
+        "workout_id": db_workout.id,
         "message": "Workout saved successfully"
     }
 
 @router.get("/workouts/history", response_model=List[WorkoutResponse])
-async def get_workout_history(limit: int = 10):
-    """Get workout history"""
-    # Mock data
-    return [
-        {
-            "id": 1,
-            "exercise_name": "Squats",
-            "date": datetime.now() - timedelta(days=1),
-            "duration": 720,
-            "reps": 67,
-            "calories": 180
-        }
-    ]
+async def get_workout_history(limit: int = 10, db: Session = Depends(get_db)):
+    """Get workout history - list of past workouts user completed"""
+    from src.backend.database.models import Workout, Exercise
+    
+    # Query workouts with exercise details
+    workouts = db.query(Workout, Exercise).join(
+        Exercise, Workout.exercise_id == Exercise.id
+    ).filter(
+        Workout.user_id == 1  # Default user for now
+    ).order_by(
+        Workout.date.desc()
+    ).limit(limit).all()
+    
+    # Format response
+    history = []
+    for workout, exercise in workouts:
+        history.append({
+            "id": workout.id,
+            "exercise_name": exercise.name,
+            "date": workout.date,
+            "duration": workout.duration_seconds,
+            "reps": workout.reps_completed,
+            "calories": 0,  # Not used, set to 0
+            "weight_lbs": workout.weight_lbs,
+            "sets_completed": workout.sets_completed or 2,
+            "reps_per_set": workout.reps_per_set or 15
+        })
+    
+    return history
 
 @router.get("/achievements")
-async def get_achievements():
-    """Get user achievements"""
-    return {
-        "unlocked": [
-            {
-                "id": "100-reps",
-                "name": "100 Reps Club",
-                "icon": "💪",
-                "date": "Oct 10"
-            },
-            {
-                "id": "7-day-streak",
-                "name": "7-Day Streak",
-                "icon": "🔥",
-                "date": "Oct 12"
-            },
-            {
-                "id": "early-bird",
-                "name": "Early Bird",
-                "icon": "🌅",
-                "date": "Oct 8"
+async def get_achievements(db: Session = Depends(get_db)):
+    """Get user achievements with category filtering (rehab/basic/advanced/lifting)"""
+    from src.backend.database.models import Achievement, UserAchievement
+    
+    try:
+        # Get all achievements
+        all_achievements = db.query(Achievement).all()
+        
+        # Get unlocked achievements for user_id = 1
+        unlocked_achievement_ids = set()
+        unlocked_with_dates = {}
+        
+        user_achievements = db.query(UserAchievement).filter(
+            UserAchievement.user_id == 1
+        ).all()
+        
+        for ua in user_achievements:
+            unlocked_achievement_ids.add(ua.achievement_id)
+            unlocked_with_dates[ua.achievement_id] = ua.unlocked_at
+        
+        # Separate into unlocked and locked
+        unlocked = []
+        locked = []
+        
+        for achievement in all_achievements:
+            # Handle category field - might not exist in old database
+            category = getattr(achievement, 'category', None) or "basic"
+            
+            achievement_data = {
+                "id": achievement.id,
+                "name": achievement.name,
+                "icon": achievement.icon or "🏆",
+                "category": category
             }
-        ],
-        "locked": [
-            {
-                "id": "14-day-streak",
-                "name": "14-Day Streak",
-                "icon": "🔥",
-                "requirement": "Maintain 14-day workout streak"
-            }
-        ],
-        "total": 6,
-        "unlocked_count": 3
-    }
+            
+            if achievement.id in unlocked_achievement_ids:
+                # Format date
+                unlock_date = unlocked_with_dates[achievement.id]
+                if unlock_date:
+                    date_str = unlock_date.strftime("%b %d") if hasattr(unlock_date, 'strftime') else str(unlock_date)
+                else:
+                    date_str = ""
+                achievement_data["date"] = date_str
+                unlocked.append(achievement_data)
+            else:
+                achievement_data["requirement"] = achievement.requirement or ""
+                locked.append(achievement_data)
+        
+        return {
+            "unlocked": unlocked,
+            "locked": locked,
+            "total": len(all_achievements),
+            "unlocked_count": len(unlocked)
+        }
+    except Exception as e:
+        # Return empty structure if there's any error (table doesn't exist, etc.)
+        import traceback
+        print(f"Error loading achievements: {e}")
+        print(traceback.format_exc())
+        return {
+            "unlocked": [],
+            "locked": [],
+            "total": 0,
+            "unlocked_count": 0
+        }
 
 @router.post("/diet/entries", response_model=DietEntryResponse)
 async def create_diet_entry(entry: DietEntryCreate, db: Session = Depends(get_db)):

@@ -200,6 +200,41 @@
 							</ul>
 						</div>
 					{/if}
+					
+					<!-- Required Equipment -->
+					{#if exerciseData.equipment && exerciseData.equipment.length > 0}
+						<div class="equipment-section">
+							<h4>🛒 Required Equipment:</h4>
+							<div class="equipment-list">
+								{#each exerciseData.equipment as item}
+									<div class="equipment-item" class:optional={!item.required}>
+										<div class="equipment-content">
+											{#if item.image}
+												<div class="equipment-image-wrapper">
+													<img src={item.image} alt={item.name} class="equipment-image" />
+												</div>
+											{/if}
+											<div class="equipment-details">
+												<div class="equipment-header">
+													<span class="equipment-icon">{item.required ? '✅' : '⚪'}</span>
+													<span class="equipment-name">{item.name}</span>
+													{#if !item.required}
+														<span class="optional-badge">Optional</span>
+													{/if}
+												</div>
+												{#if item.description}
+													<div class="equipment-description">{item.description}</div>
+												{/if}
+											</div>
+										</div>
+									</div>
+								{/each}
+							</div>
+							<div class="equipment-note">
+								💡 <strong>Need equipment?</strong> Check out the Equipment Library for recommended suppliers.
+							</div>
+						</div>
+					{/if}
 				</div>
 				
 				<div class="setup-actions">
@@ -633,6 +668,139 @@
 		left: 0;
 		color: var(--primary);
 		font-weight: bold;
+	}
+	
+	.equipment-section {
+		background: rgba(255, 255, 255, 0.03);
+		border-radius: 0.75rem;
+		padding: 1.25rem;
+		margin-top: 1rem;
+		border-left: 3px solid var(--accent-orange);
+	}
+	
+	.equipment-section h4 {
+		font-size: 1rem;
+		font-weight: 600;
+		color: var(--text-primary);
+		margin-bottom: 1rem;
+	}
+	
+	.equipment-list {
+		display: flex;
+		flex-direction: column;
+		gap: 0.75rem;
+		margin-bottom: 1rem;
+	}
+	
+	.equipment-item {
+		background: rgba(255, 255, 255, 0.05);
+		border-radius: 0.5rem;
+		padding: 0.75rem;
+		border: 1px solid rgba(255, 255, 255, 0.1);
+	}
+	
+	.equipment-item.optional {
+		opacity: 0.8;
+		border-color: rgba(255, 255, 255, 0.05);
+	}
+	
+	.equipment-content {
+		display: flex;
+		gap: 0.75rem;
+		align-items: flex-start;
+	}
+	
+	.equipment-image-wrapper {
+		flex-shrink: 0;
+		width: 80px;
+		height: 80px;
+		border-radius: 0.5rem;
+		overflow: hidden;
+		background: rgba(255, 255, 255, 0.05);
+		border: 1px solid rgba(255, 255, 255, 0.1);
+	}
+	
+	.equipment-image {
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+	}
+	
+	.equipment-details {
+		flex: 1;
+		display: flex;
+		flex-direction: column;
+		gap: 0.5rem;
+	}
+	
+	.equipment-header {
+		display: flex;
+		align-items: center;
+		gap: 0.5rem;
+		flex-wrap: wrap;
+	}
+	
+	.equipment-icon {
+		font-size: 1rem;
+		flex-shrink: 0;
+	}
+	
+	.equipment-name {
+		font-weight: 600;
+		color: var(--text-primary);
+		font-size: 0.875rem;
+		flex: 1;
+	}
+	
+	.optional-badge {
+		font-size: 0.7rem;
+		padding: 0.125rem 0.5rem;
+		background: rgba(255, 255, 255, 0.1);
+		border-radius: 0.25rem;
+		color: var(--text-secondary);
+	}
+	
+	.equipment-description {
+		font-size: 0.75rem;
+		color: var(--text-secondary);
+		line-height: 1.4;
+	}
+	
+	.equipment-link {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.375rem;
+		font-size: 0.75rem;
+		color: var(--primary);
+		text-decoration: none;
+		padding: 0.375rem 0.75rem;
+		background: rgba(255, 100, 50, 0.1);
+		border: 1px solid rgba(255, 100, 50, 0.2);
+		border-radius: 0.375rem;
+		transition: all 0.2s;
+		width: fit-content;
+	}
+	
+	.equipment-link:hover {
+		background: rgba(255, 100, 50, 0.2);
+		border-color: rgba(255, 100, 50, 0.3);
+		color: var(--primary-hover, #ff6b35);
+	}
+	
+	.equipment-link svg {
+		flex-shrink: 0;
+	}
+	
+	.equipment-note {
+		font-size: 0.75rem;
+		color: var(--text-secondary);
+		line-height: 1.5;
+		padding-top: 0.75rem;
+		border-top: 1px solid rgba(255, 255, 255, 0.1);
+	}
+	
+	.equipment-note strong {
+		color: var(--text-primary);
 	}
 	
 	.setup-actions {

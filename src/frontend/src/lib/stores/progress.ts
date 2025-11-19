@@ -15,6 +15,9 @@ export interface WorkoutHistory {
 	duration: number; // seconds
 	reps: number;
 	calories: number;
+	weight_lbs?: number | null;
+	sets_completed?: number;
+	reps_per_set?: number;
 }
 
 export interface Achievement {

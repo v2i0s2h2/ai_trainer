@@ -328,11 +328,11 @@ EXERCISES = [
         },
         "equipment": [
             {
-                "name": "Exercise Mat or Soft Surface",
+                "name": "Bench",
                 "required": True,
-                "description": "For comfort while lying on back",
+                "description": "Use a bench for hamstring medial bridge",
                 "image": None,
-                "link": "https://example.com/buy/exercise-mat"
+                "link": "https://example.com/buy/bench"
             }
         ],
         "camera_position": {
@@ -372,13 +372,6 @@ EXERCISES = [
                 "description": "Start with smaller ball, progress to larger size",
                 "image": None,
                 "link": "https://example.com/buy/medicine-ball"
-            },
-            {
-                "name": "Exercise Mat",
-                "required": False,
-                "description": "Optional - for comfort in butterfly position",
-                "image": None,
-                "link": "https://example.com/buy/exercise-mat"
             }
         ],
         "camera_position": {
@@ -413,16 +406,9 @@ EXERCISES = [
         },
         "equipment": [
             {
-                "name": "Exercise Mat or Soft Surface",
-                "required": True,
-                "description": "For comfort while lying on back",
-                "image": None,
-                "link": "https://example.com/buy/exercise-mat"
-            },
-            {
                 "name": "2.5-5 kg (5.5-11 lbs) Ankle Weight",
-                "required": False,
-                "description": "Optional - add when comfortable with bodyweight",
+                "required": True,
+                "description": "Ankle weight for quad stretch and safe extension",
                 "image": None,
                 "link": "https://example.com/buy/ankle-weights"
             }

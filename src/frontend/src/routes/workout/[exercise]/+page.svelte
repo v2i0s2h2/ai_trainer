@@ -225,27 +225,13 @@
 												{#if item.description}
 													<div class="equipment-description">{item.description}</div>
 												{/if}
-												{#if item.link}
-													<a 
-														href={item.link} 
-														target="_blank" 
-														rel="noopener noreferrer"
-														class="equipment-link"
-														on:click|stopPropagation
-													>
-														<svg fill="none" stroke="currentColor" viewBox="0 0 24 24" width="16" height="16">
-															<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path>
-														</svg>
-														Buy Now
-													</a>
-												{/if}
 											</div>
 										</div>
 									</div>
 								{/each}
 							</div>
 							<div class="equipment-note">
-								💡 <strong>Need equipment?</strong> Click "Buy Now" links above or check out recommended suppliers.
+								💡 <strong>Need equipment?</strong> Check out the Equipment Library for recommended suppliers.
 							</div>
 						</div>
 					{/if}

@@ -148,35 +148,30 @@ class UpdateProfileRequest(BaseModel):
 # Mock data for now (will replace with database)
 EXERCISES = [
     {
-        "id": "squat",
-        "name": "Squats",
+        "id": "wall-squat",
+        "name": "Wall Squat",
         "exercise_type": "basic",
         "category": "lower",
         "difficulty": "beginner",
-        "duration": 12,
-        "sets": 4,
-        "reps": 15,
-        "thumbnail": "/images/exercises/squat.jpg",
-        "description": "Basic squat exercise for legs. Start with bodyweight, then progress to weighted squats with dumbbells or barbell.",
-        "target_muscles": ["Quadriceps", "Glutes", "Hamstrings", "Calves"],
-        "youtube_link": "https://www.youtube.com/watch?v=YaXPRqUwItQ",
+        "duration": 15,
+        "sets": 5,
+        "reps": 5,
+        "thumbnail": "/images/exercises/wall-squat.jpg",
+        "description": "Wall squat exercise for mobility and squat depth improvement. Works on hip external rotation and posterior pelvic expansion. Stand one foot away from wall, feet shoulder-width apart, toes pointed out at 45-degree angle. Weight balanced on inside heel, big toe base, and PSIS (posterior superior iliac spine). Keep back slightly arched, chest lifted. Squat down quarter-way or as deep as comfortable, maintaining contact points. Focus on breathing: quietly inhale through nose and soft breath out through mouth. Do 5 sets of 5 deep breaths, twice daily for 2-4 weeks. Works in 0-60 degree hip flexion range to expand posterior upper pelvis. Essential for deep squat - hip external rotation progressively drives flexion. Focus on control, breath, and alignment, not momentum or speed. Sacrum tips backward slightly, pelvis bones rotate forward and outward for proper hip external rotation. Keep knees pointed correctly, chest elevated, arms stable. Lower hips relaxed with back arch. Exercise starts at 12th minute in video.",
+        "target_muscles": ["Hip External Rotators", "Posterior Pelvis", "Quadriceps", "Glutes", "Hip Flexors"],
+        "youtube_link": "https://youtu.be/6-VSoQnIEnA?si=ZVbenydW41nl8OFF&t=720",
         "weight_progression": {
             "starting_weight_lbs": 0.0,
-            "progression_range": "0-20 lbs",
-            "progression_notes": "Start with bodyweight. Add 5-10 lbs dumbbells when form is perfect. Progress to 15-20 lbs as strength improves."
+            "progression_range": "Bodyweight",
+            "progression_notes": "Bodyweight only exercise. Focus on breathing technique (5 deep breaths per set), position control, and pelvic biomechanics. Progress by increasing squat depth gradually as hip mobility improves. Practice twice daily for 2-4 weeks. Key is understanding sacral counternutation and posterior pelvic expansion for correct deep squat."
         },
         "equipment": [
             {
-                "name": "None (Bodyweight)",
-                "required": False,
-                "description": "Can be done with bodyweight only"
-            },
-            {
-                "name": "5-20 lbs Dumbbells",
-                "required": False,
-                "description": "Optional - for weighted progression",
+                "name": "Wall",
+                "required": True,
+                "description": "Stand one foot away from wall for support and reference",
                 "image": None,
-                "link": "https://example.com/buy/dumbbells"
+                "link": None
             }
         ],
         "camera_position": {
@@ -184,10 +179,11 @@ EXERCISES = [
             "angle": "Side view (90°)",
             "height": "Waist to hip level",
             "tips": [
-                "Place camera on your side to see full body profile",
-                "Ensure both feet and head are visible in frame",
-                "Keep camera stable (use tripod or prop against wall)",
-                "Good lighting helps with pose detection"
+                "Place camera on your side to see full body profile and squat depth",
+                "Ensure both feet, knees, and hip position are visible in frame",
+                "Camera should capture posterior pelvic expansion and hip external rotation",
+                "Keep back arch and chest lift clearly visible",
+                "Watch for proper toe angle (45 degrees) and weight distribution on contact points"
             ]
         }
     },
@@ -444,56 +440,6 @@ EXERCISES = [
                 "Camera should capture scapula depression range",
                 "Keep chest lift and shoulder position clearly in frame",
                 "Watch for winged scapula correction during depression"
-            ]
-        }
-    },
-    {
-        "id": "plank",
-        "name": "Plank",
-        "exercise_type": "basic",
-        "category": "lower",
-        "difficulty": "intermediate",
-        "duration": 5,
-        "sets": 3,
-        "reps": 1,
-        "thumbnail": "/images/exercises/plank.jpg",
-        "description": "Plank hold for core strength",
-        "target_muscles": ["Rectus Abdominis", "Transverse Abdominis", "Obliques", "Erector Spinae"],
-        "youtube_link": "https://www.youtube.com/watch?v=pSHjTRCQxIw",
-        "camera_position": {
-            "distance": "1.5-2 meters away",
-            "angle": "Side view (90°)",
-            "height": "Ground level or slightly elevated",
-            "tips": [
-                "Place camera on your side to see body alignment",
-                "Camera should be at ground level or slightly above",
-                "Ensure full body from head to feet is visible",
-                "Check that your body forms a straight line in frame"
-            ]
-        }
-    },
-    {
-        "id": "lunge",
-        "name": "Lunges",
-        "exercise_type": "basic",
-        "category": "lower",
-        "difficulty": "beginner",
-        "duration": 10,
-        "sets": 3,
-        "reps": 12,
-        "thumbnail": "/images/exercises/lunge.jpg",
-        "description": "Lunges for leg strength",
-        "target_muscles": ["Quadriceps", "Glutes", "Hamstrings", "Calves"],
-        "youtube_link": "https://www.youtube.com/watch?v=QOVaHwm-Q6U",
-        "camera_position": {
-            "distance": "2-2.5 meters away",
-            "angle": "Side view (90°)",
-            "height": "Hip to waist level",
-            "tips": [
-                "Place camera on your side to see leg movement",
-                "Ensure both legs are fully visible in frame",
-                "Camera should capture full lunge depth",
-                "Keep torso upright and visible"
             ]
         }
     },

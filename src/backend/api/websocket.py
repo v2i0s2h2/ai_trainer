@@ -177,7 +177,7 @@ class WorkoutStreamManager:
         # Normalize exercise ID (handle variations like "push-ups" vs "pushup")
         exercise_lower = self.exercise.lower().replace("-", "").replace("_", "").replace(" ", "")
         
-        if exercise_lower == "squat" or exercise_lower == "squats":
+        if exercise_lower == "squat" or exercise_lower == "squats" or exercise_lower == "wall-squat" or "wall" in exercise_lower and "squat" in exercise_lower:
             return SquatTrainer()
         elif "pushup" in exercise_lower or "push" in exercise_lower:
             return PushupTrainer()
@@ -251,7 +251,7 @@ class WorkoutStreamManager:
                 logger.error(f"Error initializing DepressionRowTrainer: {e}")
                 raise ValueError(f"Depression Row trainer not available: {e}")
         else:
-            available = "squat, push-ups, shoulder-press, bicep-curl, plank, row, pull-up, lunge, crunch, tricep-dip, lateral-raise, rear-delt-raise, pant-pull, pad-cuff, glute-fly, knee-drop, hamstring-medial-bridge, ball-squeeze, quad-stretch, depression-row"
+            available = "wall-squat, rear-delt-raise, pant-pull, pad-cuff, glute-fly, knee-drop, hamstring-medial-bridge, ball-squeeze, quad-stretch, depression-row"
             raise ValueError(f"Unknown exercise: {self.exercise}. Available: {available}")
     
     async def stream_frames(self, websocket: WebSocket, camera_device: str = "auto"):

@@ -197,6 +197,9 @@ class WorkoutStreamManager:
             return CrunchTrainer()
         elif "tricep" in exercise_lower or "dip" in exercise_lower:
             return TricepDipTrainer()
+        elif "reardelt" in exercise_lower or ("rear" in exercise_lower and "delt" in exercise_lower and "raise" in exercise_lower):
+            # Rear Delt Raise - use LateralRaiseTrainer for now (similar movement pattern)
+            return LateralRaiseTrainer()
         elif "lateral" in exercise_lower or "raise" in exercise_lower:
             return LateralRaiseTrainer()
         elif exercise_lower == "glutefly" or (exercise_lower == "glute" and "fly" in exercise_lower):
@@ -242,7 +245,7 @@ class WorkoutStreamManager:
                 logger.error(f"Error initializing DepressionRowTrainer: {e}")
                 raise ValueError(f"Depression Row trainer not available: {e}")
         else:
-            available = "squat, push-ups, shoulder-press, bicep-curl, plank, row, pull-up, lunge, crunch, tricep-dip, lateral-raise, glute-fly, knee-drop, hamstring-medial-bridge, ball-squeeze, quad-stretch, depression-row"
+            available = "squat, push-ups, shoulder-press, bicep-curl, plank, row, pull-up, lunge, crunch, tricep-dip, lateral-raise, rear-delt-raise, glute-fly, knee-drop, hamstring-medial-bridge, ball-squeeze, quad-stretch, depression-row"
             raise ValueError(f"Unknown exercise: {self.exercise}. Available: {available}")
     
     async def stream_frames(self, websocket: WebSocket, camera_device: str = "auto"):

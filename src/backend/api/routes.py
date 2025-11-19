@@ -750,6 +750,53 @@ EXERCISES = [
         }
     },
     {
+        "id": "rear-delt-raise",
+        "name": "Rear Delt Raise",
+        "exercise_type": "basic",
+        "category": "upper",
+        "difficulty": "intermediate",
+        "duration": 10,
+        "sets": 3,
+        "reps": 12,
+        "thumbnail": "/images/exercises/rear-delt-raise.jpg",
+        "description": "Rear delt raise over bench for rear deltoid and scapular stabilizer strengthening. Performed lying on bench with chest supported. Focus on controlled movement with slow eccentric phase. Helps fix winged scapula and improve shoulder stability. Emphasize scapular retraction and depression.",
+        "target_muscles": ["Rear Deltoids", "Rhomboids", "Infraspinatus", "Scapular Stabilizers", "Middle Trapezius"],
+        "youtube_link": "https://youtu.be/C-YRTquDjbg?si=wlSdPkuC81_3QnMU",
+        "weight_progression": {
+            "starting_weight_lbs": 5.0,
+            "progression_range": "5-10 lbs",
+            "progression_notes": "Start with light weight (5-8 lbs). Focus on form and muscle feel over weight. Progress weight only when form is perfect and scapular control is complete. Slow eccentric (lowering) phase is important to maintain tension in scapula muscles."
+        },
+        "equipment": [
+            {
+                "name": "Bench",
+                "required": True,
+                "description": "Bench for chest support - lie on side or support torso on bench",
+                "image": None,
+                "link": "https://example.com/buy/bench"
+            },
+            {
+                "name": "5-10 lbs Dumbbells",
+                "required": True,
+                "description": "Light dumbbells per arm - rear delts are small muscles, start light",
+                "image": None,
+                "link": "https://example.com/buy/dumbbells"
+            }
+        ],
+        "camera_position": {
+            "distance": "2-2.5 meters away",
+            "angle": "Side view (90°) or 45° angle",
+            "height": "Shoulder to chest level",
+            "tips": [
+                "Place camera on your side to see rear delt movement",
+                "Ensure full upper body and shoulder blade are visible",
+                "Camera should capture arm raise range (shoulder height parallel)",
+                "Keep scapular retraction and rear delt squeeze clearly in frame",
+                "Watch for controlled lowering phase and no trunk rotation"
+            ]
+        }
+    },
+    {
         "id": "lateral-raise",
         "name": "Lateral Raises",
         "exercise_type": "basic",

@@ -25,6 +25,13 @@ class WeightProgression(BaseModel):
     progression_range: str  # e.g., "5-10 lbs", "10-20 lbs"
     progression_notes: Optional[str] = None  # Tips for progression
 
+class EquipmentItem(BaseModel):
+    name: str  # e.g., "5 lbs Ankle Weights"
+    required: bool = True  # Required or optional
+    description: Optional[str] = None  # Additional details
+    image: Optional[str] = None  # Equipment image URL
+    link: Optional[str] = None  # Link to buy/purchase equipment
+
 class ExerciseResponse(BaseModel):
     id: str
     name: str
@@ -40,6 +47,7 @@ class ExerciseResponse(BaseModel):
     youtube_link: Optional[str] = None  # YouTube tutorial video link
     camera_position: Optional[CameraPosition] = None  # Camera setup instructions
     weight_progression: Optional[WeightProgression] = None  # Weight progression guidance
+    equipment: List[EquipmentItem] = []  # Required equipment for this exercise
 
 class TodayStatsResponse(BaseModel):
     reps_today: int
@@ -157,6 +165,20 @@ EXERCISES = [
             "progression_range": "0-20 lbs",
             "progression_notes": "Start with bodyweight. Add 5-10 lbs dumbbells when form is perfect. Progress to 15-20 lbs as strength improves."
         },
+        "equipment": [
+            {
+                "name": "None (Bodyweight)",
+                "required": False,
+                "description": "Can be done with bodyweight only"
+            },
+            {
+                "name": "5-20 lbs Dumbbells",
+                "required": False,
+                "description": "Optional - for weighted progression",
+                "image": None,
+                "link": "https://example.com/buy/dumbbells"
+            }
+        ],
         "camera_position": {
             "distance": "2-3 meters away",
             "angle": "Side view (90°)",
@@ -212,6 +234,22 @@ EXERCISES = [
             "progression_range": "0-6 lbs",
             "progression_notes": "Start with bodyweight, hold 30 seconds. Add 5-6 lbs weight when correct muscle firing is achieved. Keep movement short and compact. Focus on glute medius dimple activation."
         },
+        "equipment": [
+            {
+                "name": "2-inch Pad or Towel",
+                "required": True,
+                "description": "Place under knee for support",
+                "image": None,
+                "link": "https://example.com/buy/yoga-block"
+            },
+            {
+                "name": "5-6 lbs Ankle Weight or Dumbbell",
+                "required": False,
+                "description": "Optional - start with bodyweight, add weight when form is correct",
+                "image": None,
+                "link": "https://example.com/buy/ankle-weights"
+            }
+        ],
         "camera_position": {
             "distance": "2-2.5 meters away",
             "angle": "Side view (90°)",
@@ -242,6 +280,22 @@ EXERCISES = [
             "progression_range": "0-8 lbs",
             "progression_notes": "Start without weight, use 2-inch pad/towel under knee. Progress to 5-8 lbs ankle weight or dumbbell when form is perfect. Focus on down phase for minimus activation. No hip or compensation movement."
         },
+        "equipment": [
+            {
+                "name": "2-inch Pad or Towel",
+                "required": True,
+                "description": "Place under knee for medial rotation support",
+                "image": None,
+                "link": "https://example.com/buy/yoga-block"
+            },
+            {
+                "name": "5-8 lbs Ankle Weight or Dumbbell",
+                "required": False,
+                "description": "Optional - add when form is perfect",
+                "image": None,
+                "link": "https://example.com/buy/ankle-weights"
+            }
+        ],
         "camera_position": {
             "distance": "2-2.5 meters away",
             "angle": "Side view (90°)",
@@ -272,6 +326,15 @@ EXERCISES = [
             "progression_range": "0-10 lbs",
             "progression_notes": "Start with bodyweight, focus on medial hamstring feel. Don't lift too high, just enough for inner hamstring tension. Progress to single leg (advanced) after mastering both legs."
         },
+        "equipment": [
+            {
+                "name": "Exercise Mat or Soft Surface",
+                "required": True,
+                "description": "For comfort while lying on back",
+                "image": None,
+                "link": "https://example.com/buy/exercise-mat"
+            }
+        ],
         "camera_position": {
             "distance": "2-2.5 meters away",
             "angle": "Side view (90°)",
@@ -302,6 +365,22 @@ EXERCISES = [
             "progression_range": "N/A (ball size)",
             "progression_notes": "Start with smaller ball, progress to larger medicine ball. Focus on adductor (groin) feel, not hip flexor pinch. If adductors don't fire, do other exercises first for 3-4 weeks."
         },
+        "equipment": [
+            {
+                "name": "Medicine Ball or Football",
+                "required": True,
+                "description": "Start with smaller ball, progress to larger size",
+                "image": None,
+                "link": "https://example.com/buy/medicine-ball"
+            },
+            {
+                "name": "Exercise Mat",
+                "required": False,
+                "description": "Optional - for comfort in butterfly position",
+                "image": None,
+                "link": "https://example.com/buy/exercise-mat"
+            }
+        ],
         "camera_position": {
             "distance": "1.5-2 meters away",
             "angle": "Front view (0°) or 45° angle",
@@ -332,6 +411,22 @@ EXERCISES = [
             "progression_range": "0-11 lbs (5 kg)",
             "progression_notes": "Start with bodyweight, gentle stretch. Add 2.5-5 kg (5.5-11 lbs) ankle weight when comfortable. Healthy side can use more weight. Work within available range, don't force. Range improves gradually."
         },
+        "equipment": [
+            {
+                "name": "Exercise Mat or Soft Surface",
+                "required": True,
+                "description": "For comfort while lying on back",
+                "image": None,
+                "link": "https://example.com/buy/exercise-mat"
+            },
+            {
+                "name": "2.5-5 kg (5.5-11 lbs) Ankle Weight",
+                "required": False,
+                "description": "Optional - add when comfortable with bodyweight",
+                "image": None,
+                "link": "https://example.com/buy/ankle-weights"
+            }
+        ],
         "camera_position": {
             "distance": "2-2.5 meters away",
             "angle": "Side view (90°)",
@@ -362,6 +457,22 @@ EXERCISES = [
             "progression_range": "5-15 lbs",
             "progression_notes": "Start with 5 lbs per arm. Increase by 2.5-5 lbs when you can complete all sets with perfect form. Focus on controlled movement."
         },
+        "equipment": [
+            {
+                "name": "5-15 lbs Dumbbells",
+                "required": True,
+                "description": "One dumbbell per arm, or use resistance bands as alternative",
+                "image": None,
+                "link": "https://example.com/buy/dumbbells"
+            },
+            {
+                "name": "Exercise Bands",
+                "required": False,
+                "description": "Alternative to dumbbells - use resistance bands for shoulder press",
+                "image": None,
+                "link": "https://example.com/buy/exercise-bands"
+            }
+        ],
         "camera_position": {
             "distance": "2-2.5 meters away",
             "angle": "Front view (0°)",
@@ -392,6 +503,22 @@ EXERCISES = [
             "progression_range": "5-15 lbs",
             "progression_notes": "Start with 5 lbs per arm. Progress to 7.5-10 lbs when form is consistent. Increase to 12-15 lbs as strength builds."
         },
+        "equipment": [
+            {
+                "name": "5-15 lbs Dumbbells",
+                "required": True,
+                "description": "One dumbbell per arm, or use resistance bands as alternative",
+                "image": None,
+                "link": "https://example.com/buy/dumbbells"
+            },
+            {
+                "name": "Exercise Bands",
+                "required": False,
+                "description": "Alternative to dumbbells - use resistance bands for bicep curls",
+                "image": None,
+                "link": "https://example.com/buy/exercise-bands"
+            }
+        ],
         "camera_position": {
             "distance": "1.5-2 meters away",
             "angle": "Front view (0°) or 45° angle",
@@ -447,6 +574,22 @@ EXERCISES = [
             "progression_range": "8-20 lbs",
             "progression_notes": "Start with 8-10 lbs per arm. Progress to 12-15 lbs when back muscles are stronger. Focus on squeezing shoulder blades together."
         },
+        "equipment": [
+            {
+                "name": "8-20 lbs Dumbbells",
+                "required": True,
+                "description": "One dumbbell per arm, or use resistance bands with door anchor",
+                "image": None,
+                "link": "https://example.com/buy/dumbbells"
+            },
+            {
+                "name": "Exercise Bands",
+                "required": False,
+                "description": "Alternative to dumbbells - use resistance bands with door anchor for rows",
+                "image": None,
+                "link": "https://example.com/buy/exercise-bands"
+            }
+        ],
         "camera_position": {
             "distance": "2-2.5 meters away",
             "angle": "Side view (90°)",
@@ -544,9 +687,23 @@ EXERCISES = [
         "sets": 3,
         "reps": 10,
         "thumbnail": "/images/exercises/tricep-dip.jpg",
-        "description": "Tricep dips for arm strength",
+        "description": "Tricep dips for arm strength. Use a bench, chair, or elevated surface.",
         "target_muscles": ["Triceps", "Anterior Deltoids", "Pectorals"],
         "youtube_link": "https://www.youtube.com/watch?v=6kALZikXxLc",
+        "weight_progression": {
+            "starting_weight_lbs": 0.0,
+            "progression_range": "Bodyweight",
+            "progression_notes": "Start with bodyweight. Progress by adding weight on lap or using weighted vest as you get stronger."
+        },
+        "equipment": [
+            {
+                "name": "Bench or Chair",
+                "required": True,
+                "description": "Use a sturdy bench, chair, or elevated surface for tricep dips",
+                "image": None,
+                "link": "https://example.com/buy/bench"
+            }
+        ],
         "camera_position": {
             "distance": "1.5-2 meters away",
             "angle": "Side view (90°)",
@@ -577,6 +734,15 @@ EXERCISES = [
             "progression_range": "3-10 lbs",
             "progression_notes": "Start with 3-5 lbs per arm. Lateral deltoids are small muscles, so use lighter weights. Progress to 7-10 lbs gradually."
         },
+        "equipment": [
+            {
+                "name": "3-10 lbs Light Dumbbells",
+                "required": True,
+                "description": "Light weights per arm - lateral deltoids are small muscles",
+                "image": None,
+                "link": "https://example.com/buy/dumbbells"
+            }
+        ],
         "camera_position": {
             "distance": "1.5-2 meters away",
             "angle": "Front view (0°)",

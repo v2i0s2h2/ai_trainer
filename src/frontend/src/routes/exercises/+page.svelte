@@ -118,13 +118,13 @@
 			<div class="section">
 				<h2 class="section-title">
 					<span class="section-icon">⬆️</span>
-					Upper Body
+					{selectedExerciseType === 'advanced' ? 'Back and Triceps' : 'Upper Body'}
 				</h2>
 				{#if getUpperExercises(selectedExerciseType).length > 0}
 					<ExerciseGrid exercises={getUpperExercises(selectedExerciseType)} />
 				{:else}
 					<div class="empty-section">
-						<p>No upper body exercises available yet.</p>
+						<p>No {selectedExerciseType === 'advanced' ? 'back and triceps' : 'upper body'} exercises available yet.</p>
 						<p class="coming-soon">More exercises coming soon! 🚀</p>
 					</div>
 				{/if}

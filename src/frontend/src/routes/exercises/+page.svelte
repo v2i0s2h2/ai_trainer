@@ -77,6 +77,19 @@
 		];
 		return getUpperExercises('advanced').filter(ex => chestBicepsIds.includes(ex.id));
 	}
+	
+	function getShoulderDayExercises() {
+		const shoulderDayIds = [
+			'incline-dumbbell-shoulder-press',
+			'lateral-raises-advanced',
+			'lateral-raises-weak-spot',
+			'dips-parallel-bars',
+			'traps-shrugs',
+			'forearm-extension-fix',
+			'forearm-flexion-fix'
+		];
+		return getUpperExercises('advanced').filter(ex => shoulderDayIds.includes(ex.id));
+	}
 </script>
 
 <div class="exercises-container">
@@ -167,6 +180,22 @@
 					{:else}
 						<div class="empty-section">
 							<p>No chest and biceps exercises available yet.</p>
+							<p class="coming-soon">More exercises coming soon! 🚀</p>
+						</div>
+					{/if}
+				</div>
+				
+				<!-- Shoulder Day + Bi and Tri Section -->
+				<div class="section">
+					<h2 class="section-title">
+						<span class="section-icon">🏋️</span>
+						Shoulder Day + Bi and Tri
+					</h2>
+					{#if getShoulderDayExercises().length > 0}
+						<ExerciseGrid exercises={getShoulderDayExercises()} />
+					{:else}
+						<div class="empty-section">
+							<p>No shoulder day exercises available yet.</p>
 							<p class="coming-soon">More exercises coming soon! 🚀</p>
 						</div>
 					{/if}

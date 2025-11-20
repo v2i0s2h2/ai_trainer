@@ -286,8 +286,29 @@ class WorkoutStreamManager:
         elif "cablecrunch" in exercise_lower or ("cable" in exercise_lower and "crunch" in exercise_lower):
             # Cable Crunch - use CrunchTrainer
             return CrunchTrainer()
+        elif "inclinedumbbellshoulderpress" in exercise_lower or ("incline" in exercise_lower and "dumbbell" in exercise_lower and "shoulder" in exercise_lower):
+            # Incline Dumbbell Shoulder Press - use ShoulderPressTrainer
+            return ShoulderPressTrainer()
+        elif "lateralraisesadvanced" in exercise_lower or ("lateral" in exercise_lower and "raises" in exercise_lower and "advanced" in exercise_lower):
+            # Lateral Raises Advanced - use LateralRaiseTrainer
+            return LateralRaiseTrainer()
+        elif "lateralraisesweakspot" in exercise_lower or ("lateral" in exercise_lower and "weak" in exercise_lower):
+            # Lateral Raises Weak Spot - use LateralRaiseTrainer
+            return LateralRaiseTrainer()
+        elif "dipsparallelbars" in exercise_lower or ("dips" in exercise_lower and "parallel" in exercise_lower):
+            # Dips Parallel Bars - use TricepDipTrainer
+            return TricepDipTrainer()
+        elif "trapsshrug" in exercise_lower or ("trap" in exercise_lower and "shrug" in exercise_lower):
+            # Traps/Shrugs - use basic trainer for now
+            return BicepCurlTrainer()
+        elif "forearmextensionfix" in exercise_lower or ("forearm" in exercise_lower and "extension" in exercise_lower):
+            # Forearm Extension Fix - use basic trainer
+            return BicepCurlTrainer()
+        elif "forearmflexionfix" in exercise_lower or ("forearm" in exercise_lower and "flexion" in exercise_lower):
+            # Forearm Flexion Fix - use basic trainer
+            return BicepCurlTrainer()
         else:
-            available = "wall-squat, plank, rear-delt-raise, pant-pull, pad-cuff, glute-fly, knee-drop, hamstring-medial-bridge, ball-squeeze, quad-stretch, depression-row, weighted-pull-ups, close-grip-pull-down, wide-grip-row, single-arm-row, weighted-dips, incline-skull-crushers, incline-bench-press, flat-dumbbell-bench-press, cable-crossovers, hammer-curls, barbell-curls, cable-crunch"
+            available = "wall-squat, plank, rear-delt-raise, pant-pull, pad-cuff, glute-fly, knee-drop, hamstring-medial-bridge, ball-squeeze, quad-stretch, depression-row, weighted-pull-ups, close-grip-pull-down, wide-grip-row, single-arm-row, weighted-dips, incline-skull-crushers, incline-bench-press, flat-dumbbell-bench-press, cable-crossovers, hammer-curls, barbell-curls, cable-crunch, incline-dumbbell-shoulder-press, lateral-raises-advanced, lateral-raises-weak-spot, dips-parallel-bars, traps-shrugs, forearm-extension-fix, forearm-flexion-fix"
             raise ValueError(f"Unknown exercise: {self.exercise}. Available: {available}")
     
     async def stream_frames(self, websocket: WebSocket, camera_device: str = "auto"):

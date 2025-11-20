@@ -1147,6 +1147,286 @@ EXERCISES = [
                 "Watch for proper butt squeeze and tuck position"
             ]
         }
+    },
+    {
+        "id": "incline-dumbbell-shoulder-press",
+        "name": "Incline Dumbbell Shoulder Press",
+        "exercise_type": "advanced",
+        "category": "upper",
+        "difficulty": "advanced",
+        "duration": 8,
+        "sets": 1,
+        "reps": 7,
+        "thumbnail": "/images/exercises/shoulder-press.jpg",
+        "description": "Exercise starts in video. NOTE: Requires gym equipment (incline bench and dumbbells). Cannot be performed at home.",
+        "target_muscles": ["Anterior Deltoids", "Lateral Deltoids", "Triceps Brachii", "Upper Pectoralis"],
+        "youtube_link": "https://youtu.be/OuctHJhvR5A?si=z2eMMG7O2dLozgFq",
+        "weight_progression": {
+            "starting_weight_lbs": 40.0,
+            "progression_range": "40-65 lbs",
+            "progression_notes": "Warm up with 40s. Working set with 65s. Goal is 7-8 reps. Cycle is 4-8 weeks. Try to stretch up and touch for full range. No rest-pause with dumbbells (risky). After working set, perform quick drop set."
+        },
+        "equipment": [
+            {
+                "name": "Incline Bench",
+                "required": True,
+                "description": "Gym incline bench (slight incline, not totally upright)",
+                "image": None,
+                "link": "https://example.com/buy/incline-bench"
+            },
+            {
+                "name": "Dumbbells",
+                "required": True,
+                "description": "Heavy dumbbells (40-65 lbs each) for shoulder press",
+                "image": None,
+                "link": "https://example.com/buy/dumbbells"
+            }
+        ],
+        "camera_position": {
+            "distance": "2-3 meters away",
+            "angle": "Front view or side view (90°)",
+            "height": "Chest to head level",
+            "tips": [
+                "Place camera in front or side to see full shoulder press motion",
+                "Ensure bench angle and full range of motion are visible",
+                "Camera should capture proper form and controlled movement",
+                "Watch for full range - stretch up and touch"
+            ]
+        }
+    },
+    {
+        "id": "lateral-raises-advanced",
+        "name": "Lateral Raises (Dumbbells)",
+        "exercise_type": "advanced",
+        "category": "upper",
+        "difficulty": "advanced",
+        "duration": 5,
+        "sets": 1,
+        "reps": 15,
+        "thumbnail": "/images/exercises/lateral-raise.jpg",
+        "description": "Exercise starts in video. NOTE: Requires gym equipment (dumbbells). Cannot be performed at home.",
+        "target_muscles": ["Lateral Deltoids", "Anterior Deltoids"],
+        "youtube_link": "https://youtu.be/OuctHJhvR5A?si=z2eMMG7O2dLozgFq",
+        "weight_progression": {
+            "starting_weight_lbs": 15.0,
+            "progression_range": "15-20 lbs",
+            "progression_notes": "Warm up with 15s. Working set with 20s. Only increase weight when you can hit around 15 reps. Heavy weight (like 25s for 5-6 reps) can hurt shoulders. Slight lean forward. After working set, perform drop set if needed."
+        },
+        "equipment": [
+            {
+                "name": "Dumbbells",
+                "required": True,
+                "description": "Dumbbells (15-20 lbs each) for lateral raises",
+                "image": None,
+                "link": "https://example.com/buy/dumbbells"
+            }
+        ],
+        "camera_position": {
+            "distance": "2-2.5 meters away",
+            "angle": "Front view or side view (90°)",
+            "height": "Chest to shoulder level",
+            "tips": [
+                "Place camera in front or side to see lateral raise motion",
+                "Ensure full range of motion and arm position are visible",
+                "Camera should capture lateral deltoid engagement",
+                "Watch for proper form - slight lean forward"
+            ]
+        }
+    },
+    {
+        "id": "lateral-raises-weak-spot",
+        "name": "Lateral Raises - Weak Spot Focus",
+        "exercise_type": "advanced",
+        "category": "upper",
+        "difficulty": "advanced",
+        "duration": 5,
+        "sets": 1,
+        "reps": 12,
+        "thumbnail": "/images/exercises/lateral-raise.jpg",
+        "description": "Exercise starts in video. NOTE: Requires gym equipment (cable machine or dumbbells). Targets under-developed shoulder area.",
+        "target_muscles": ["Lateral Deltoids", "Rear Deltoids", "Upper Shoulder"],
+        "youtube_link": "https://youtu.be/OuctHJhvR5A?si=z2eMMG7O2dLozgFq",
+        "weight_progression": {
+            "starting_weight_lbs": 0.0,
+            "progression_range": "Varies by strength level",
+            "progression_notes": "Targets area between lateral head and rear delt. Slight lean and lateral flex. Keep shoulder down. Only go to top of shoulder. Finisher: use cable system for rest-pause at this specific angle to crush weak area."
+        },
+        "equipment": [
+            {
+                "name": "Cable Machine",
+                "required": True,
+                "description": "Gym cable machine or dumbbells for weak spot lateral raises",
+                "image": None,
+                "link": "https://example.com/buy/cable-machine"
+            }
+        ],
+        "camera_position": {
+            "distance": "2-2.5 meters away",
+            "angle": "Side view (90°) or front view",
+            "height": "Shoulder level",
+            "tips": [
+                "Place camera to see lateral raise from side or front",
+                "Ensure weak spot area (between lateral and rear delt) is visible",
+                "Camera should capture slight lean and lateral flex position",
+                "Watch for proper shoulder position - keep down"
+            ]
+        }
+    },
+    {
+        "id": "dips-parallel-bars",
+        "name": "Dips (Parallel Bars)",
+        "exercise_type": "advanced",
+        "category": "upper",
+        "difficulty": "advanced",
+        "duration": 5,
+        "sets": 1,
+        "reps": 12,
+        "thumbnail": "/images/exercises/dips.jpg",
+        "description": "Exercise starts in video. NOTE: Requires gym equipment (parallel bars or dip machine). For triceps stimulus.",
+        "target_muscles": ["Triceps Brachii", "Anterior Deltoids", "Pectoralis Major (Lower)"],
+        "youtube_link": "https://youtu.be/OuctHJhvR5A?si=z2eMMG7O2dLozgFq",
+        "weight_progression": {
+            "starting_weight_lbs": 0.0,
+            "progression_range": "Bodyweight to 10 lbs",
+            "progression_notes": "Bodyweight dips for now (weighted dips hard on shoulders). Technique: knees forward, shoulders down (like pants pull position) to avoid pinching. Nice pause at bottom. Once you hit 12 reps, add 10 lbs weight next week."
+        },
+        "equipment": [
+            {
+                "name": "Parallel Bars",
+                "required": True,
+                "description": "Gym parallel bars or dip machine",
+                "image": None,
+                "link": "https://example.com/buy/parallel-bars"
+            }
+        ],
+        "camera_position": {
+            "distance": "2-3 meters away",
+            "angle": "Side view (90°)",
+            "height": "Chest to head level",
+            "tips": [
+                "Place camera on your side to see full dip motion",
+                "Ensure parallel bars and full range of motion are visible",
+                "Camera should capture tricep engagement and proper form",
+                "Watch for shoulders down position and pause at bottom"
+            ]
+        }
+    },
+    {
+        "id": "traps-shrugs",
+        "name": "Traps/Shrugs",
+        "exercise_type": "advanced",
+        "category": "upper",
+        "difficulty": "advanced",
+        "duration": 5,
+        "sets": 2,
+        "reps": 12,
+        "thumbnail": "/images/exercises/shrug.jpg",
+        "description": "Exercise starts in video. NOTE: Requires gym equipment (dumbbells or weight). Focus on weak side.",
+        "target_muscles": ["Upper Trapezius", "Levator Scapulae"],
+        "youtube_link": "https://youtu.be/OuctHJhvR5A?si=z2eMMG7O2dLozgFq",
+        "weight_progression": {
+            "starting_weight_lbs": 0.0,
+            "progression_range": "Varies by strength level",
+            "progression_notes": "Focus on weak side (usually left). Slight lean, come up with elbows, squeeze at top. Do 2-3 sets. Previously avoided due to right side neck pull (left side was weak)."
+        },
+        "equipment": [
+            {
+                "name": "Dumbbells",
+                "required": True,
+                "description": "Dumbbells or weight for traps/shrugs",
+                "image": None,
+                "link": "https://example.com/buy/dumbbells"
+            }
+        ],
+        "camera_position": {
+            "distance": "2-2.5 meters away",
+            "angle": "Side view (90°) or front view",
+            "height": "Shoulder to head level",
+            "tips": [
+                "Place camera to see shrug motion from side or front",
+                "Ensure full range of motion and trap engagement are visible",
+                "Camera should capture proper form - elbows up, squeeze at top",
+                "Watch for weak side focus"
+            ]
+        }
+    },
+    {
+        "id": "forearm-extension-fix",
+        "name": "Forearm Extension Fix",
+        "exercise_type": "advanced",
+        "category": "upper",
+        "difficulty": "advanced",
+        "duration": 5,
+        "sets": 1,
+        "reps": 15,
+        "thumbnail": "/images/exercises/forearm.jpg",
+        "description": "Exercise starts in video. NOTE: Requires gym equipment (dumbbells). Targets weak forearm extensors.",
+        "target_muscles": ["Forearm Extensors", "Wrist Extensors"],
+        "youtube_link": "https://youtu.be/OuctHJhvR5A?si=z2eMMG7O2dLozgFq",
+        "weight_progression": {
+            "starting_weight_lbs": 0.0,
+            "progression_range": "Light weight to start",
+            "progression_notes": "Right side usually very weak. Right hand always in 'whittling' or 'dishes' position, so extensors weak. Start light - heavy weight can cause wrist pinch. Goal is to build strength to 15 reps."
+        },
+        "equipment": [
+            {
+                "name": "Dumbbells",
+                "required": True,
+                "description": "Light dumbbells for forearm extension exercises",
+                "image": None,
+                "link": "https://example.com/buy/dumbbells"
+            }
+        ],
+        "camera_position": {
+            "distance": "2-2.5 meters away",
+            "angle": "Side view (90°)",
+            "height": "Forearm to elbow level",
+            "tips": [
+                "Place camera on your side to see forearm extension motion",
+                "Ensure wrist and forearm position are visible",
+                "Camera should capture extension movement",
+                "Watch for proper form and avoid wrist pinch"
+            ]
+        }
+    },
+    {
+        "id": "forearm-flexion-fix",
+        "name": "Forearm Flexion/Grip Fix",
+        "exercise_type": "advanced",
+        "category": "upper",
+        "difficulty": "advanced",
+        "duration": 5,
+        "sets": 1,
+        "reps": 20,
+        "thumbnail": "/images/exercises/forearm.jpg",
+        "description": "Exercise starts in video. NOTE: Requires gym equipment (dumbbells). Targets weak grip/left arm.",
+        "target_muscles": ["Forearm Flexors", "Grip Muscles", "Wrist Flexors"],
+        "youtube_link": "https://youtu.be/OuctHJhvR5A?si=z2eMMG7O2dLozgFq",
+        "weight_progression": {
+            "starting_weight_lbs": 4.0,
+            "progression_range": "4-20 lbs",
+            "progression_notes": "Designed for left arm (weak in gripping position). Dominant right arm used more for suitcase/coffee cup. Warm up with 4 lbs, then heavy grip with 20s. Crush and continue until muscle is completely fatigued and fried. Left arm still feels very weak in this position."
+        },
+        "equipment": [
+            {
+                "name": "Dumbbells",
+                "required": True,
+                "description": "Dumbbells (4-20 lbs) for forearm flexion/grip exercises",
+                "image": None,
+                "link": "https://example.com/buy/dumbbells"
+            }
+        ],
+        "camera_position": {
+            "distance": "2-2.5 meters away",
+            "angle": "Side view (90°)",
+            "height": "Forearm to elbow level",
+            "tips": [
+                "Place camera on your side to see forearm flexion/grip motion",
+                "Ensure wrist and grip position are visible",
+                "Camera should capture flexion movement and grip strength",
+                "Watch for proper form and left arm focus"
+            ]
+        }
     }
 ]
 

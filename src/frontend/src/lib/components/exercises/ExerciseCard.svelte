@@ -6,6 +6,7 @@
 		id: string;
 		name: string;
 		category: string;
+		exercise_type?: string;
 		duration: number;
 		sets: number;
 		reps: number;
@@ -58,7 +59,7 @@
 					<span class="camera-text">{exercise.camera_position.angle} • {exercise.camera_position.distance}</span>
 				</div>
 			{/if}
-			{#if exercise.equipment && exercise.equipment.length > 0}
+			{#if exercise.equipment && exercise.equipment.length > 0 && exercise.exercise_type !== 'advanced'}
 				<div class="equipment-preview">
 					<div class="equipment-items">
 						{#each exercise.equipment.slice(0, 3) as item}

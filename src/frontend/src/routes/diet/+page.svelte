@@ -5,6 +5,7 @@
 	let showAddForm = false;
 	let showEducation = true;
 	let activeTab: 'tracking' | 'education' = 'tracking';
+	let learnSubSection: 'food' | 'muscles' = 'food';
 	
 	// Form state
 	let formData = {
@@ -270,6 +271,25 @@
 	{:else}
 		<!-- Education Content -->
 		<div class="education-content">
+			<!-- Learn Sub-sections Navigation -->
+			<div class="learn-subsections">
+				<button 
+					class="subsection-btn"
+					class:active={learnSubSection === 'food'}
+					on:click={() => learnSubSection = 'food'}
+				>
+					🍽️ About Food
+				</button>
+				<button 
+					class="subsection-btn"
+					class:active={learnSubSection === 'muscles'}
+					on:click={() => learnSubSection = 'muscles'}
+				>
+					💪 About Muscles in Body
+				</button>
+			</div>
+
+			{#if learnSubSection === 'food'}
 			<!-- Protein Section -->
 			<section class="edu-section">
 				<h2>🥩 Protein: The Foundation</h2>
@@ -714,6 +734,205 @@
 					<div class="tip-card">✅ Manage stress (deep breathing, meditation)</div>
 				</div>
 			</section>
+			{/if}
+
+			{#if learnSubSection === 'muscles'}
+				<!-- Muscles Content -->
+				<div class="muscles-content">
+					<!-- Key Principles Banner -->
+					<div class="principles-banner">
+						<div class="principle-item">
+							<span class="principle-icon">⚖️</span>
+							<span class="principle-text">Always do exercises with both sides</span>
+						</div>
+						<div class="principle-item">
+							<span class="principle-icon">🔄</span>
+							<span class="principle-text">All about balance and symmetry</span>
+						</div>
+					</div>
+
+					<section class="edu-section">
+						<div class="section-header">
+							<h2>🦵 Medial & Lateral Rotators</h2>
+							<a 
+								href="https://youtu.be/2xHQ0DjVrcE?si=meT61RMdq9F6cR_V" 
+								target="_blank" 
+								rel="noopener noreferrer"
+								class="youtube-link"
+							>
+								📺 Watch Video Tutorial
+							</a>
+						</div>
+
+						<div class="info-card">
+							<h3>🎯 The Core Concept (Mool Vichar)</h3>
+							<p><strong>Hip training program ka poora point yeh hai</strong> ki <strong>medial rotators ko lateral rotators ke saath balance karna zaroori hai</strong>.</p>
+							
+							<p><strong>Research aur experience se pata chalta hai</strong> ki <strong>agar medial rotators weak hain</strong> aur <strong>lateral rotators strong hain</strong>, toh <strong>yahi imbalance hips aur legs mein sabhi injuries ka kaaran banta hai</strong>. <strong>Isse tightness bhi hoti hai</strong>.</p>
+							
+							<p><strong>Woh athletes jo har samay stretch karte hain</strong> ya <strong>traction rolling karte hain</strong>, <strong>aur unki flexibility improve nahi hoti</strong>, <strong>iska kaaran yeh hai</strong> ki <strong>lateral rotators strong hain</strong> aur <strong>medial rotators weak hain</strong>.</p>
+							
+							<p><strong>Sports training standpoint se</strong>, <strong>agar hips ke medial aur lateral rotators ko saath mein balance kiya jaye</strong>, toh <strong>performance, speed, aur strength mein increase hota hai</strong>.</p>
+						</div>
+
+						<div class="info-card">
+							<h3>🔄 Medial Rotation vs. Lateral Rotation</h3>
+							<div class="comparison">
+								<div class="comparison-item">
+									<h4>Lateral Rotation</h4>
+									<p><strong>Lateral rotation hai</strong> <strong>jab aapke hips is tarah laterally move karte hain</strong>, <strong>bahar ki taraf move karte hain</strong>.</p>
+								</div>
+								<div class="comparison-item">
+									<h4>Medial Rotation</h4>
+									<p><strong>Medial rotation hai</strong> <strong>jab hips is tarah andar ki taraf move karte hain</strong>, <strong>immediately rotate in karte hain</strong>.</p>
+								</div>
+							</div>
+						</div>
+
+						<div class="info-card">
+							<h3>➡️ Lateral Rotators (Woh Muscles jo Bahar Ghumate Hain)</h3>
+							<p><strong>Jab aapka leg is tarah bahar move karta hai</strong>, toh <strong>lateral rotators</strong> hain:</p>
+							<ul class="muscle-list">
+								<li><strong>Piriformis</strong></li>
+								<li><strong>Hamstring ka bicep femoris</strong></li>
+								<li><strong>Sartorius</strong> (jo leg ke front part se neeche jaata hai)</li>
+							</ul>
+							<div class="note-box">
+								<p><strong>Compensators:</strong> <strong>IT band</strong> aur <strong>TFL (Tensor Fasciae Latae)</strong> bhi <strong>lateral rotators ke saath</strong> <strong>main compensators honge</strong>, <strong>agar medial rotators weak hain</strong>.</p>
+								<p><strong>Injury Connection:</strong> <strong>Lateral rotators ko woh main muscles samjho</strong> jo <strong>overwork hone se compensations ka kaaran bante hain</strong>.</p>
+							</div>
+						</div>
+
+						<div class="info-card warning">
+							<h3>⚠️ Lateral Rotators Ka Overdevelopment</h3>
+							<p><strong>Zyadatar sports mein</strong>, <strong>hum medial rotation se zyada</strong> <strong>lateral rotation mein hote hain</strong>. Iski examples dekhiye:</p>
+							<ul class="example-list">
+								<li><strong>Jab hum squat karte hain</strong>, <strong>hum apne knees ko bahar push karte hain</strong>, <strong>hum laterally rotate out ho rahe hote hain</strong>.</li>
+								<li><strong>Jab log daudte hain</strong>, <strong>jab woh upar aate hain</strong>, toh <strong>woh aam taur par laterally rotate out hote hain</strong> <strong>jab woh zameen ko contact karte hain</strong>.</li>
+								<li><strong>Jab log lunging karte hain</strong>, <strong>zyadatar logon ke knees is tarah zyada bahar aayenge</strong>.</li>
+								<li><strong>Agility mein</strong>, <strong>aap laterally rotated hote hain</strong>. <strong>Jab aap cutting karte hain</strong>, <strong>aap laterally rotate kar rahe hote hain</strong>, <strong>aap open up kar rahe hote hain</strong>.</li>
+								<li><strong>Jab aap mound se push off karte hain</strong>, <strong>aap laterally rotate kar rahe hote hain</strong> <strong>jaise aap open up karte hain</strong>.</li>
+							</ul>
+							<p class="conclusion"><strong>Is tarah</strong>, <strong>aap constantly lateral rotators ko develop kar rahe hain</strong>, <strong>aur medial rotators poori tarah se underdeveloped rehte hain</strong>, <strong>aur yahi injury aur imbalances ka kaaran banta hai</strong>.</p>
+						</div>
+
+						<div class="info-card success">
+							<h3>⬅️ Medial Rotators (Woh Muscles jo Andar Ghumate Hain)</h3>
+							<p><strong>Jab aapka leg is tarah andar move karta hai</strong>, toh <strong>main muscles</strong> jo yeh action karte hain:</p>
+							<ul class="muscle-list">
+								<li><strong>Glute medius aur minimus</strong></li>
+								<li><strong>Hamstring ka semimembranosus</strong> (hamstring ka inside portion)</li>
+								<li><strong>Adductors</strong> (<strong>brevis, longus, aur gracilis</strong>)</li>
+							</ul>
+							<div class="note-box">
+								<p><strong>Medial Rotators ka Goal:</strong> <strong>Main goal</strong> yeh hai ki <strong>jab yeh exercises kiye jaate hain</strong>, <strong>toh lateral rotators ko equation se poori tarah nikaal dena hai</strong>, <strong>aur sirf medial rotators par focus karna hai</strong>.</p>
+							</div>
+						</div>
+
+						<div class="info-card">
+							<h3>🎯 Training Tips for Medial Rotation</h3>
+							<p>Training karte samay, <strong>Medial Rotation ko target karne ke liye</strong> yeh tareeke use hote hain:</p>
+							<ul class="training-tips">
+								<li>
+									<strong>Hip Extension Exercises</strong> (jaise hamstring work) mein, <strong>laterally rotate out nahi karna chahiye</strong>. <strong>Medially rotate in karna chahiye</strong> taaki <strong>semimembranosus par focus ho sake</strong>, instead of <strong>lateral rotator</strong> (<strong>bicep femoris</strong>) <strong>par saara pressure daalna</strong>.
+								</li>
+								<li>
+									<strong>Abduction exercises</strong> mein, <strong>foot ko is tarah turn out nahi hone dena chahiye</strong> aur <strong>laterally rotate nahi karna chahiye</strong> <strong>taaki piriformis involve ho</strong>. <strong>Foot ko baahar nikaal kar</strong> aur <strong>simply andar turn karna chahiye</strong> taaki <strong>glute medius aur minimus par focus ho sake</strong>.
+								</li>
+								<li>
+									<strong>Adduction exercises</strong> mein, <strong>laterally rotate out nahi karna hai</strong> <strong>taaki Sartorius par zyada pressure pade</strong>. <strong>Medially rotate in karna hai</strong> taaki <strong>adductors par zyada focus ho sake</strong> aur <strong>Sartorius se pressure hatt jaaye</strong>.
+								</li>
+							</ul>
+						</div>
+
+						<div class="info-card">
+							<h3>🔄 Dual Function of Medial Rotators</h3>
+							<p><strong>Yeh samajhna bhi zaroori hai</strong> ki <strong>glute medius aur minimus</strong> <strong>aur groin</strong> sirf <strong>medial rotators hi nahi hain</strong>, <strong>balki woh abduct bhi karte hain</strong> (leg ko is tarah upar laate hain) aur <strong>adduct bhi karte hain</strong> (leg ko is tarah andar laate hain).</p>
+							
+							<p><strong>In muscles ko isolate aur strengthen karne se</strong>, <strong>agar athletes chalte samay ya squat karte samay andar ki taraf cave in karte hain</strong>, <strong>toh yeh un knees ko kholne mein madad karega</strong>.</p>
+							
+							<p class="final-note">Agar aap <strong>rolling aur stretching kar rahe hain</strong> aur <strong>flexible hone mein struggle kar rahe hain</strong>, toh <strong>most likely iska kaaran yahi hai</strong> ki <strong>aapke medial aur lateral rotators ke beech imbalance hai</strong>, aur <strong>aapke lateral rotators compensate kar rahe hain</strong>, <strong>jo muscles ko clamp down kar rahe hain</strong>, <strong>aur aapko hamstrings, glutes, aur hip flexors aur groin ko stretch out nahi karne de rahe hain</strong>.</p>
+						</div>
+					</section>
+
+					<!-- Hip Flexor Pull Section -->
+					<section class="edu-section">
+						<div class="section-header">
+							<h2>🦵 Hip Flexor Pull</h2>
+						</div>
+
+						<div class="info-card">
+							<h3>📚 Introduction</h3>
+							<p><strong>Yeh guide</strong> <strong>hip flexor aur adductor pulls</strong> <strong>ke baare mein hai</strong>. <strong>Is guide mein</strong> <strong>teen alag-alag injuries</strong> ko cover kiya gaya hai <strong>jo in areas mein ho sakti hain</strong>. <strong>Pehle</strong> <strong>anatomy</strong> ke baare mein baat karte hain <strong>taaki samajh aaye ki</strong> <strong>why the pulls occur there</strong>.</p>
+						</div>
+
+						<div class="info-card highlight">
+							<h3>💡 Success Story</h3>
+							<p><strong>Ek client ko</strong> <strong>really bad hip flexor pull</strong> tha. <strong>Unke beta ko</strong> <strong>snapping hip syndrome</strong> tha, <strong>jo lagbhag</strong> <strong>teen saal</strong> se chal raha tha. <strong>Bahut saare doctors aur therapists ko dikhaya</strong>, <strong>par koi bhi</strong> <strong>100% dard se nikal nahi paaya</strong>. <strong>Do</strong> <strong>hip injections</strong> hue aur <strong>surgery</strong> ke baare mein bhi baat ho rahi thi. <strong>Corexcell therapy</strong> ke <strong>within six sessions</strong>, <strong>Bryce ab</strong> <strong>100% pain-free</strong> hai. <strong>Absolutely</strong> <strong>uske</strong> <strong>hip mein koi</strong> <strong>snapping</strong> nahi hai. <strong>Teen saal</strong> ka hip pain, <strong>six sessions</strong>, <strong>aur ab woh</strong> <strong>100% free</strong> hai.</p>
+						</div>
+
+						<div class="info-card">
+							<h3>🔬 Hip Flexor Anatomy</h3>
+							<p><strong>Hip flexor kya hai</strong> <strong>yeh samajhna zaroori hai</strong>. <strong>Main hip flexors hain</strong>:</p>
+							<ul class="muscle-list">
+								<li><strong>Rectus Femoris</strong></li>
+								<li><strong>Iliacus</strong></li>
+								<li><strong>Psoas</strong></li>
+							</ul>
+							<p><strong>Yeh hi hain jo</strong> <strong>hip ko upar drive karte hain</strong> (hip flexion). <strong>Aur</strong> <strong>front part</strong> ka hip flexor, <strong>sartorius aur</strong> <strong>TFL</strong>, <strong>woh bhi</strong> <strong>hip flexion</strong> mein <strong>aid</strong> karte hain.</p>
+							
+							<div class="note-box">
+								<p><strong>Sabse zaruri baat:</strong> <strong>Adductors</strong>—<strong>pectineus, brevis, longus, aur gracilis</strong>—<strong>woh bhi</strong> <strong>hip flexion mein kaam karte hain</strong>. <strong>Yeh iske liye ek bahut bada</strong> <strong>support structure</strong> hain.</p>
+								<p><strong>Lekin</strong> <strong>groin magnus</strong> (<strong>adductor magnus</strong>), <strong>bhale hi woh mainly ek adductor hai</strong>, <strong>lekin yeh</strong> <strong>only adductor in the chain hai jo</strong> <strong>hip flexion mein kaam nahi karta</strong>. <strong>Yeh</strong> <strong>adduction ka</strong> <strong>primary mover</strong> hai.</p>
+							</div>
+						</div>
+
+						<div class="info-card warning">
+							<h3>⚠️ Why Hip Flexor Pull Occurs (Kyun Hip Flexor Pull Hota Hai)</h3>
+							<p><strong>Jab</strong> <strong>pulls</strong> <strong>aate hain</strong> <strong>basically</strong> <strong>right through this front section</strong>—<strong>top front of the hip flexor</strong>. <strong>Agar ise</strong> <strong>break up</strong> <strong>karein</strong> <strong>right down the center, high on the center</strong>, <strong>toh</strong> <strong>ek</strong> <strong>impingement</strong> <strong>mil sakta hai</strong>, <strong>ya</strong> <strong>pain</strong>, <strong>ya</strong> <strong>just</strong> <strong>thoda sa uske upar</strong> <strong>like an inch</strong>.</p>
+							
+							<p><strong>Jab</strong> <strong>pain</strong> <strong>is</strong> <strong>kind of section</strong> <strong>mein aana shuru hota hai</strong>, <strong>toh iska kaaran yeh hai ki</strong> <strong>the adductor chain here is extremely weak</strong>.</p>
+							
+							<p><strong>Aur isliye</strong> <strong>this part of your hip flexor</strong> (<strong>jahaan</strong> <strong>rectus femoris aur sartorius milte hain</strong>) <strong>has to start over working</strong>.</p>
+							
+							<p><strong>Jab dard</strong> <strong>top of the hip flexor</strong> <strong>par aata hai</strong>, <strong>toh iska matlab hai ki usse</strong> <strong>adductor chain se</strong> <strong>support</strong> <strong>nahi mil raha hai</strong>.</p>
+							
+							<div class="note-box">
+								<p><strong>Solution:</strong> <strong>Strengthen up your adductors</strong> <strong>is tarah se</strong> <strong>in order to</strong> <strong>take the pressure off of this up here</strong> (top hip flexor).</p>
+							</div>
+						</div>
+
+						<div class="info-card success">
+							<h3>✅ Support Structure Importance</h3>
+							<p><strong>Glute medius aur minimus bhi</strong> <strong>medial rotation</strong> <strong>mein iske saath kaam karte hain</strong>. <strong>Toh isko bhi</strong> <strong>strengthen</strong> <strong>karne se</strong> <strong>yeh ek bahut hi mazboot</strong> <strong>unit</strong> <strong>ban jaata hai</strong>.</p>
+							
+							<p><strong>Yeh bahut hi zaroori hai ki</strong> <strong>strength</strong> <strong>create ki jaaye</strong> <strong>in</strong> <strong>both these areas</strong> (<strong>adductors, glute medius/minimus</strong>) <strong>in order to</strong> <strong>take the pressure off here</strong> (<strong>top hip flexor</strong>).</p>
+						</div>
+
+						<div class="info-card warning">
+							<h3>⚠️ Hip Snapping aur Popping (Impingement)</h3>
+							<p><strong>Hip snapping aur popping bhi hota hai</strong>. <strong>Agar aapke adductors aur</strong> <strong>glute medius</strong> <strong>aur</strong> <strong>minimus</strong> <strong>kamzor hain</strong>, <strong>toh aapko</strong> <strong>hip impingement</strong> <strong>hona shuru ho jaata hai</strong>. <strong>Kyunki saara</strong> <strong>torque</strong> <strong>aur</strong> <strong>pressure</strong> <strong>ab</strong> <strong>rectus femoris aur</strong> <strong>psoas</strong> <strong>par jaata hai</strong>.</p>
+							
+							<p><strong>Jab</strong> <strong>rectus femoris overworked</strong> <strong>hona shuru ho jaata hai</strong>, <strong>uske paas</strong> <strong>support</strong> <strong>nahi hota</strong>, <strong>hips</strong> <strong>out of alignment</strong> <strong>hote hain</strong>. <strong>Har baar jab aap apna ghutna upar uthate hain</strong>, <strong>woh</strong> <strong>rubs right over</strong> <strong>uss</strong> <strong>hip bone</strong> <strong>par</strong>, <strong>aur wahin aapko</strong> <strong>snap</strong> <strong>milta hai</strong> <strong>right through here</strong>.</p>
+							
+							<div class="note-box warning-box">
+								<p><strong>⚠️ Important:</strong> <strong>Is chot ke saath sabse buri cheez jo aap kar sakte hain woh hai</strong> <strong>to do exercise and evolve</strong> <strong>hip flexion</strong>. <strong>Pehle</strong> <strong>support structure</strong> <strong>banao</strong> (<strong>adductors aur glute medius/minimus</strong>), <strong>fir aap</strong> <strong>later phase</strong> <strong>mein waapas jaa sakte ho aur</strong> <strong>hip flexion</strong> <strong>shuru kar sakte ho</strong>. <strong>Tab</strong> <strong>pressure</strong> <strong>uss area se hatt jaayega</strong>.</p>
+							</div>
+						</div>
+
+						<div class="info-card highlight">
+							<h3>🎯 Key Takeaways</h3>
+							<ul class="summary-list">
+								<li>✅ <strong>Hip flexor pulls</strong> <strong>ka main kaaran</strong> <strong>weak adductor chain</strong> <strong>hai</strong></li>
+								<li>✅ <strong>Top hip flexor</strong> <strong>overwork</strong> <strong>hota hai jab</strong> <strong>adductors weak</strong> <strong>hote hain</strong></li>
+								<li>✅ <strong>Glute medius aur minimus</strong> <strong>ko bhi strengthen karna zaroori hai</strong> <strong>medial rotation support ke liye</strong></li>
+								<li>✅ <strong>Hip snapping/popping</strong> <strong>adductor aur glute weakness</strong> <strong>ki wajah se hota hai</strong></li>
+								<li>✅ <strong>Pehle support structure banao</strong> (<strong>adductors, glute medius/minimus</strong>), <strong>fir hip flexion exercises shuru karein</strong></li>
+							</ul>
+						</div>
+					</section>
+				</div>
+			{/if}
 		</div>
 	{/if}
 </div>
@@ -1313,6 +1532,273 @@
 		.comparison-table th,
 		.comparison-table td {
 			padding: 0.5rem 0.25rem;
+		}
+	}
+
+	/* Learn Sub-sections Styles */
+	.learn-subsections {
+		display: flex;
+		gap: 0.75rem;
+		margin-bottom: 2rem;
+		background: var(--bg-card);
+		padding: 0.5rem;
+		border-radius: 0.75rem;
+	}
+
+	.subsection-btn {
+		flex: 1;
+		padding: 0.75rem 1rem;
+		background: transparent;
+		border: none;
+		border-radius: 0.5rem;
+		color: var(--text-secondary);
+		font-weight: 500;
+		cursor: pointer;
+		transition: all 0.2s;
+		font-size: 0.9rem;
+	}
+
+	.subsection-btn:hover {
+		background: rgba(255, 255, 255, 0.05);
+	}
+
+	.subsection-btn.active {
+		background: var(--primary);
+		color: white;
+		font-weight: 600;
+	}
+
+	/* Muscles Content Styles */
+	.muscles-content {
+		animation: fadeIn 0.3s ease-in;
+	}
+
+	@keyframes fadeIn {
+		from {
+			opacity: 0;
+			transform: translateY(10px);
+		}
+		to {
+			opacity: 1;
+			transform: translateY(0);
+		}
+	}
+
+	.principles-banner {
+		background: linear-gradient(135deg, rgba(255, 100, 50, 0.15), rgba(255, 100, 50, 0.05));
+		border: 2px solid rgba(255, 100, 50, 0.3);
+		border-radius: 1rem;
+		padding: 1.5rem;
+		margin-bottom: 2rem;
+		display: flex;
+		flex-direction: column;
+		gap: 1rem;
+	}
+
+	.principle-item {
+		display: flex;
+		align-items: center;
+		gap: 1rem;
+		font-size: 1.1rem;
+		font-weight: 600;
+		color: var(--accent-orange);
+	}
+
+	.principle-icon {
+		font-size: 1.5rem;
+	}
+
+	.principle-text {
+		flex: 1;
+	}
+
+	.section-header {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		margin-bottom: 2rem;
+		flex-wrap: wrap;
+		gap: 1rem;
+	}
+
+	.section-header h2 {
+		font-size: 1.5rem;
+		margin-bottom: 0;
+	}
+
+	.youtube-link {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.5rem;
+		padding: 0.5rem 1rem;
+		background: #ff0000;
+		color: white;
+		border-radius: 0.5rem;
+		text-decoration: none;
+		font-weight: 500;
+		font-size: 0.9rem;
+		transition: background 0.2s;
+	}
+
+	.youtube-link:hover {
+		background: #cc0000;
+	}
+
+	.intro-box {
+		background: rgba(255, 100, 50, 0.1);
+		border-left: 4px solid var(--accent-orange);
+		border-radius: 0.75rem;
+		padding: 1.5rem;
+		margin-bottom: 2rem;
+	}
+
+	.intro-text {
+		font-size: 1.1rem;
+		line-height: 1.8;
+		color: var(--text-primary);
+		margin: 0;
+	}
+
+	.comparison {
+		display: grid;
+		grid-template-columns: 1fr 1fr;
+		gap: 1.5rem;
+		margin-top: 1rem;
+	}
+
+	.comparison-item {
+		background: rgba(255, 255, 255, 0.05);
+		border-radius: 0.5rem;
+		padding: 1rem;
+	}
+
+	.comparison-item h4 {
+		font-size: 1.1rem;
+		font-weight: 600;
+		margin-bottom: 0.5rem;
+		color: var(--accent-orange);
+		margin-top: 0;
+	}
+
+	.muscle-list {
+		list-style: none;
+		padding-left: 0;
+		margin: 1rem 0;
+	}
+
+	.muscle-list li {
+		padding: 0.75rem;
+		margin-bottom: 0.5rem;
+		background: rgba(255, 255, 255, 0.05);
+		border-radius: 0.5rem;
+		border-left: 3px solid var(--accent-orange);
+	}
+
+	.example-list {
+		list-style: none;
+		padding-left: 0;
+		margin: 1rem 0;
+	}
+
+	.example-list li {
+		padding: 0.75rem;
+		margin-bottom: 0.75rem;
+		background: rgba(255, 255, 255, 0.05);
+		border-radius: 0.5rem;
+		border-left: 3px solid #ff6b6b;
+		line-height: 1.7;
+	}
+
+	.training-tips {
+		list-style: none;
+		padding-left: 0;
+		margin: 1rem 0;
+	}
+
+	.training-tips li {
+		padding: 1rem;
+		margin-bottom: 1rem;
+		background: rgba(255, 255, 255, 0.05);
+		border-radius: 0.5rem;
+		border-left: 3px solid var(--accent-orange);
+		line-height: 1.8;
+	}
+
+	.note-box {
+		background: rgba(255, 100, 50, 0.1);
+		border-left: 3px solid var(--accent-orange);
+		border-radius: 0.5rem;
+		padding: 1rem;
+		margin-top: 1rem;
+	}
+
+	.note-box p {
+		margin-bottom: 0.5rem;
+	}
+
+	.note-box p:last-child {
+		margin-bottom: 0;
+	}
+
+	.note-box.warning-box {
+		background: rgba(255, 107, 107, 0.15);
+		border-left-color: #ff6b6b;
+	}
+
+	.info-card.warning {
+		border-left: 4px solid #ff6b6b;
+		background: rgba(255, 107, 107, 0.05);
+	}
+
+	.info-card.success {
+		border-left: 4px solid #51cf66;
+		background: rgba(81, 207, 102, 0.05);
+	}
+
+	.conclusion {
+		margin-top: 1rem;
+		padding: 1rem;
+		background: rgba(255, 107, 107, 0.1);
+		border-radius: 0.5rem;
+		border-left: 3px solid #ff6b6b;
+		font-weight: 500;
+	}
+
+	.final-note {
+		margin-top: 1.5rem;
+		padding: 1.25rem;
+		background: rgba(255, 100, 50, 0.1);
+		border-radius: 0.75rem;
+		border-left: 4px solid var(--accent-orange);
+		font-weight: 500;
+		line-height: 1.9;
+	}
+
+	@media (max-width: 768px) {
+		.learn-subsections {
+			flex-direction: column;
+		}
+
+		.subsection-btn {
+			font-size: 0.85rem;
+			padding: 0.625rem 0.875rem;
+		}
+
+		.principles-banner {
+			padding: 1rem;
+		}
+
+		.principle-item {
+			font-size: 1rem;
+		}
+
+		.comparison {
+			grid-template-columns: 1fr;
+		}
+
+		.section-header {
+			flex-direction: column;
+			align-items: flex-start;
 		}
 	}
 </style>

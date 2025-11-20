@@ -148,35 +148,30 @@ class UpdateProfileRequest(BaseModel):
 # Mock data for now (will replace with database)
 EXERCISES = [
     {
-        "id": "squat",
-        "name": "Squats",
+        "id": "wall-squat",
+        "name": "Wall Squat",
         "exercise_type": "basic",
         "category": "lower",
         "difficulty": "beginner",
-        "duration": 12,
-        "sets": 4,
-        "reps": 15,
-        "thumbnail": "/images/exercises/squat.jpg",
-        "description": "Basic squat exercise for legs. Start with bodyweight, then progress to weighted squats with dumbbells or barbell.",
-        "target_muscles": ["Quadriceps", "Glutes", "Hamstrings", "Calves"],
-        "youtube_link": "https://www.youtube.com/watch?v=YaXPRqUwItQ",
+        "duration": 15,
+        "sets": 5,
+        "reps": 5,
+        "thumbnail": "/images/exercises/wall-squat.jpg",
+        "description": "Exercise starts at 12th minute in video.",
+        "target_muscles": ["Hip External Rotators", "Posterior Pelvis", "Quadriceps", "Glutes", "Hip Flexors"],
+        "youtube_link": "https://youtu.be/6-VSoQnIEnA?si=ZVbenydW41nl8OFF&t=720",
         "weight_progression": {
             "starting_weight_lbs": 0.0,
-            "progression_range": "0-20 lbs",
-            "progression_notes": "Start with bodyweight. Add 5-10 lbs dumbbells when form is perfect. Progress to 15-20 lbs as strength improves."
+            "progression_range": "Bodyweight",
+            "progression_notes": "Bodyweight only exercise. Focus on breathing technique (5 deep breaths per set), position control, and pelvic biomechanics. Progress by increasing squat depth gradually as hip mobility improves. Practice twice daily for 2-4 weeks. Key is understanding sacral counternutation and posterior pelvic expansion for correct deep squat."
         },
         "equipment": [
             {
-                "name": "None (Bodyweight)",
-                "required": False,
-                "description": "Can be done with bodyweight only"
-            },
-            {
-                "name": "5-20 lbs Dumbbells",
-                "required": False,
-                "description": "Optional - for weighted progression",
+                "name": "Wall",
+                "required": True,
+                "description": "Stand one foot away from wall for support and reference",
                 "image": None,
-                "link": "https://example.com/buy/dumbbells"
+                "link": None
             }
         ],
         "camera_position": {
@@ -184,35 +179,51 @@ EXERCISES = [
             "angle": "Side view (90°)",
             "height": "Waist to hip level",
             "tips": [
-                "Place camera on your side to see full body profile",
-                "Ensure both feet and head are visible in frame",
-                "Keep camera stable (use tripod or prop against wall)",
-                "Good lighting helps with pose detection"
+                "Place camera on your side to see full body profile and squat depth",
+                "Ensure both feet, knees, and hip position are visible in frame",
+                "Camera should capture posterior pelvic expansion and hip external rotation",
+                "Keep back arch and chest lift clearly visible",
+                "Watch for proper toe angle (45 degrees) and weight distribution on contact points"
             ]
         }
     },
     {
-        "id": "push-ups",
-        "name": "Push-ups",
+        "id": "plank",
+        "name": "Plank",
         "exercise_type": "basic",
-        "category": "upper",
+        "category": "lower",
         "difficulty": "beginner",
-        "duration": 10,
+        "duration": 5,
         "sets": 3,
-        "reps": 12,
-        "thumbnail": "/images/exercises/pushup.jpg",
-        "description": "Classic push-up for chest and arms",
-        "target_muscles": ["Pectorals", "Triceps", "Anterior Deltoids", "Core"],
-        "youtube_link": "https://www.youtube.com/watch?v=IODxDxX7oi4",
+        "reps": 1,
+        "thumbnail": "/images/exercises/plank.jpg",
+        "description": "Exercise starts in video.",
+        "target_muscles": ["Rectus Abdominis", "Transverse Abdominis", "Obliques", "Erector Spinae", "Core Stabilizers"],
+        "youtube_link": "https://youtu.be/xijbLirwKtc?si=P0iazX0cJwvvbmcQ",
+        "weight_progression": {
+            "starting_weight_lbs": 0.0,
+            "progression_range": "Bodyweight",
+            "progression_notes": "Bodyweight only exercise. Focus on proper core engagement - actively squeeze abs and tighten butt. Keep feet slightly back so shoulders align with elbows. When plank becomes difficult, drop to knees and continue holding. Progress by increasing hold duration gradually. Regular practice improves pelvis control, posture, and core strength."
+        },
+        "equipment": [
+            {
+                "name": "Exercise Mat",
+                "required": False,
+                "description": "Optional - use mat for comfort on hard surfaces",
+                "image": None,
+                "link": "https://example.com/buy/exercise-mat"
+            }
+        ],
         "camera_position": {
             "distance": "1.5-2 meters away",
             "angle": "Side view (90°)",
             "height": "Ground level or slightly elevated",
             "tips": [
                 "Place camera on your side to see body alignment",
-                "Camera should be at same level as your body (on floor or low surface)",
+                "Camera should be at ground level or slightly above",
                 "Ensure full body from head to feet is visible",
-                "Make sure arms and shoulders are clearly visible"
+                "Check that your body forms a straight line in frame",
+                "Watch for proper core engagement and butt squeeze"
             ]
         }
     },
@@ -473,318 +484,1009 @@ EXERCISES = [
         }
     },
     {
-        "id": "shoulder-press",
-        "name": "Shoulder Press",
+        "id": "rear-delt-raise",
+        "name": "Rear Delt Raise",
         "exercise_type": "basic",
         "category": "upper",
-        "difficulty": "beginner",
+        "difficulty": "intermediate",
         "duration": 10,
         "sets": 3,
         "reps": 12,
-        "thumbnail": "/images/exercises/shoulder-press.jpg",
-        "description": "Shoulder press for shoulder strength. Use dumbbells or resistance bands.",
-        "target_muscles": ["Anterior Deltoids", "Lateral Deltoids", "Triceps", "Upper Trapezius"],
-        "youtube_link": "https://www.youtube.com/watch?v=qEwKCR5JCog",
+        "thumbnail": "/images/exercises/rear-delt-raise.jpg",
+        "description": "Rear delt raise over bench for rear deltoid and scapular stabilizer strengthening. Performed lying on bench with chest supported. Focus on controlled movement with slow eccentric phase. Helps fix winged scapula and improve shoulder stability. Emphasize scapular retraction and depression.",
+        "target_muscles": ["Rear Deltoids", "Rhomboids", "Infraspinatus", "Scapular Stabilizers", "Middle Trapezius"],
+        "youtube_link": "https://youtu.be/C-YRTquDjbg?si=wlSdPkuC81_3QnMU",
         "weight_progression": {
             "starting_weight_lbs": 5.0,
-            "progression_range": "5-15 lbs",
-            "progression_notes": "Start with 5 lbs per arm. Increase by 2.5-5 lbs when you can complete all sets with perfect form. Focus on controlled movement."
+            "progression_range": "5-10 lbs",
+            "progression_notes": "Start with light weight (5-8 lbs). Focus on form and muscle feel over weight. Progress weight only when form is perfect and scapular control is complete. Slow eccentric (lowering) phase is important to maintain tension in scapula muscles."
         },
         "equipment": [
             {
-                "name": "5-15 lbs Dumbbells",
+                "name": "Bench",
                 "required": True,
-                "description": "One dumbbell per arm, or use resistance bands as alternative",
+                "description": "Bench for chest support - lie on side or support torso on bench",
                 "image": None,
-                "link": "https://example.com/buy/dumbbells"
+                "link": "https://example.com/buy/bench"
             },
             {
-                "name": "Exercise Bands",
-                "required": False,
-                "description": "Alternative to dumbbells - use resistance bands for shoulder press",
+                "name": "5-10 lbs Dumbbells",
+                "required": True,
+                "description": "Light dumbbells per arm - rear delts are small muscles, start light",
                 "image": None,
-                "link": "https://example.com/buy/exercise-bands"
+                "link": "https://example.com/buy/dumbbells"
             }
         ],
         "camera_position": {
             "distance": "2-2.5 meters away",
-            "angle": "Front view (0°)",
+            "angle": "Side view (90°) or 45° angle",
             "height": "Shoulder to chest level",
             "tips": [
-                "Place camera directly in front of you",
-                "Ensure full upper body is visible (head to waist)",
-                "Keep arms and shoulders clearly in frame",
-                "Camera should capture full range of arm motion"
+                "Place camera on your side to see rear delt movement",
+                "Ensure full upper body and shoulder blade are visible",
+                "Camera should capture arm raise range (shoulder height parallel)",
+                "Keep scapular retraction and rear delt squeeze clearly in frame",
+                "Watch for controlled lowering phase and no trunk rotation"
             ]
         }
     },
     {
-        "id": "bicep-curl",
-        "name": "Bicep Curls",
+        "id": "pant-pull",
+        "name": "Pant Pull",
         "exercise_type": "basic",
         "category": "upper",
         "difficulty": "beginner",
         "duration": 8,
         "sets": 3,
         "reps": 15,
-        "thumbnail": "/images/exercises/bicep-curl.jpg",
-        "description": "Bicep curls for arm strength. Use dumbbells or resistance bands.",
-        "target_muscles": ["Biceps Brachii", "Brachialis", "Brachioradialis"],
-        "youtube_link": "https://www.youtube.com/watch?v=ykJmrZ5v0Oo",
-        "weight_progression": {
-            "starting_weight_lbs": 5.0,
-            "progression_range": "5-15 lbs",
-            "progression_notes": "Start with 5 lbs per arm. Progress to 7.5-10 lbs when form is consistent. Increase to 12-15 lbs as strength builds."
-        },
-        "equipment": [
-            {
-                "name": "5-15 lbs Dumbbells",
-                "required": True,
-                "description": "One dumbbell per arm, or use resistance bands as alternative",
-                "image": None,
-                "link": "https://example.com/buy/dumbbells"
-            },
-            {
-                "name": "Exercise Bands",
-                "required": False,
-                "description": "Alternative to dumbbells - use resistance bands for bicep curls",
-                "image": None,
-                "link": "https://example.com/buy/exercise-bands"
-            }
-        ],
-        "camera_position": {
-            "distance": "1.5-2 meters away",
-            "angle": "Front view (0°) or 45° angle",
-            "height": "Chest to shoulder level",
-            "tips": [
-                "Place camera in front of you, slightly to the side if needed",
-                "Ensure both arms are fully visible",
-                "Camera should capture full range of arm curl motion",
-                "Keep elbows in frame for proper form tracking"
-            ]
-        }
-    },
-    {
-        "id": "plank",
-        "name": "Plank",
-        "exercise_type": "basic",
-        "category": "lower",
-        "difficulty": "intermediate",
-        "duration": 5,
-        "sets": 3,
-        "reps": 1,
-        "thumbnail": "/images/exercises/plank.jpg",
-        "description": "Plank hold for core strength",
-        "target_muscles": ["Rectus Abdominis", "Transverse Abdominis", "Obliques", "Erector Spinae"],
-        "youtube_link": "https://www.youtube.com/watch?v=pSHjTRCQxIw",
-        "camera_position": {
-            "distance": "1.5-2 meters away",
-            "angle": "Side view (90°)",
-            "height": "Ground level or slightly elevated",
-            "tips": [
-                "Place camera on your side to see body alignment",
-                "Camera should be at ground level or slightly above",
-                "Ensure full body from head to feet is visible",
-                "Check that your body forms a straight line in frame"
-            ]
-        }
-    },
-    {
-        "id": "row",
-        "name": "Rows",
-        "exercise_type": "basic",
-        "category": "upper",
-        "difficulty": "beginner",
-        "duration": 10,
-        "sets": 3,
-        "reps": 12,
-        "thumbnail": "/images/exercises/row.jpg",
-        "description": "Row exercise for back strength. Use dumbbells or resistance bands.",
-        "target_muscles": ["Latissimus Dorsi", "Rhomboids", "Middle Trapezius", "Rear Deltoids", "Biceps"],
-        "youtube_link": "https://www.youtube.com/watch?v=rep-qVOkqgk",
-        "weight_progression": {
-            "starting_weight_lbs": 8.0,
-            "progression_range": "8-20 lbs",
-            "progression_notes": "Start with 8-10 lbs per arm. Progress to 12-15 lbs when back muscles are stronger. Focus on squeezing shoulder blades together."
-        },
-        "equipment": [
-            {
-                "name": "8-20 lbs Dumbbells",
-                "required": True,
-                "description": "One dumbbell per arm, or use resistance bands with door anchor",
-                "image": None,
-                "link": "https://example.com/buy/dumbbells"
-            },
-            {
-                "name": "Exercise Bands",
-                "required": False,
-                "description": "Alternative to dumbbells - use resistance bands with door anchor for rows",
-                "image": None,
-                "link": "https://example.com/buy/exercise-bands"
-            }
-        ],
-        "camera_position": {
-            "distance": "2-2.5 meters away",
-            "angle": "Side view (90°)",
-            "height": "Chest to shoulder level",
-            "tips": [
-                "Place camera on your side to see pulling motion",
-                "Ensure full upper body is visible",
-                "Camera should capture arm pull-back range",
-                "Keep back and shoulders clearly in frame"
-            ]
-        }
-    },
-    {
-        "id": "pull-up",
-        "name": "Pull-ups",
-        "exercise_type": "basic",
-        "category": "upper",
-        "difficulty": "advanced",
-        "duration": 8,
-        "sets": 3,
-        "reps": 8,
-        "thumbnail": "/images/exercises/pullup.jpg",
-        "description": "Pull-ups for upper body strength",
-        "target_muscles": ["Latissimus Dorsi", "Rhomboids", "Biceps", "Rear Deltoids", "Teres Major"],
-        "youtube_link": "https://www.youtube.com/watch?v=eGo4IYlbE5g",
-        "camera_position": {
-            "distance": "2.5-3 meters away",
-            "angle": "Front view (0°)",
-            "height": "Chest to head level",
-            "tips": [
-                "Place camera directly in front of you",
-                "Ensure full body from head to feet is visible",
-                "Camera should capture full pull-up range (hanging to chin-over-bar)",
-                "Keep bar and full arm extension visible"
-            ]
-        }
-    },
-    {
-        "id": "lunge",
-        "name": "Lunges",
-        "exercise_type": "basic",
-        "category": "lower",
-        "difficulty": "beginner",
-        "duration": 10,
-        "sets": 3,
-        "reps": 12,
-        "thumbnail": "/images/exercises/lunge.jpg",
-        "description": "Lunges for leg strength",
-        "target_muscles": ["Quadriceps", "Glutes", "Hamstrings", "Calves"],
-        "youtube_link": "https://www.youtube.com/watch?v=QOVaHwm-Q6U",
-        "camera_position": {
-            "distance": "2-2.5 meters away",
-            "angle": "Side view (90°)",
-            "height": "Hip to waist level",
-            "tips": [
-                "Place camera on your side to see leg movement",
-                "Ensure both legs are fully visible in frame",
-                "Camera should capture full lunge depth",
-                "Keep torso upright and visible"
-            ]
-        }
-    },
-    {
-        "id": "crunch",
-        "name": "Crunches",
-        "exercise_type": "basic",
-        "category": "upper",
-        "difficulty": "beginner",
-        "duration": 8,
-        "sets": 3,
-        "reps": 15,
-        "thumbnail": "/images/exercises/crunch.jpg",
-        "description": "Crunches for core strength",
-        "target_muscles": ["Rectus Abdominis", "Obliques"],
-        "youtube_link": "https://www.youtube.com/watch?v=MKmrqcoCZ-M",
-        "camera_position": {
-            "distance": "1.5-2 meters away",
-            "angle": "Side view (90°)",
-            "height": "Ground level or slightly elevated",
-            "tips": [
-                "Place camera on your side to see torso curl",
-                "Camera should be at ground level or slightly above",
-                "Ensure upper body and core are visible",
-                "Keep head and shoulders in frame for rep counting"
-            ]
-        }
-    },
-    {
-        "id": "tricep-dip",
-        "name": "Tricep Dips",
-        "exercise_type": "basic",
-        "category": "upper",
-        "difficulty": "intermediate",
-        "duration": 8,
-        "sets": 3,
-        "reps": 10,
-        "thumbnail": "/images/exercises/tricep-dip.jpg",
-        "description": "Tricep dips for arm strength. Use a bench, chair, or elevated surface.",
-        "target_muscles": ["Triceps", "Anterior Deltoids", "Pectorals"],
-        "youtube_link": "https://www.youtube.com/watch?v=6kALZikXxLc",
+        "thumbnail": "/images/exercises/pant-pull.jpg",
+        "description": "Pant pull exercise for scapular strengthening and fixing winged scapula. Standing or slight bend forward stance with arms pulled back like pulling pants waistband. Focus on scapular retraction - squeeze shoulder blades together without shrugging up. Controlled movement to activate scapular stabilizers (rhomboids, rear delts, lower traps). Daily practice recommended to retrain scapular muscles and build strong movement pattern.",
+        "target_muscles": ["Rhomboids", "Rear Deltoids", "Lower Trapezius", "Scapular Stabilizers", "Middle Trapezius"],
+        "youtube_link": "https://youtu.be/T70OdD3ckcI?si=gTgATcsIuuhWOzT_",
         "weight_progression": {
             "starting_weight_lbs": 0.0,
             "progression_range": "Bodyweight",
-            "progression_notes": "Start with bodyweight. Progress by adding weight on lap or using weighted vest as you get stronger."
+            "progression_notes": "Start with bodyweight. Focus on proper scapular retraction and controlled movement. Can progress to using resistance bands or light weights once form is perfect. Daily practice is beneficial for scapular stability improvement."
         },
         "equipment": [
             {
-                "name": "Bench or Chair",
-                "required": True,
-                "description": "Use a sturdy bench, chair, or elevated surface for tricep dips",
+                "name": "None (Bodyweight)",
+                "required": False,
+                "description": "Can be done with bodyweight only",
                 "image": None,
-                "link": "https://example.com/buy/bench"
+                "link": None
+            },
+            {
+                "name": "Exercise Bands",
+                "required": False,
+                "description": "Optional - add resistance bands for progression once form is perfect",
+                "image": None,
+                "link": "https://example.com/buy/exercise-bands"
             }
         ],
         "camera_position": {
-            "distance": "1.5-2 meters away",
-            "angle": "Side view (90°)",
-            "height": "Chest to shoulder level",
+            "distance": "2-2.5 meters away",
+            "angle": "Side view (90°) or 45° angle",
+            "height": "Shoulder to chest level",
             "tips": [
-                "Place camera on your side to see arm movement",
-                "Ensure full upper body is visible",
-                "Camera should capture full dip range (up to down)",
-                "Keep elbows and shoulders clearly in frame"
+                "Place camera on your side to see scapular movement",
+                "Ensure full upper body and shoulder blades are visible",
+                "Camera should capture scapular retraction range",
+                "Keep arms and shoulder blade position clearly in frame",
+                "Watch for controlled movement without shoulder shrugging"
             ]
         }
     },
     {
-        "id": "lateral-raise",
-        "name": "Lateral Raises",
+        "id": "pad-cuff",
+        "name": "Pad Cuff",
         "exercise_type": "basic",
         "category": "upper",
         "difficulty": "beginner",
-        "duration": 8,
+        "duration": 10,
         "sets": 3,
-        "reps": 12,
-        "thumbnail": "/images/exercises/lateral-raise.jpg",
-        "description": "Lateral raises for shoulder strength. Use light dumbbells.",
-        "target_muscles": ["Lateral Deltoids", "Anterior Deltoids", "Supraspinatus"],
-        "youtube_link": "https://www.youtube.com/watch?v=3VcKaXpzqRo",
+        "reps": 15,
+        "thumbnail": "/images/exercises/pad-cuff.jpg",
+        "description": "Pad cuff exercise for shoulder rehab focusing on infraspinatus region. Elbow at hip center line, arm at 90-degree angle. Short range controlled movement with light pressure (5% push down). Goal is to feel tension in infraspinatus region, not front/side shoulder or rear delt. Start with light weight (1-3 kg / 2-6 lbs). Slow and controlled reps, avoid over-stressing shoulder. Focus on mind-muscle connection to infraspinatus region. Perform 2x per week for recovery, avoid high frequency if technique not perfect.",
+        "target_muscles": ["Infraspinatus", "Teres Minor", "Rotator Cuff", "Posterior Deltoids"],
+        "youtube_link": "https://youtu.be/FLGcoOxTaR4?si=FQBMRtrCKpFHWsac",
         "weight_progression": {
-            "starting_weight_lbs": 3.0,
-            "progression_range": "3-10 lbs",
-            "progression_notes": "Start with 3-5 lbs per arm. Lateral deltoids are small muscles, so use lighter weights. Progress to 7-10 lbs gradually."
+            "starting_weight_lbs": 2.0,
+            "progression_range": "2-6 lbs",
+            "progression_notes": "Start with very light weight (1-3 kg / 2-6 lbs). Too much weight can irritate shoulder. Focus on proper form and infraspinatus activation over weight. Progress weight only when technique is perfect and you can consistently feel tension in infraspinatus region. Avoid compensation from other muscles."
         },
         "equipment": [
             {
-                "name": "3-10 lbs Light Dumbbells",
+                "name": "Pad or Towel",
                 "required": True,
-                "description": "Light weights per arm - lateral deltoids are small muscles",
+                "description": "2-inch pad or towel for support during exercise",
+                "image": None,
+                "link": "https://example.com/buy/pad-towel"
+            },
+            {
+                "name": "Light Dumbbell",
+                "required": True,
+                "description": "Very light dumbbell (1-3 kg / 2-6 lbs) - start low to avoid shoulder irritation",
                 "image": None,
                 "link": "https://example.com/buy/dumbbells"
             }
         ],
         "camera_position": {
-            "distance": "1.5-2 meters away",
-            "angle": "Front view (0°)",
+            "distance": "2-2.5 meters away",
+            "angle": "Side view (90°) or 45° angle",
             "height": "Shoulder to chest level",
             "tips": [
-                "Place camera directly in front of you",
-                "Ensure both arms are fully visible",
-                "Camera should capture full arm raise range (down to shoulder height)",
-                "Keep shoulders and arms clearly in frame"
+                "Place camera on your side to see shoulder and arm position",
+                "Ensure elbow position at hip center line is clearly visible",
+                "Camera should capture 90-degree arm angle and short range movement",
+                "Keep infraspinatus region and shoulder blade position in frame",
+                "Watch for controlled movement without compensation"
+            ]
+        }
+    },
+    {
+        "id": "weighted-pull-ups",
+        "name": "Weighted Pull-ups",
+        "exercise_type": "advanced",
+        "category": "upper",
+        "difficulty": "advanced",
+        "duration": 10,
+        "sets": 1,
+        "reps": 12,
+        "thumbnail": "/images/exercises/pull-ups.jpg",
+        "description": "Exercise starts in video. NOTE: Requires gym equipment (assisted pull-up machine for warm-up, pull-up bar with weight attachment for working set). Cannot be performed at home without proper setup.",
+        "target_muscles": ["Latissimus Dorsi", "Rhomboids", "Middle Trapezius", "Rear Deltoids", "Biceps", "Brachialis"],
+        "youtube_link": "https://youtu.be/s8irV9uIxgI?si=W5rk10Gpfk9eexqS",
+        "weight_progression": {
+            "starting_weight_lbs": 0.0,
+            "progression_range": "Bodyweight to 10-20 lbs",
+            "progression_notes": "Start with assisted pull-ups (20 lbs assist) to build form. Once you can do 11-12 reps with bodyweight, add 5 lbs weight. Focus on correct form: stay back, drive arms to bottom of chest, no shrug. All-out set to failure. If you hit 7-9 reps, use rest-pause (15-30 second rest, then more reps)."
+        },
+        "equipment": [
+            {
+                "name": "Assisted Pull-up Machine",
+                "required": True,
+                "description": "Gym machine with ankle strap for assisted pull-ups (warm-up: 20 lbs assist). Required for form building.",
+                "image": None,
+                "link": "https://example.com/buy/assisted-pull-up-machine"
+            },
+            {
+                "name": "Pull-up Bar with Weight Attachment",
+                "required": True,
+                "description": "Gym pull-up bar with weight belt attachment for weighted pull-ups (working set: 5-20 lbs added weight)",
+                "image": None,
+                "link": "https://example.com/buy/pull-up-bar"
+            },
+            {
+                "name": "Weight Belt",
+                "required": True,
+                "description": "Weight belt for adding weight to pull-ups (5-20 lbs progression)",
+                "image": None,
+                "link": "https://example.com/buy/weight-belt"
+            }
+        ],
+        "camera_position": {
+            "distance": "2-3 meters away",
+            "angle": "Side view (90°) or front view",
+            "height": "Chest to head level",
+            "tips": [
+                "Place camera to capture full body from side or front",
+                "Ensure pull-up bar and full range of motion is visible",
+                "Camera should show body position and arm drive to chest",
+                "Watch for proper form: stay back, no shrug, controlled movement"
+            ]
+        }
+    },
+    {
+        "id": "close-grip-pull-down",
+        "name": "Close Grip Pull Down",
+        "exercise_type": "advanced",
+        "category": "upper",
+        "difficulty": "advanced",
+        "duration": 5,
+        "sets": 1,
+        "reps": 12,
+        "thumbnail": "/images/exercises/pull-down.jpg",
+        "description": "Exercise starts in video. NOTE: This exercise requires gym equipment (pulldown machine). Cannot be performed at home.",
+        "target_muscles": ["Latissimus Dorsi", "Rhomboids", "Middle Trapezius", "Biceps", "Brachialis"],
+        "youtube_link": "https://youtu.be/s8irV9uIxgI?si=W5rk10Gpfk9eexqS",
+        "weight_progression": {
+            "starting_weight_lbs": 100.0,
+            "progression_range": "100-120 lbs",
+            "progression_notes": "Warm up with 20 lbs less than working weight (100 lbs warm-up, 120 lbs working set). Working set: all-out to failure. Goal is 11-12 reps before increasing weight. Take small pause at bottom for muscle connection and control. After working set, perform drop set for additional volume."
+        },
+        "equipment": [
+            {
+                "name": "Pulldown Machine (Cable System)",
+                "required": True,
+                "description": "Gym pulldown machine with cable system. Warm-up: 100 lbs, Working set: 120 lbs. Required - cannot be done at home.",
+                "image": None,
+                "link": "https://example.com/buy/pulldown-machine"
+            },
+            {
+                "name": "Close Grip Handle",
+                "required": True,
+                "description": "Close grip attachment for pulldown machine",
+                "image": None,
+                "link": "https://example.com/buy/close-grip-handle"
+            }
+        ],
+        "camera_position": {
+            "distance": "2-2.5 meters away",
+            "angle": "Side view (90°)",
+            "height": "Chest to head level",
+            "tips": [
+                "Place camera on your side to see full range of motion",
+                "Ensure cable machine and handle position are visible",
+                "Camera should capture controlled pull-down with pause at bottom",
+                "Watch for proper lat engagement and muscle connection"
+            ]
+        }
+    },
+    {
+        "id": "wide-grip-row",
+        "name": "Wide Grip Row",
+        "exercise_type": "advanced",
+        "category": "upper",
+        "difficulty": "advanced",
+        "duration": 5,
+        "sets": 1,
+        "reps": 9,
+        "thumbnail": "/images/exercises/row.jpg",
+        "description": "Exercise starts in video. NOTE: This exercise requires gym equipment (wide grip row machine). Cannot be performed at home.",
+        "target_muscles": ["Upper Latissimus Dorsi", "Rhomboids", "Middle Trapezius", "Rear Deltoids"],
+        "youtube_link": "https://youtu.be/s8irV9uIxgI?si=W5rk10Gpfk9eexqS",
+        "weight_progression": {
+            "starting_weight_lbs": 90.0,
+            "progression_range": "90-110 lbs",
+            "progression_notes": "Warm up with 20 lbs less than working weight (90 lbs warm-up, 110 lbs working set). Working set: all-out to failure. Goal is 9 reps. This exercise targets upper section of lats. Fatigue from previous exercises may affect performance, which is normal."
+        },
+        "equipment": [
+            {
+                "name": "Wide Grip Row Machine",
+                "required": True,
+                "description": "Gym row machine with wide grip handle. Warm-up: 90 lbs, Working set: 110 lbs. Required - cannot be done at home.",
+                "image": None,
+                "link": "https://example.com/buy/row-machine"
+            },
+            {
+                "name": "Wide Grip Handle",
+                "required": True,
+                "description": "Wide grip handle attachment for row machine",
+                "image": None,
+                "link": "https://example.com/buy/wide-grip-handle"
+            }
+        ],
+        "camera_position": {
+            "distance": "2-2.5 meters away",
+            "angle": "Side view (90°)",
+            "height": "Chest level",
+            "tips": [
+                "Place camera on your side to see rowing motion",
+                "Ensure cable machine and handle position are visible",
+                "Camera should capture upper lat engagement",
+                "Watch for controlled rowing motion and proper form"
+            ]
+        }
+    },
+    {
+        "id": "single-arm-row",
+        "name": "Single Arm Row (Cable Machine)",
+        "exercise_type": "advanced",
+        "category": "upper",
+        "difficulty": "advanced",
+        "duration": 5,
+        "sets": 1,
+        "reps": 9,
+        "thumbnail": "/images/exercises/row.jpg",
+        "description": "Exercise starts in video. NOTE: This exercise requires gym equipment (cable machine). Preferred over dumbbell rows for less hip pressure. Cannot be performed at home.",
+        "target_muscles": ["Latissimus Dorsi", "Rhomboids", "Middle Trapezius", "Rear Deltoids", "Biceps"],
+        "youtube_link": "https://youtu.be/s8irV9uIxgI?si=W5rk10Gpfk9eexqS",
+        "weight_progression": {
+            "starting_weight_lbs": 80.0,
+            "progression_range": "80-100 lbs",
+            "progression_notes": "Preferred over dumbbell rows for less hip pressure. Warm up first, then working set at 100 units (10). All-out set to failure. Single arm allows for better muscle connection and focus. No rest-pause needed if already fatigued from previous exercises."
+        },
+        "equipment": [
+            {
+                "name": "Cable Machine",
+                "required": True,
+                "description": "Gym cable machine with single handle attachment. Working set: 100 units (10). Required - cannot be done at home.",
+                "image": None,
+                "link": "https://example.com/buy/cable-machine"
+            },
+            {
+                "name": "Single Handle",
+                "required": True,
+                "description": "Single handle attachment for cable machine rowing",
+                "image": None,
+                "link": "https://example.com/buy/single-handle"
+            }
+        ],
+        "camera_position": {
+            "distance": "2-2.5 meters away",
+            "angle": "Side view (90°)",
+            "height": "Chest level",
+            "tips": [
+                "Place camera on your side to see single arm rowing motion",
+                "Ensure cable machine and handle position are visible",
+                "Camera should capture full range of motion and muscle engagement",
+                "Watch for proper form and controlled movement"
+            ]
+        }
+    },
+    {
+        "id": "weighted-dips",
+        "name": "Dips Off The Bench (Weighted)",
+        "exercise_type": "advanced",
+        "category": "upper",
+        "difficulty": "advanced",
+        "duration": 5,
+        "sets": 1,
+        "reps": 15,
+        "thumbnail": "/images/exercises/dips.jpg",
+        "description": "Exercise starts in video. NOTE: Can be performed at home with bench and dumbbell.",
+        "target_muscles": ["Triceps Brachii", "Anterior Deltoids", "Pectoralis Major (Lower)", "Triceps Horseshoe"],
+        "youtube_link": "https://youtu.be/s8irV9uIxgI?si=W5rk10Gpfk9eexqS",
+        "weight_progression": {
+            "starting_weight_lbs": 70.0,
+            "progression_range": "70-80 lbs",
+            "progression_notes": "Best exercise for tricep development and horseshoe shape. Keep reps in 12-15 failure range. Warm up first, then working set with 80 lb dumbbell. Once you hit 15 reps, increase weight next week. After weighted set, perform bodyweight burnout for additional volume."
+        },
+        "equipment": [
+            {
+                "name": "Bench",
+                "required": True,
+                "description": "Flat bench for dips off the bench. Can use home bench or gym bench.",
+                "image": None,
+                "link": "https://example.com/buy/bench"
+            },
+            {
+                "name": "Dumbbell",
+                "required": True,
+                "description": "Weighted dumbbell (70-80 lbs) placed on lap during dips",
+                "image": None,
+                "link": "https://example.com/buy/dumbbells"
+            }
+        ],
+        "camera_position": {
+            "distance": "2-3 meters away",
+            "angle": "Side view (90°)",
+            "height": "Chest to head level",
+            "tips": [
+                "Place camera on your side to see full dip motion",
+                "Ensure bench and full range of motion are visible",
+                "Camera should capture tricep engagement and contraction",
+                "Watch for proper form and controlled movement"
+            ]
+        }
+    },
+    {
+        "id": "incline-skull-crushers",
+        "name": "Incline Skull Crushers (Dumbbells)",
+        "exercise_type": "advanced",
+        "category": "upper",
+        "difficulty": "advanced",
+        "duration": 5,
+        "sets": 1,
+        "reps": 12,
+        "thumbnail": "/images/exercises/skull-crushers.jpg",
+        "description": "Exercise starts in video. NOTE: Can be performed at home with adjustable incline bench and dumbbells.",
+        "target_muscles": ["Triceps Brachii", "Triceps Long Head", "Triceps Lateral Head", "Triceps Medial Head"],
+        "youtube_link": "https://youtu.be/s8irV9uIxgI?si=W5rk10Gpfk9eexqS",
+        "weight_progression": {
+            "starting_weight_lbs": 30.0,
+            "progression_range": "30-35 lbs",
+            "progression_notes": "Incline version reduces elbow torque compared to flat skull crushers. Warm up first, then working set with 35 lb dumbbells. Goal is 7-12 reps. If you hit 12 reps, increase weight next week. All-out set to failure. No drop set if already fatigued."
+        },
+        "equipment": [
+            {
+                "name": "Adjustable Incline Bench",
+                "required": True,
+                "description": "Incline bench (30-45 degrees) for skull crushers. Can use adjustable home bench or gym bench.",
+                "image": None,
+                "link": "https://example.com/buy/incline-bench"
+            },
+            {
+                "name": "Dumbbells",
+                "required": True,
+                "description": "Dumbbells (30-35 lbs each) for incline skull crushers",
+                "image": None,
+                "link": "https://example.com/buy/dumbbells"
+            }
+        ],
+        "camera_position": {
+            "distance": "2-2.5 meters away",
+            "angle": "Side view (90°) or front view",
+            "height": "Chest to head level",
+            "tips": [
+                "Place camera on your side to see full tricep extension",
+                "Ensure incline bench and dumbbell position are visible",
+                "Camera should capture tricep engagement and controlled movement",
+                "Watch for proper elbow position and reduced torque"
+            ]
+        }
+    },
+    {
+        "id": "incline-bench-press",
+        "name": "Incline Bench Press",
+        "exercise_type": "advanced",
+        "category": "upper",
+        "difficulty": "advanced",
+        "duration": 10,
+        "sets": 1,
+        "reps": 12,
+        "thumbnail": "/images/exercises/bench-press.jpg",
+        "description": "Exercise starts in video. NOTE: Requires gym equipment (incline bench press machine or barbell with incline bench). Cannot be performed at home.",
+        "target_muscles": ["Pectoralis Major (Upper)", "Anterior Deltoids", "Triceps Brachii"],
+        "youtube_link": "https://youtu.be/s8irV9uIxgI?si=W5rk10Gpfk9eexqS",
+        "weight_progression": {
+            "starting_weight_lbs": 0.0,
+            "progression_range": "Varies by strength level",
+            "progression_notes": "Warm up with 10-15 lbs less than working weight (8 reps). Working set: all-out to failure. Goal is 10-12 reps. Once you hit 12 reps, increase weight next week. Use rest-pause after failure for 2-3 extra reps. Grip: Pinky on bench notch, hands slightly inside elbows (like dumbbell press position). Avoid wider grip to reduce shoulder pressure."
+        },
+        "equipment": [
+            {
+                "name": "Incline Bench Press Machine",
+                "required": True,
+                "description": "Gym incline bench press machine (30-45 degree angle) or barbell with incline bench",
+                "image": None,
+                "link": "https://example.com/buy/incline-bench-press"
+            }
+        ],
+        "camera_position": {
+            "distance": "2-3 meters away",
+            "angle": "Side view (90°)",
+            "height": "Chest to head level",
+            "tips": [
+                "Place camera on your side to see full bench press motion",
+                "Ensure bench angle and full range of motion are visible",
+                "Camera should capture proper grip position and bar path",
+                "Watch for controlled movement and proper form"
+            ]
+        }
+    },
+    {
+        "id": "flat-dumbbell-bench-press",
+        "name": "Flat Dumbbell Bench Press",
+        "exercise_type": "advanced",
+        "category": "upper",
+        "difficulty": "advanced",
+        "duration": 8,
+        "sets": 1,
+        "reps": 8,
+        "thumbnail": "/images/exercises/bench-press.jpg",
+        "description": "Exercise starts in video. NOTE: Requires gym equipment (flat bench and heavy dumbbells). Cannot be performed at home without proper setup.",
+        "target_muscles": ["Pectoralis Major", "Anterior Deltoids", "Triceps Brachii"],
+        "youtube_link": "https://youtu.be/s8irV9uIxgI?si=W5rk10Gpfk9eexqS",
+        "weight_progression": {
+            "starting_weight_lbs": 70.0,
+            "progression_range": "70-80 lbs",
+            "progression_notes": "Working set with 80 lbs dumbbells. Goal is 8 reps. Once you hit target reps, increase weight next week. Take 3-4 minute rest before working set. After working set, perform quick drop set (e.g., 80 lbs to 60 lbs). No rest-pause with dumbbells (too risky)."
+        },
+        "equipment": [
+            {
+                "name": "Flat Bench",
+                "required": True,
+                "description": "Gym flat bench for dumbbell press",
+                "image": None,
+                "link": "https://example.com/buy/bench"
+            },
+            {
+                "name": "Heavy Dumbbells",
+                "required": True,
+                "description": "Heavy dumbbells (70-80 lbs each) for bench press",
+                "image": None,
+                "link": "https://example.com/buy/dumbbells"
+            }
+        ],
+        "camera_position": {
+            "distance": "2-3 meters away",
+            "angle": "Side view (90°)",
+            "height": "Chest level",
+            "tips": [
+                "Place camera on your side to see full dumbbell press motion",
+                "Ensure bench and full range of motion are visible",
+                "Camera should capture controlled movement and proper form",
+                "Watch for proper dumbbell path and chest engagement"
+            ]
+        }
+    },
+    {
+        "id": "cable-crossovers",
+        "name": "Cable Crossovers/Flys",
+        "exercise_type": "advanced",
+        "category": "upper",
+        "difficulty": "advanced",
+        "duration": 5,
+        "sets": 1,
+        "reps": 12,
+        "thumbnail": "/images/exercises/cable-fly.jpg",
+        "description": "Exercise starts in video. NOTE: Requires gym equipment (cable machine). Cannot be performed at home.",
+        "target_muscles": ["Pectoralis Major (Inner)", "Anterior Deltoids"],
+        "youtube_link": "https://youtu.be/s8irV9uIxgI?si=W5rk10Gpfk9eexqS",
+        "weight_progression": {
+            "starting_weight_lbs": 0.0,
+            "progression_range": "Varies by strength level",
+            "progression_notes": "Warm up first, then all-out set to failure. Goal is 12 solid reps. Don't go too far back - only go back as far as you can without shrugging and while maintaining inner chest connection. After failure, perform partials for total fatigue (these don't count in main rep count)."
+        },
+        "equipment": [
+            {
+                "name": "Cable Machine",
+                "required": True,
+                "description": "Gym cable machine with cable crossover setup",
+                "image": None,
+                "link": "https://example.com/buy/cable-machine"
+            }
+        ],
+        "camera_position": {
+            "distance": "2-2.5 meters away",
+            "angle": "Front view or side view (90°)",
+            "height": "Chest level",
+            "tips": [
+                "Place camera in front or side to see cable fly motion",
+                "Ensure cable machine and full range of motion are visible",
+                "Camera should capture inner chest engagement",
+                "Watch for proper form - don't go too far back, maintain chest connection"
+            ]
+        }
+    },
+    {
+        "id": "hammer-curls",
+        "name": "Hammer Curls",
+        "exercise_type": "advanced",
+        "category": "upper",
+        "difficulty": "advanced",
+        "duration": 5,
+        "sets": 1,
+        "reps": 8,
+        "thumbnail": "/images/exercises/bicep-curl.jpg",
+        "description": "Exercise starts in video. NOTE: Requires gym equipment (dumbbells). Safer alternative to regular curls for elbow pressure.",
+        "target_muscles": ["Biceps Brachii", "Brachialis", "Brachioradialis", "Forearm Extensors"],
+        "youtube_link": "https://youtu.be/s8irV9uIxgI?si=W5rk10Gpfk9eexqS",
+        "weight_progression": {
+            "starting_weight_lbs": 30.0,
+            "progression_range": "30-35 lbs",
+            "progression_notes": "Warm up with 30 lbs (12 reps target). Working set with 35 lbs (7-8 reps target). If too much elbow pressure, drop weight and do lighter high reps (15-20) for burnout. Hammer curls put more pressure on wrist extensors."
+        },
+        "equipment": [
+            {
+                "name": "Dumbbells",
+                "required": True,
+                "description": "Dumbbells (30-35 lbs each) for hammer curls",
+                "image": None,
+                "link": "https://example.com/buy/dumbbells"
+            }
+        ],
+        "camera_position": {
+            "distance": "2-2.5 meters away",
+            "angle": "Front view or side view (90°)",
+            "height": "Chest to shoulder level",
+            "tips": [
+                "Place camera in front or side to see hammer curl motion",
+                "Ensure full range of motion and arm position are visible",
+                "Camera should capture bicep and forearm engagement",
+                "Watch for proper form and controlled movement"
+            ]
+        }
+    },
+    {
+        "id": "barbell-curls",
+        "name": "Barbell Curls",
+        "exercise_type": "advanced",
+        "category": "upper",
+        "difficulty": "advanced",
+        "duration": 5,
+        "sets": 1,
+        "reps": 12,
+        "thumbnail": "/images/exercises/bicep-curl.jpg",
+        "description": "Exercise starts in video. NOTE: Requires gym equipment (barbell). Cannot be performed at home.",
+        "target_muscles": ["Biceps Brachii", "Brachialis", "Forearm Flexors"],
+        "youtube_link": "https://youtu.be/s8irV9uIxgI?si=W5rk10Gpfk9eexqS",
+        "weight_progression": {
+            "starting_weight_lbs": 0.0,
+            "progression_range": "Varies by strength level",
+            "progression_notes": "Quick 2-rep warm-up, then 1.5 minute rest before working set. When you fail, use swing to get weight up, then focus on eccentric (negative) portion for 4 extra reps. This technique helps maximize volume after failure."
+        },
+        "equipment": [
+            {
+                "name": "Barbell",
+                "required": True,
+                "description": "Gym barbell with appropriate weight plates",
+                "image": None,
+                "link": "https://example.com/buy/barbell"
+            }
+        ],
+        "camera_position": {
+            "distance": "2-2.5 meters away",
+            "angle": "Front view or side view (90°)",
+            "height": "Chest to shoulder level",
+            "tips": [
+                "Place camera in front or side to see barbell curl motion",
+                "Ensure full range of motion and bar path are visible",
+                "Camera should capture bicep engagement and form",
+                "Watch for controlled movement and proper technique"
+            ]
+        }
+    },
+    {
+        "id": "cable-crunch",
+        "name": "Cable Crunch/Ab Roll",
+        "exercise_type": "advanced",
+        "category": "upper",
+        "difficulty": "advanced",
+        "duration": 5,
+        "sets": 1,
+        "reps": 15,
+        "thumbnail": "/images/exercises/crunch.jpg",
+        "description": "Exercise starts in video. NOTE: Requires gym equipment (cable system). Cannot be performed at home.",
+        "target_muscles": ["Rectus Abdominis", "Obliques", "Transverse Abdominis"],
+        "youtube_link": "https://youtu.be/s8irV9uIxgI?si=W5rk10Gpfk9eexqS",
+        "weight_progression": {
+            "starting_weight_lbs": 0.0,
+            "progression_range": "Bodyweight to weighted",
+            "progression_notes": "Performed on knees using cable system. Focus on squeezing butt and tucking under. If you feel pressure in low back, you're not ready for this position. Should only feel abs, not low back. Usually paired with side raises for obliques."
+        },
+        "equipment": [
+            {
+                "name": "Cable System",
+                "required": True,
+                "description": "Gym cable machine with cable crunch attachment",
+                "image": None,
+                "link": "https://example.com/buy/cable-machine"
+            }
+        ],
+        "camera_position": {
+            "distance": "2-2.5 meters away",
+            "angle": "Side view (90°)",
+            "height": "Waist to chest level",
+            "tips": [
+                "Place camera on your side to see cable crunch motion",
+                "Ensure cable system and full range of motion are visible",
+                "Camera should capture core engagement and form",
+                "Watch for proper butt squeeze and tuck position"
+            ]
+        }
+    },
+    {
+        "id": "incline-dumbbell-shoulder-press",
+        "name": "Incline Dumbbell Shoulder Press",
+        "exercise_type": "advanced",
+        "category": "upper",
+        "difficulty": "advanced",
+        "duration": 8,
+        "sets": 1,
+        "reps": 7,
+        "thumbnail": "/images/exercises/shoulder-press.jpg",
+        "description": "Exercise starts in video. NOTE: Requires gym equipment (incline bench and dumbbells). Cannot be performed at home.",
+        "target_muscles": ["Anterior Deltoids", "Lateral Deltoids", "Triceps Brachii", "Upper Pectoralis"],
+        "youtube_link": "https://youtu.be/OuctHJhvR5A?si=z2eMMG7O2dLozgFq",
+        "weight_progression": {
+            "starting_weight_lbs": 40.0,
+            "progression_range": "40-65 lbs",
+            "progression_notes": "Warm up with 40s. Working set with 65s. Goal is 7-8 reps. Cycle is 4-8 weeks. Try to stretch up and touch for full range. No rest-pause with dumbbells (risky). After working set, perform quick drop set."
+        },
+        "equipment": [
+            {
+                "name": "Incline Bench",
+                "required": True,
+                "description": "Gym incline bench (slight incline, not totally upright)",
+                "image": None,
+                "link": "https://example.com/buy/incline-bench"
+            },
+            {
+                "name": "Dumbbells",
+                "required": True,
+                "description": "Heavy dumbbells (40-65 lbs each) for shoulder press",
+                "image": None,
+                "link": "https://example.com/buy/dumbbells"
+            }
+        ],
+        "camera_position": {
+            "distance": "2-3 meters away",
+            "angle": "Front view or side view (90°)",
+            "height": "Chest to head level",
+            "tips": [
+                "Place camera in front or side to see full shoulder press motion",
+                "Ensure bench angle and full range of motion are visible",
+                "Camera should capture proper form and controlled movement",
+                "Watch for full range - stretch up and touch"
+            ]
+        }
+    },
+    {
+        "id": "lateral-raises-advanced",
+        "name": "Lateral Raises (Dumbbells)",
+        "exercise_type": "advanced",
+        "category": "upper",
+        "difficulty": "advanced",
+        "duration": 5,
+        "sets": 1,
+        "reps": 15,
+        "thumbnail": "/images/exercises/lateral-raise.jpg",
+        "description": "Exercise starts in video. NOTE: Requires gym equipment (dumbbells). Cannot be performed at home.",
+        "target_muscles": ["Lateral Deltoids", "Anterior Deltoids"],
+        "youtube_link": "https://youtu.be/OuctHJhvR5A?si=z2eMMG7O2dLozgFq",
+        "weight_progression": {
+            "starting_weight_lbs": 15.0,
+            "progression_range": "15-20 lbs",
+            "progression_notes": "Warm up with 15s. Working set with 20s. Only increase weight when you can hit around 15 reps. Heavy weight (like 25s for 5-6 reps) can hurt shoulders. Slight lean forward. After working set, perform drop set if needed."
+        },
+        "equipment": [
+            {
+                "name": "Dumbbells",
+                "required": True,
+                "description": "Dumbbells (15-20 lbs each) for lateral raises",
+                "image": None,
+                "link": "https://example.com/buy/dumbbells"
+            }
+        ],
+        "camera_position": {
+            "distance": "2-2.5 meters away",
+            "angle": "Front view or side view (90°)",
+            "height": "Chest to shoulder level",
+            "tips": [
+                "Place camera in front or side to see lateral raise motion",
+                "Ensure full range of motion and arm position are visible",
+                "Camera should capture lateral deltoid engagement",
+                "Watch for proper form - slight lean forward"
+            ]
+        }
+    },
+    {
+        "id": "lateral-raises-weak-spot",
+        "name": "Lateral Raises - Weak Spot Focus",
+        "exercise_type": "advanced",
+        "category": "upper",
+        "difficulty": "advanced",
+        "duration": 5,
+        "sets": 1,
+        "reps": 12,
+        "thumbnail": "/images/exercises/lateral-raise.jpg",
+        "description": "Exercise starts in video. NOTE: Requires gym equipment (cable machine or dumbbells). Targets under-developed shoulder area.",
+        "target_muscles": ["Lateral Deltoids", "Rear Deltoids", "Upper Shoulder"],
+        "youtube_link": "https://youtu.be/OuctHJhvR5A?si=z2eMMG7O2dLozgFq",
+        "weight_progression": {
+            "starting_weight_lbs": 0.0,
+            "progression_range": "Varies by strength level",
+            "progression_notes": "Targets area between lateral head and rear delt. Slight lean and lateral flex. Keep shoulder down. Only go to top of shoulder. Finisher: use cable system for rest-pause at this specific angle to crush weak area."
+        },
+        "equipment": [
+            {
+                "name": "Cable Machine",
+                "required": True,
+                "description": "Gym cable machine or dumbbells for weak spot lateral raises",
+                "image": None,
+                "link": "https://example.com/buy/cable-machine"
+            }
+        ],
+        "camera_position": {
+            "distance": "2-2.5 meters away",
+            "angle": "Side view (90°) or front view",
+            "height": "Shoulder level",
+            "tips": [
+                "Place camera to see lateral raise from side or front",
+                "Ensure weak spot area (between lateral and rear delt) is visible",
+                "Camera should capture slight lean and lateral flex position",
+                "Watch for proper shoulder position - keep down"
+            ]
+        }
+    },
+    {
+        "id": "dips-parallel-bars",
+        "name": "Dips (Parallel Bars)",
+        "exercise_type": "advanced",
+        "category": "upper",
+        "difficulty": "advanced",
+        "duration": 5,
+        "sets": 1,
+        "reps": 12,
+        "thumbnail": "/images/exercises/dips.jpg",
+        "description": "Exercise starts in video. NOTE: Requires gym equipment (parallel bars or dip machine). For triceps stimulus.",
+        "target_muscles": ["Triceps Brachii", "Anterior Deltoids", "Pectoralis Major (Lower)"],
+        "youtube_link": "https://youtu.be/OuctHJhvR5A?si=z2eMMG7O2dLozgFq",
+        "weight_progression": {
+            "starting_weight_lbs": 0.0,
+            "progression_range": "Bodyweight to 10 lbs",
+            "progression_notes": "Bodyweight dips for now (weighted dips hard on shoulders). Technique: knees forward, shoulders down (like pants pull position) to avoid pinching. Nice pause at bottom. Once you hit 12 reps, add 10 lbs weight next week."
+        },
+        "equipment": [
+            {
+                "name": "Parallel Bars",
+                "required": True,
+                "description": "Gym parallel bars or dip machine",
+                "image": None,
+                "link": "https://example.com/buy/parallel-bars"
+            }
+        ],
+        "camera_position": {
+            "distance": "2-3 meters away",
+            "angle": "Side view (90°)",
+            "height": "Chest to head level",
+            "tips": [
+                "Place camera on your side to see full dip motion",
+                "Ensure parallel bars and full range of motion are visible",
+                "Camera should capture tricep engagement and proper form",
+                "Watch for shoulders down position and pause at bottom"
+            ]
+        }
+    },
+    {
+        "id": "traps-shrugs",
+        "name": "Traps/Shrugs",
+        "exercise_type": "advanced",
+        "category": "upper",
+        "difficulty": "advanced",
+        "duration": 5,
+        "sets": 2,
+        "reps": 12,
+        "thumbnail": "/images/exercises/shrug.jpg",
+        "description": "Exercise starts in video. NOTE: Requires gym equipment (dumbbells or weight). Focus on weak side.",
+        "target_muscles": ["Upper Trapezius", "Levator Scapulae"],
+        "youtube_link": "https://youtu.be/OuctHJhvR5A?si=z2eMMG7O2dLozgFq",
+        "weight_progression": {
+            "starting_weight_lbs": 0.0,
+            "progression_range": "Varies by strength level",
+            "progression_notes": "Focus on weak side (usually left). Slight lean, come up with elbows, squeeze at top. Do 2-3 sets. Previously avoided due to right side neck pull (left side was weak)."
+        },
+        "equipment": [
+            {
+                "name": "Dumbbells",
+                "required": True,
+                "description": "Dumbbells or weight for traps/shrugs",
+                "image": None,
+                "link": "https://example.com/buy/dumbbells"
+            }
+        ],
+        "camera_position": {
+            "distance": "2-2.5 meters away",
+            "angle": "Side view (90°) or front view",
+            "height": "Shoulder to head level",
+            "tips": [
+                "Place camera to see shrug motion from side or front",
+                "Ensure full range of motion and trap engagement are visible",
+                "Camera should capture proper form - elbows up, squeeze at top",
+                "Watch for weak side focus"
+            ]
+        }
+    },
+    {
+        "id": "forearm-extension-fix",
+        "name": "Forearm Extension Fix",
+        "exercise_type": "advanced",
+        "category": "upper",
+        "difficulty": "advanced",
+        "duration": 5,
+        "sets": 1,
+        "reps": 15,
+        "thumbnail": "/images/exercises/forearm.jpg",
+        "description": "Exercise starts in video. NOTE: Requires gym equipment (dumbbells). Targets weak forearm extensors.",
+        "target_muscles": ["Forearm Extensors", "Wrist Extensors"],
+        "youtube_link": "https://youtu.be/OuctHJhvR5A?si=z2eMMG7O2dLozgFq",
+        "weight_progression": {
+            "starting_weight_lbs": 0.0,
+            "progression_range": "Light weight to start",
+            "progression_notes": "Right side usually very weak. Right hand always in 'whittling' or 'dishes' position, so extensors weak. Start light - heavy weight can cause wrist pinch. Goal is to build strength to 15 reps."
+        },
+        "equipment": [
+            {
+                "name": "Dumbbells",
+                "required": True,
+                "description": "Light dumbbells for forearm extension exercises",
+                "image": None,
+                "link": "https://example.com/buy/dumbbells"
+            }
+        ],
+        "camera_position": {
+            "distance": "2-2.5 meters away",
+            "angle": "Side view (90°)",
+            "height": "Forearm to elbow level",
+            "tips": [
+                "Place camera on your side to see forearm extension motion",
+                "Ensure wrist and forearm position are visible",
+                "Camera should capture extension movement",
+                "Watch for proper form and avoid wrist pinch"
+            ]
+        }
+    },
+    {
+        "id": "forearm-flexion-fix",
+        "name": "Forearm Flexion/Grip Fix",
+        "exercise_type": "advanced",
+        "category": "upper",
+        "difficulty": "advanced",
+        "duration": 5,
+        "sets": 1,
+        "reps": 20,
+        "thumbnail": "/images/exercises/forearm.jpg",
+        "description": "Exercise starts in video. NOTE: Requires gym equipment (dumbbells). Targets weak grip/left arm.",
+        "target_muscles": ["Forearm Flexors", "Grip Muscles", "Wrist Flexors"],
+        "youtube_link": "https://youtu.be/OuctHJhvR5A?si=z2eMMG7O2dLozgFq",
+        "weight_progression": {
+            "starting_weight_lbs": 4.0,
+            "progression_range": "4-20 lbs",
+            "progression_notes": "Designed for left arm (weak in gripping position). Dominant right arm used more for suitcase/coffee cup. Warm up with 4 lbs, then heavy grip with 20s. Crush and continue until muscle is completely fatigued and fried. Left arm still feels very weak in this position."
+        },
+        "equipment": [
+            {
+                "name": "Dumbbells",
+                "required": True,
+                "description": "Dumbbells (4-20 lbs) for forearm flexion/grip exercises",
+                "image": None,
+                "link": "https://example.com/buy/dumbbells"
+            }
+        ],
+        "camera_position": {
+            "distance": "2-2.5 meters away",
+            "angle": "Side view (90°)",
+            "height": "Forearm to elbow level",
+            "tips": [
+                "Place camera on your side to see forearm flexion/grip motion",
+                "Ensure wrist and grip position are visible",
+                "Camera should capture flexion movement and grip strength",
+                "Watch for proper form and left arm focus"
+            ]
+        }
+    },
+    {
+        "id": "box-squat",
+        "name": "Box Squat",
+        "exercise_type": "lifting",
+        "category": "lower",
+        "difficulty": "intermediate",
+        "duration": 10,
+        "sets": 2,
+        "reps": 12,
+        "thumbnail": "/images/exercises/box-squat.jpg",
+        "description": "Exercise starts in video. NOTE: Requires gym equipment (squat rack, barbell, weight plates, box/bench). Cannot be performed at home. Box squat for quad-focused bodybuilding style. Safer than regular squats - requires control at bottom, no bounce or stretch reflex. For bodybuilding: 90° depth, only 20% pressure on box, quads flexed at bottom. Keep knees pushed out, use glutes. Shoulder-width stance. First set: 10-12 reps connection set at 10-15 lbs less. Second set: failure set at working weight. Progress: when you hit 12 reps, increase weight by 10-15 lbs next week. Start with 65-75 lbs, progress to 85-95 lbs.",
+        "target_muscles": ["Quadriceps", "Glutes", "Hamstrings", "Erector Spinae", "Core Stabilizers"],
+        "youtube_link": None,
+        "weight_progression": {
+            "starting_weight_lbs": 65.0,
+            "progression_range": "65-95+ lbs",
+            "progression_notes": "Start with 65 lbs for connection set (10-12 reps). Working set at 75 lbs (8-12 reps to failure). When you hit 12 reps, increase weight by 10-15 lbs next week. First set: 10-15 lbs less than working weight (connection/challenge set). Second set: failure set at working weight. Rest 2-3 minutes between sets. Focus on quad engagement at bottom - only 20% pressure on box. Keep quads flexed throughout. Progress by 10-15 lbs when hitting 12 reps consistently."
+        },
+        "equipment": [
+            {
+                "name": "Box or Bench",
+                "required": True,
+                "description": "Gym box or bench set to 90° depth (hip top piece should be slightly below knee line for bodybuilding style)",
+                "image": None,
+                "link": "https://example.com/buy/box-bench"
+            },
+            {
+                "name": "Barbell",
+                "required": True,
+                "description": "Gym Olympic barbell for loaded squats",
+                "image": None,
+                "link": "https://example.com/buy/barbell"
+            },
+            {
+                "name": "Weight Plates",
+                "required": True,
+                "description": "Gym weight plates for progressive loading (start with 65-75 lbs total)",
+                "image": None,
+                "link": "https://example.com/buy/weight-plates"
+            },
+            {
+                "name": "Squat Rack",
+                "required": True,
+                "description": "Gym squat rack or power rack for safety and proper setup",
+                "image": None,
+                "link": "https://example.com/buy/squat-rack"
+            }
+        ],
+        "camera_position": {
+            "distance": "2-3 meters away",
+            "angle": "Side view (90°)",
+            "height": "Hip to knee level",
+            "tips": [
+                "Place camera on your side to see full squat motion and depth",
+                "Ensure box, full range of motion, and knee position are visible",
+                "Camera should capture 90° depth and quad engagement at bottom",
+                "Watch for proper knee position (pushed out, not caving in)",
+                "Check that only 20% pressure is on box, quads remain flexed",
+                "Ensure shoulder-width stance and proper bar position are visible"
             ]
         }
     }

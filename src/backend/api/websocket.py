@@ -177,7 +177,7 @@ class WorkoutStreamManager:
         # Normalize exercise ID (handle variations like "push-ups" vs "pushup")
         exercise_lower = self.exercise.lower().replace("-", "").replace("_", "").replace(" ", "")
         
-        if exercise_lower == "squat" or exercise_lower == "squats":
+        if exercise_lower == "squat" or exercise_lower == "squats" or exercise_lower == "wall-squat" or exercise_lower == "box-squat" or ("wall" in exercise_lower and "squat" in exercise_lower) or ("box" in exercise_lower and "squat" in exercise_lower):
             return SquatTrainer()
         elif "pushup" in exercise_lower or "push" in exercise_lower:
             return PushupTrainer()
@@ -197,6 +197,15 @@ class WorkoutStreamManager:
             return CrunchTrainer()
         elif "tricep" in exercise_lower or "dip" in exercise_lower:
             return TricepDipTrainer()
+        elif "reardelt" in exercise_lower or ("rear" in exercise_lower and "delt" in exercise_lower and "raise" in exercise_lower):
+            # Rear Delt Raise - use LateralRaiseTrainer for now (similar movement pattern)
+            return LateralRaiseTrainer()
+        elif "pantpull" in exercise_lower or ("pant" in exercise_lower and "pull" in exercise_lower):
+            # Pant Pull - use RowTrainer for now (similar scapular retraction movement)
+            return RowTrainer()
+        elif "padcuff" in exercise_lower or ("pad" in exercise_lower and "cuff" in exercise_lower):
+            # Pad Cuff - use RowTrainer for now (similar rotator cuff movement)
+            return RowTrainer()
         elif "lateral" in exercise_lower or "raise" in exercise_lower:
             return LateralRaiseTrainer()
         elif exercise_lower == "glutefly" or (exercise_lower == "glute" and "fly" in exercise_lower):
@@ -241,8 +250,65 @@ class WorkoutStreamManager:
             except Exception as e:
                 logger.error(f"Error initializing DepressionRowTrainer: {e}")
                 raise ValueError(f"Depression Row trainer not available: {e}")
+        elif "weightedpullup" in exercise_lower or ("weighted" in exercise_lower and "pull" in exercise_lower):
+            # Weighted Pull-ups - use PullupTrainer
+            return PullupTrainer()
+        elif "closegrippulldown" in exercise_lower or ("close" in exercise_lower and "grip" in exercise_lower and "pull" in exercise_lower):
+            # Close Grip Pull Down - use PullupTrainer
+            return PullupTrainer()
+        elif "widegriprow" in exercise_lower or ("wide" in exercise_lower and "grip" in exercise_lower and "row" in exercise_lower):
+            # Wide Grip Row - use RowTrainer
+            return RowTrainer()
+        elif "singlearmrow" in exercise_lower or ("single" in exercise_lower and "arm" in exercise_lower and "row" in exercise_lower):
+            # Single Arm Row - use RowTrainer
+            return RowTrainer()
+        elif "weighteddip" in exercise_lower or ("weighted" in exercise_lower and "dip" in exercise_lower):
+            # Weighted Dips - use TricepDipTrainer
+            return TricepDipTrainer()
+        elif "inclineskullcrusher" in exercise_lower or ("incline" in exercise_lower and "skull" in exercise_lower):
+            # Incline Skull Crushers - use TricepDipTrainer
+            return TricepDipTrainer()
+        elif "inclinebenchpress" in exercise_lower or ("incline" in exercise_lower and "bench" in exercise_lower and "press" in exercise_lower):
+            # Incline Bench Press - use PushupTrainer for now
+            return PushupTrainer()
+        elif "flatdumbbellbenchpress" in exercise_lower or ("flat" in exercise_lower and "dumbbell" in exercise_lower and "bench" in exercise_lower):
+            # Flat Dumbbell Bench Press - use PushupTrainer for now
+            return PushupTrainer()
+        elif "cablecrossover" in exercise_lower or ("cable" in exercise_lower and ("crossover" in exercise_lower or "fly" in exercise_lower)):
+            # Cable Crossovers/Flys - use PushupTrainer for now
+            return PushupTrainer()
+        elif "hammercurl" in exercise_lower or ("hammer" in exercise_lower and "curl" in exercise_lower):
+            # Hammer Curls - use BicepCurlTrainer
+            return BicepCurlTrainer()
+        elif "barbellcurl" in exercise_lower or ("barbell" in exercise_lower and "curl" in exercise_lower):
+            # Barbell Curls - use BicepCurlTrainer
+            return BicepCurlTrainer()
+        elif "cablecrunch" in exercise_lower or ("cable" in exercise_lower and "crunch" in exercise_lower):
+            # Cable Crunch - use CrunchTrainer
+            return CrunchTrainer()
+        elif "inclinedumbbellshoulderpress" in exercise_lower or ("incline" in exercise_lower and "dumbbell" in exercise_lower and "shoulder" in exercise_lower):
+            # Incline Dumbbell Shoulder Press - use ShoulderPressTrainer
+            return ShoulderPressTrainer()
+        elif "lateralraisesadvanced" in exercise_lower or ("lateral" in exercise_lower and "raises" in exercise_lower and "advanced" in exercise_lower):
+            # Lateral Raises Advanced - use LateralRaiseTrainer
+            return LateralRaiseTrainer()
+        elif "lateralraisesweakspot" in exercise_lower or ("lateral" in exercise_lower and "weak" in exercise_lower):
+            # Lateral Raises Weak Spot - use LateralRaiseTrainer
+            return LateralRaiseTrainer()
+        elif "dipsparallelbars" in exercise_lower or ("dips" in exercise_lower and "parallel" in exercise_lower):
+            # Dips Parallel Bars - use TricepDipTrainer
+            return TricepDipTrainer()
+        elif "trapsshrug" in exercise_lower or ("trap" in exercise_lower and "shrug" in exercise_lower):
+            # Traps/Shrugs - use basic trainer for now
+            return BicepCurlTrainer()
+        elif "forearmextensionfix" in exercise_lower or ("forearm" in exercise_lower and "extension" in exercise_lower):
+            # Forearm Extension Fix - use basic trainer
+            return BicepCurlTrainer()
+        elif "forearmflexionfix" in exercise_lower or ("forearm" in exercise_lower and "flexion" in exercise_lower):
+            # Forearm Flexion Fix - use basic trainer
+            return BicepCurlTrainer()
         else:
-            available = "squat, push-ups, shoulder-press, bicep-curl, plank, row, pull-up, lunge, crunch, tricep-dip, lateral-raise, glute-fly, knee-drop, hamstring-medial-bridge, ball-squeeze, quad-stretch, depression-row"
+            available = "wall-squat, box-squat, plank, rear-delt-raise, pant-pull, pad-cuff, glute-fly, knee-drop, hamstring-medial-bridge, ball-squeeze, quad-stretch, depression-row, weighted-pull-ups, close-grip-pull-down, wide-grip-row, single-arm-row, weighted-dips, incline-skull-crushers, incline-bench-press, flat-dumbbell-bench-press, cable-crossovers, hammer-curls, barbell-curls, cable-crunch, incline-dumbbell-shoulder-press, lateral-raises-advanced, lateral-raises-weak-spot, dips-parallel-bars, traps-shrugs, forearm-extension-fix, forearm-flexion-fix"
             raise ValueError(f"Unknown exercise: {self.exercise}. Available: {available}")
     
     async def stream_frames(self, websocket: WebSocket, camera_device: str = "auto"):

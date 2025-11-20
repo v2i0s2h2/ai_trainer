@@ -143,6 +143,13 @@
 				</div>
 				
 				<div class="setup-content">
+					<!-- Exercise Description -->
+					{#if exerciseData.description}
+						<div class="exercise-description-section">
+							<h4>📝 Exercise Description:</h4>
+							<p class="exercise-description-text">{exerciseData.description}</p>
+						</div>
+					{/if}
 					<!-- Visual Diagram -->
 					<div class="camera-diagram">
 						<div class="diagram-container">
@@ -472,6 +479,28 @@
 		display: flex;
 		flex-direction: column;
 		gap: 1.5rem;
+	}
+	
+	.exercise-description-section {
+		background: rgba(255, 255, 255, 0.03);
+		border-radius: 0.75rem;
+		padding: 1.25rem;
+		border-left: 3px solid var(--primary);
+	}
+	
+	.exercise-description-section h4 {
+		font-size: 1rem;
+		font-weight: 600;
+		color: var(--text-primary);
+		margin-bottom: 0.75rem;
+	}
+	
+	.exercise-description-text {
+		font-size: 0.875rem;
+		color: var(--text-secondary);
+		line-height: 1.6;
+		margin: 0;
+		white-space: pre-line;
 	}
 	
 	.camera-diagram {

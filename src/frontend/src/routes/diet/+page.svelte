@@ -764,21 +764,15 @@
 							</a>
 						</div>
 
-						<div class="intro-box">
-							<p class="intro-text">
-								<strong>Hi, main Zach hoon.</strong> <strong>Aaj hum aapko batayenge</strong> <strong>medial aur lateral rotators</strong> ke baare mein <strong>jo bahut zaroori hain</strong> <strong>hips aur legs ki injuries ko theek karne ke liye</strong>.
-							</p>
-						</div>
-
 						<div class="info-card">
 							<h3>🎯 The Core Concept (Mool Vichar)</h3>
-							<p><strong>Is hip training program ka poora point yeh hai</strong> ki <strong>hum medial rotators ko lateral rotators ke saath balance karenge</strong>.</p>
+							<p><strong>Hip training program ka poora point yeh hai</strong> ki <strong>medial rotators ko lateral rotators ke saath balance karna zaroori hai</strong>.</p>
 							
-							<p><strong>Maine saalon se apne experience se dekha hai</strong> ki <strong>agar medial rotators weak hain</strong> aur <strong>lateral rotators strong hain</strong>, toh <strong>simply yahi hota hai</strong> ki <strong>yahi cheez hips aur legs mein sabhi injuries ka kaaran banti hai</strong>. <strong>Isse tightness bhi hoti hai</strong>.</p>
+							<p><strong>Research aur experience se pata chalta hai</strong> ki <strong>agar medial rotators weak hain</strong> aur <strong>lateral rotators strong hain</strong>, toh <strong>yahi imbalance hips aur legs mein sabhi injuries ka kaaran banta hai</strong>. <strong>Isse tightness bhi hoti hai</strong>.</p>
 							
 							<p><strong>Woh athletes jo har samay stretch karte hain</strong> ya <strong>traction rolling karte hain</strong>, <strong>aur unki flexibility improve nahi hoti</strong>, <strong>iska kaaran yeh hai</strong> ki <strong>lateral rotators strong hain</strong> aur <strong>medial rotators weak hain</strong>.</p>
 							
-							<p><strong>Sports training standpoint se</strong>, <strong>agar hum hips ke medial aur lateral rotators ko saath mein balance kar sakte hain</strong>, toh <strong>performance, speed, aur strength mein increase hogi</strong>.</p>
+							<p><strong>Sports training standpoint se</strong>, <strong>agar hips ke medial aur lateral rotators ko saath mein balance kiya jaye</strong>, toh <strong>performance, speed, aur strength mein increase hota hai</strong>.</p>
 						</div>
 
 						<div class="info-card">
@@ -831,7 +825,7 @@
 								<li><strong>Adductors</strong> (<strong>brevis, longus, aur gracilis</strong>)</li>
 							</ul>
 							<div class="note-box">
-								<p><strong>Medial Rotators ka Goal:</strong> <strong>Main goal</strong> yeh hai ki <strong>jab hum yeh exercises kar rahe hon</strong>, <strong>toh lateral rotators ko equation se poori tarah nikaal dena hai</strong>, <strong>aur sirf medial rotators par focus karna hai</strong>.</p>
+								<p><strong>Medial Rotators ka Goal:</strong> <strong>Main goal</strong> yeh hai ki <strong>jab yeh exercises kiye jaate hain</strong>, <strong>toh lateral rotators ko equation se poori tarah nikaal dena hai</strong>, <strong>aur sirf medial rotators par focus karna hai</strong>.</p>
 							</div>
 						</div>
 
@@ -840,13 +834,13 @@
 							<p>Training karte samay, <strong>Medial Rotation ko target karne ke liye</strong> yeh tareeke use hote hain:</p>
 							<ul class="training-tips">
 								<li>
-									<strong>Hip Extension Exercises</strong> (jaise hamstring work) mein, <strong>humein laterally rotate out nahi karna</strong>. <strong>Humein medially rotate in karna hai</strong> taaki <strong>semimembranosus par focus ho sake</strong>, instead of <strong>lateral rotator</strong> (<strong>bicep femoris</strong>) <strong>par saara pressure daalna</strong>.
+									<strong>Hip Extension Exercises</strong> (jaise hamstring work) mein, <strong>laterally rotate out nahi karna chahiye</strong>. <strong>Medially rotate in karna chahiye</strong> taaki <strong>semimembranosus par focus ho sake</strong>, instead of <strong>lateral rotator</strong> (<strong>bicep femoris</strong>) <strong>par saara pressure daalna</strong>.
 								</li>
 								<li>
-									<strong>Abduction exercises</strong> mein, <strong>hum foot ko is tarah turn out nahi hone denge</strong> aur <strong>laterally rotate nahi karenge</strong> <strong>taaki piriformis involve ho</strong>. <strong>Hum use baahar nikaalenge</strong> aur <strong>simply andar turn karenge</strong> taaki <strong>glute medius aur minimus par focus ho sake</strong>.
+									<strong>Abduction exercises</strong> mein, <strong>foot ko is tarah turn out nahi hone dena chahiye</strong> aur <strong>laterally rotate nahi karna chahiye</strong> <strong>taaki piriformis involve ho</strong>. <strong>Foot ko baahar nikaal kar</strong> aur <strong>simply andar turn karna chahiye</strong> taaki <strong>glute medius aur minimus par focus ho sake</strong>.
 								</li>
 								<li>
-									<strong>Adduction exercises</strong> mein, <strong>laterally rotate out nahi karna hai</strong> <strong>taaki Sartorius par zyada pressure pade</strong>. <strong>Humein medially rotate in karna hai</strong> taaki <strong>adductors par zyada focus ho sake</strong> aur <strong>Sartorius se pressure hatt jaaye</strong>.
+									<strong>Adduction exercises</strong> mein, <strong>laterally rotate out nahi karna hai</strong> <strong>taaki Sartorius par zyada pressure pade</strong>. <strong>Medially rotate in karna hai</strong> taaki <strong>adductors par zyada focus ho sake</strong> aur <strong>Sartorius se pressure hatt jaaye</strong>.
 								</li>
 							</ul>
 						</div>
@@ -858,6 +852,83 @@
 							<p><strong>In muscles ko isolate aur strengthen karne se</strong>, <strong>agar athletes chalte samay ya squat karte samay andar ki taraf cave in karte hain</strong>, <strong>toh yeh un knees ko kholne mein madad karega</strong>.</p>
 							
 							<p class="final-note">Agar aap <strong>rolling aur stretching kar rahe hain</strong> aur <strong>flexible hone mein struggle kar rahe hain</strong>, toh <strong>most likely iska kaaran yahi hai</strong> ki <strong>aapke medial aur lateral rotators ke beech imbalance hai</strong>, aur <strong>aapke lateral rotators compensate kar rahe hain</strong>, <strong>jo muscles ko clamp down kar rahe hain</strong>, <strong>aur aapko hamstrings, glutes, aur hip flexors aur groin ko stretch out nahi karne de rahe hain</strong>.</p>
+						</div>
+					</section>
+
+					<!-- Hip Flexor Pull Section -->
+					<section class="edu-section">
+						<div class="section-header">
+							<h2>🦵 Hip Flexor Pull</h2>
+						</div>
+
+						<div class="info-card">
+							<h3>📚 Introduction</h3>
+							<p><strong>Yeh guide</strong> <strong>hip flexor aur adductor pulls</strong> <strong>ke baare mein hai</strong>. <strong>Is guide mein</strong> <strong>teen alag-alag injuries</strong> ko cover kiya gaya hai <strong>jo in areas mein ho sakti hain</strong>. <strong>Pehle</strong> <strong>anatomy</strong> ke baare mein baat karte hain <strong>taaki samajh aaye ki</strong> <strong>why the pulls occur there</strong>.</p>
+						</div>
+
+						<div class="info-card highlight">
+							<h3>💡 Success Story</h3>
+							<p><strong>Ek client ko</strong> <strong>really bad hip flexor pull</strong> tha. <strong>Unke beta ko</strong> <strong>snapping hip syndrome</strong> tha, <strong>jo lagbhag</strong> <strong>teen saal</strong> se chal raha tha. <strong>Bahut saare doctors aur therapists ko dikhaya</strong>, <strong>par koi bhi</strong> <strong>100% dard se nikal nahi paaya</strong>. <strong>Do</strong> <strong>hip injections</strong> hue aur <strong>surgery</strong> ke baare mein bhi baat ho rahi thi. <strong>Corexcell therapy</strong> ke <strong>within six sessions</strong>, <strong>Bryce ab</strong> <strong>100% pain-free</strong> hai. <strong>Absolutely</strong> <strong>uske</strong> <strong>hip mein koi</strong> <strong>snapping</strong> nahi hai. <strong>Teen saal</strong> ka hip pain, <strong>six sessions</strong>, <strong>aur ab woh</strong> <strong>100% free</strong> hai.</p>
+						</div>
+
+						<div class="info-card">
+							<h3>🔬 Hip Flexor Anatomy</h3>
+							<p><strong>Hip flexor kya hai</strong> <strong>yeh samajhna zaroori hai</strong>. <strong>Main hip flexors hain</strong>:</p>
+							<ul class="muscle-list">
+								<li><strong>Rectus Femoris</strong></li>
+								<li><strong>Iliacus</strong></li>
+								<li><strong>Psoas</strong></li>
+							</ul>
+							<p><strong>Yeh hi hain jo</strong> <strong>hip ko upar drive karte hain</strong> (hip flexion). <strong>Aur</strong> <strong>front part</strong> ka hip flexor, <strong>sartorius aur</strong> <strong>TFL</strong>, <strong>woh bhi</strong> <strong>hip flexion</strong> mein <strong>aid</strong> karte hain.</p>
+							
+							<div class="note-box">
+								<p><strong>Sabse zaruri baat:</strong> <strong>Adductors</strong>—<strong>pectineus, brevis, longus, aur gracilis</strong>—<strong>woh bhi</strong> <strong>hip flexion mein kaam karte hain</strong>. <strong>Yeh iske liye ek bahut bada</strong> <strong>support structure</strong> hain.</p>
+								<p><strong>Lekin</strong> <strong>groin magnus</strong> (<strong>adductor magnus</strong>), <strong>bhale hi woh mainly ek adductor hai</strong>, <strong>lekin yeh</strong> <strong>only adductor in the chain hai jo</strong> <strong>hip flexion mein kaam nahi karta</strong>. <strong>Yeh</strong> <strong>adduction ka</strong> <strong>primary mover</strong> hai.</p>
+							</div>
+						</div>
+
+						<div class="info-card warning">
+							<h3>⚠️ Why Hip Flexor Pull Occurs (Kyun Hip Flexor Pull Hota Hai)</h3>
+							<p><strong>Jab</strong> <strong>pulls</strong> <strong>aate hain</strong> <strong>basically</strong> <strong>right through this front section</strong>—<strong>top front of the hip flexor</strong>. <strong>Agar ise</strong> <strong>break up</strong> <strong>karein</strong> <strong>right down the center, high on the center</strong>, <strong>toh</strong> <strong>ek</strong> <strong>impingement</strong> <strong>mil sakta hai</strong>, <strong>ya</strong> <strong>pain</strong>, <strong>ya</strong> <strong>just</strong> <strong>thoda sa uske upar</strong> <strong>like an inch</strong>.</p>
+							
+							<p><strong>Jab</strong> <strong>pain</strong> <strong>is</strong> <strong>kind of section</strong> <strong>mein aana shuru hota hai</strong>, <strong>toh iska kaaran yeh hai ki</strong> <strong>the adductor chain here is extremely weak</strong>.</p>
+							
+							<p><strong>Aur isliye</strong> <strong>this part of your hip flexor</strong> (<strong>jahaan</strong> <strong>rectus femoris aur sartorius milte hain</strong>) <strong>has to start over working</strong>.</p>
+							
+							<p><strong>Jab dard</strong> <strong>top of the hip flexor</strong> <strong>par aata hai</strong>, <strong>toh iska matlab hai ki usse</strong> <strong>adductor chain se</strong> <strong>support</strong> <strong>nahi mil raha hai</strong>.</p>
+							
+							<div class="note-box">
+								<p><strong>Solution:</strong> <strong>Strengthen up your adductors</strong> <strong>is tarah se</strong> <strong>in order to</strong> <strong>take the pressure off of this up here</strong> (top hip flexor).</p>
+							</div>
+						</div>
+
+						<div class="info-card success">
+							<h3>✅ Support Structure Importance</h3>
+							<p><strong>Glute medius aur minimus bhi</strong> <strong>medial rotation</strong> <strong>mein iske saath kaam karte hain</strong>. <strong>Toh isko bhi</strong> <strong>strengthen</strong> <strong>karne se</strong> <strong>yeh ek bahut hi mazboot</strong> <strong>unit</strong> <strong>ban jaata hai</strong>.</p>
+							
+							<p><strong>Yeh bahut hi zaroori hai ki</strong> <strong>strength</strong> <strong>create ki jaaye</strong> <strong>in</strong> <strong>both these areas</strong> (<strong>adductors, glute medius/minimus</strong>) <strong>in order to</strong> <strong>take the pressure off here</strong> (<strong>top hip flexor</strong>).</p>
+						</div>
+
+						<div class="info-card warning">
+							<h3>⚠️ Hip Snapping aur Popping (Impingement)</h3>
+							<p><strong>Hip snapping aur popping bhi hota hai</strong>. <strong>Agar aapke adductors aur</strong> <strong>glute medius</strong> <strong>aur</strong> <strong>minimus</strong> <strong>kamzor hain</strong>, <strong>toh aapko</strong> <strong>hip impingement</strong> <strong>hona shuru ho jaata hai</strong>. <strong>Kyunki saara</strong> <strong>torque</strong> <strong>aur</strong> <strong>pressure</strong> <strong>ab</strong> <strong>rectus femoris aur</strong> <strong>psoas</strong> <strong>par jaata hai</strong>.</p>
+							
+							<p><strong>Jab</strong> <strong>rectus femoris overworked</strong> <strong>hona shuru ho jaata hai</strong>, <strong>uske paas</strong> <strong>support</strong> <strong>nahi hota</strong>, <strong>hips</strong> <strong>out of alignment</strong> <strong>hote hain</strong>. <strong>Har baar jab aap apna ghutna upar uthate hain</strong>, <strong>woh</strong> <strong>rubs right over</strong> <strong>uss</strong> <strong>hip bone</strong> <strong>par</strong>, <strong>aur wahin aapko</strong> <strong>snap</strong> <strong>milta hai</strong> <strong>right through here</strong>.</p>
+							
+							<div class="note-box warning-box">
+								<p><strong>⚠️ Important:</strong> <strong>Is chot ke saath sabse buri cheez jo aap kar sakte hain woh hai</strong> <strong>to do exercise and evolve</strong> <strong>hip flexion</strong>. <strong>Pehle</strong> <strong>support structure</strong> <strong>banao</strong> (<strong>adductors aur glute medius/minimus</strong>), <strong>fir aap</strong> <strong>later phase</strong> <strong>mein waapas jaa sakte ho aur</strong> <strong>hip flexion</strong> <strong>shuru kar sakte ho</strong>. <strong>Tab</strong> <strong>pressure</strong> <strong>uss area se hatt jaayega</strong>.</p>
+							</div>
+						</div>
+
+						<div class="info-card highlight">
+							<h3>🎯 Key Takeaways</h3>
+							<ul class="summary-list">
+								<li>✅ <strong>Hip flexor pulls</strong> <strong>ka main kaaran</strong> <strong>weak adductor chain</strong> <strong>hai</strong></li>
+								<li>✅ <strong>Top hip flexor</strong> <strong>overwork</strong> <strong>hota hai jab</strong> <strong>adductors weak</strong> <strong>hote hain</strong></li>
+								<li>✅ <strong>Glute medius aur minimus</strong> <strong>ko bhi strengthen karna zaroori hai</strong> <strong>medial rotation support ke liye</strong></li>
+								<li>✅ <strong>Hip snapping/popping</strong> <strong>adductor aur glute weakness</strong> <strong>ki wajah se hota hai</strong></li>
+								<li>✅ <strong>Pehle support structure banao</strong> (<strong>adductors, glute medius/minimus</strong>), <strong>fir hip flexion exercises shuru karein</strong></li>
+							</ul>
 						</div>
 					</section>
 				</div>
@@ -1667,6 +1738,11 @@
 
 	.note-box p:last-child {
 		margin-bottom: 0;
+	}
+
+	.note-box.warning-box {
+		background: rgba(255, 107, 107, 0.15);
+		border-left-color: #ff6b6b;
 	}
 
 	.info-card.warning {

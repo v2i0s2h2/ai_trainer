@@ -623,6 +623,289 @@ EXERCISES = [
                 "Watch for controlled movement without compensation"
             ]
         }
+    },
+    {
+        "id": "weighted-pull-ups",
+        "name": "Weighted Pull-ups",
+        "exercise_type": "advanced",
+        "category": "upper",
+        "difficulty": "advanced",
+        "duration": 10,
+        "sets": 1,
+        "reps": 12,
+        "thumbnail": "/images/exercises/pull-ups.jpg",
+        "description": "Exercise starts in video. NOTE: Requires gym equipment (assisted pull-up machine for warm-up, pull-up bar with weight attachment for working set). Cannot be performed at home without proper setup.",
+        "target_muscles": ["Latissimus Dorsi", "Rhomboids", "Middle Trapezius", "Rear Deltoids", "Biceps", "Brachialis"],
+        "youtube_link": "https://youtu.be/s8irV9uIxgI?si=W5rk10Gpfk9eexqS",
+        "weight_progression": {
+            "starting_weight_lbs": 0.0,
+            "progression_range": "Bodyweight to 10-20 lbs",
+            "progression_notes": "Start with assisted pull-ups (20 lbs assist) to build form. Once you can do 11-12 reps with bodyweight, add 5 lbs weight. Focus on correct form: stay back, drive arms to bottom of chest, no shrug. All-out set to failure. If you hit 7-9 reps, use rest-pause (15-30 second rest, then more reps)."
+        },
+        "equipment": [
+            {
+                "name": "Assisted Pull-up Machine",
+                "required": True,
+                "description": "Gym machine with ankle strap for assisted pull-ups (warm-up: 20 lbs assist). Required for form building.",
+                "image": None,
+                "link": "https://example.com/buy/assisted-pull-up-machine"
+            },
+            {
+                "name": "Pull-up Bar with Weight Attachment",
+                "required": True,
+                "description": "Gym pull-up bar with weight belt attachment for weighted pull-ups (working set: 5-20 lbs added weight)",
+                "image": None,
+                "link": "https://example.com/buy/pull-up-bar"
+            },
+            {
+                "name": "Weight Belt",
+                "required": True,
+                "description": "Weight belt for adding weight to pull-ups (5-20 lbs progression)",
+                "image": None,
+                "link": "https://example.com/buy/weight-belt"
+            }
+        ],
+        "camera_position": {
+            "distance": "2-3 meters away",
+            "angle": "Side view (90°) or front view",
+            "height": "Chest to head level",
+            "tips": [
+                "Place camera to capture full body from side or front",
+                "Ensure pull-up bar and full range of motion is visible",
+                "Camera should show body position and arm drive to chest",
+                "Watch for proper form: stay back, no shrug, controlled movement"
+            ]
+        }
+    },
+    {
+        "id": "close-grip-pull-down",
+        "name": "Close Grip Pull Down",
+        "exercise_type": "advanced",
+        "category": "upper",
+        "difficulty": "advanced",
+        "duration": 5,
+        "sets": 1,
+        "reps": 12,
+        "thumbnail": "/images/exercises/pull-down.jpg",
+        "description": "Exercise starts in video. NOTE: This exercise requires gym equipment (pulldown machine). Cannot be performed at home.",
+        "target_muscles": ["Latissimus Dorsi", "Rhomboids", "Middle Trapezius", "Biceps", "Brachialis"],
+        "youtube_link": "https://youtu.be/s8irV9uIxgI?si=W5rk10Gpfk9eexqS",
+        "weight_progression": {
+            "starting_weight_lbs": 100.0,
+            "progression_range": "100-120 lbs",
+            "progression_notes": "Warm up with 20 lbs less than working weight (100 lbs warm-up, 120 lbs working set). Working set: all-out to failure. Goal is 11-12 reps before increasing weight. Take small pause at bottom for muscle connection and control. After working set, perform drop set for additional volume."
+        },
+        "equipment": [
+            {
+                "name": "Pulldown Machine (Cable System)",
+                "required": True,
+                "description": "Gym pulldown machine with cable system. Warm-up: 100 lbs, Working set: 120 lbs. Required - cannot be done at home.",
+                "image": None,
+                "link": "https://example.com/buy/pulldown-machine"
+            },
+            {
+                "name": "Close Grip Handle",
+                "required": True,
+                "description": "Close grip attachment for pulldown machine",
+                "image": None,
+                "link": "https://example.com/buy/close-grip-handle"
+            }
+        ],
+        "camera_position": {
+            "distance": "2-2.5 meters away",
+            "angle": "Side view (90°)",
+            "height": "Chest to head level",
+            "tips": [
+                "Place camera on your side to see full range of motion",
+                "Ensure cable machine and handle position are visible",
+                "Camera should capture controlled pull-down with pause at bottom",
+                "Watch for proper lat engagement and muscle connection"
+            ]
+        }
+    },
+    {
+        "id": "wide-grip-row",
+        "name": "Wide Grip Row",
+        "exercise_type": "advanced",
+        "category": "upper",
+        "difficulty": "advanced",
+        "duration": 5,
+        "sets": 1,
+        "reps": 9,
+        "thumbnail": "/images/exercises/row.jpg",
+        "description": "Exercise starts in video. NOTE: This exercise requires gym equipment (wide grip row machine). Cannot be performed at home.",
+        "target_muscles": ["Upper Latissimus Dorsi", "Rhomboids", "Middle Trapezius", "Rear Deltoids"],
+        "youtube_link": "https://youtu.be/s8irV9uIxgI?si=W5rk10Gpfk9eexqS",
+        "weight_progression": {
+            "starting_weight_lbs": 90.0,
+            "progression_range": "90-110 lbs",
+            "progression_notes": "Warm up with 20 lbs less than working weight (90 lbs warm-up, 110 lbs working set). Working set: all-out to failure. Goal is 9 reps. This exercise targets upper section of lats. Fatigue from previous exercises may affect performance, which is normal."
+        },
+        "equipment": [
+            {
+                "name": "Wide Grip Row Machine",
+                "required": True,
+                "description": "Gym row machine with wide grip handle. Warm-up: 90 lbs, Working set: 110 lbs. Required - cannot be done at home.",
+                "image": None,
+                "link": "https://example.com/buy/row-machine"
+            },
+            {
+                "name": "Wide Grip Handle",
+                "required": True,
+                "description": "Wide grip handle attachment for row machine",
+                "image": None,
+                "link": "https://example.com/buy/wide-grip-handle"
+            }
+        ],
+        "camera_position": {
+            "distance": "2-2.5 meters away",
+            "angle": "Side view (90°)",
+            "height": "Chest level",
+            "tips": [
+                "Place camera on your side to see rowing motion",
+                "Ensure cable machine and handle position are visible",
+                "Camera should capture upper lat engagement",
+                "Watch for controlled rowing motion and proper form"
+            ]
+        }
+    },
+    {
+        "id": "single-arm-row",
+        "name": "Single Arm Row (Cable Machine)",
+        "exercise_type": "advanced",
+        "category": "upper",
+        "difficulty": "advanced",
+        "duration": 5,
+        "sets": 1,
+        "reps": 9,
+        "thumbnail": "/images/exercises/row.jpg",
+        "description": "Exercise starts in video. NOTE: This exercise requires gym equipment (cable machine). Preferred over dumbbell rows for less hip pressure. Cannot be performed at home.",
+        "target_muscles": ["Latissimus Dorsi", "Rhomboids", "Middle Trapezius", "Rear Deltoids", "Biceps"],
+        "youtube_link": "https://youtu.be/s8irV9uIxgI?si=W5rk10Gpfk9eexqS",
+        "weight_progression": {
+            "starting_weight_lbs": 80.0,
+            "progression_range": "80-100 lbs",
+            "progression_notes": "Preferred over dumbbell rows for less hip pressure. Warm up first, then working set at 100 units (10). All-out set to failure. Single arm allows for better muscle connection and focus. No rest-pause needed if already fatigued from previous exercises."
+        },
+        "equipment": [
+            {
+                "name": "Cable Machine",
+                "required": True,
+                "description": "Gym cable machine with single handle attachment. Working set: 100 units (10). Required - cannot be done at home.",
+                "image": None,
+                "link": "https://example.com/buy/cable-machine"
+            },
+            {
+                "name": "Single Handle",
+                "required": True,
+                "description": "Single handle attachment for cable machine rowing",
+                "image": None,
+                "link": "https://example.com/buy/single-handle"
+            }
+        ],
+        "camera_position": {
+            "distance": "2-2.5 meters away",
+            "angle": "Side view (90°)",
+            "height": "Chest level",
+            "tips": [
+                "Place camera on your side to see single arm rowing motion",
+                "Ensure cable machine and handle position are visible",
+                "Camera should capture full range of motion and muscle engagement",
+                "Watch for proper form and controlled movement"
+            ]
+        }
+    },
+    {
+        "id": "weighted-dips",
+        "name": "Dips Off The Bench (Weighted)",
+        "exercise_type": "advanced",
+        "category": "upper",
+        "difficulty": "advanced",
+        "duration": 5,
+        "sets": 1,
+        "reps": 15,
+        "thumbnail": "/images/exercises/dips.jpg",
+        "description": "Exercise starts in video. NOTE: Can be performed at home with bench and dumbbell.",
+        "target_muscles": ["Triceps Brachii", "Anterior Deltoids", "Pectoralis Major (Lower)", "Triceps Horseshoe"],
+        "youtube_link": "https://youtu.be/s8irV9uIxgI?si=W5rk10Gpfk9eexqS",
+        "weight_progression": {
+            "starting_weight_lbs": 70.0,
+            "progression_range": "70-80 lbs",
+            "progression_notes": "Best exercise for tricep development and horseshoe shape. Keep reps in 12-15 failure range. Warm up first, then working set with 80 lb dumbbell. Once you hit 15 reps, increase weight next week. After weighted set, perform bodyweight burnout for additional volume."
+        },
+        "equipment": [
+            {
+                "name": "Bench",
+                "required": True,
+                "description": "Flat bench for dips off the bench. Can use home bench or gym bench.",
+                "image": None,
+                "link": "https://example.com/buy/bench"
+            },
+            {
+                "name": "Dumbbell",
+                "required": True,
+                "description": "Weighted dumbbell (70-80 lbs) placed on lap during dips",
+                "image": None,
+                "link": "https://example.com/buy/dumbbells"
+            }
+        ],
+        "camera_position": {
+            "distance": "2-3 meters away",
+            "angle": "Side view (90°)",
+            "height": "Chest to head level",
+            "tips": [
+                "Place camera on your side to see full dip motion",
+                "Ensure bench and full range of motion are visible",
+                "Camera should capture tricep engagement and contraction",
+                "Watch for proper form and controlled movement"
+            ]
+        }
+    },
+    {
+        "id": "incline-skull-crushers",
+        "name": "Incline Skull Crushers (Dumbbells)",
+        "exercise_type": "advanced",
+        "category": "upper",
+        "difficulty": "advanced",
+        "duration": 5,
+        "sets": 1,
+        "reps": 12,
+        "thumbnail": "/images/exercises/skull-crushers.jpg",
+        "description": "Exercise starts in video. NOTE: Can be performed at home with adjustable incline bench and dumbbells.",
+        "target_muscles": ["Triceps Brachii", "Triceps Long Head", "Triceps Lateral Head", "Triceps Medial Head"],
+        "youtube_link": "https://youtu.be/s8irV9uIxgI?si=W5rk10Gpfk9eexqS",
+        "weight_progression": {
+            "starting_weight_lbs": 30.0,
+            "progression_range": "30-35 lbs",
+            "progression_notes": "Incline version reduces elbow torque compared to flat skull crushers. Warm up first, then working set with 35 lb dumbbells. Goal is 7-12 reps. If you hit 12 reps, increase weight next week. All-out set to failure. No drop set if already fatigued."
+        },
+        "equipment": [
+            {
+                "name": "Adjustable Incline Bench",
+                "required": True,
+                "description": "Incline bench (30-45 degrees) for skull crushers. Can use adjustable home bench or gym bench.",
+                "image": None,
+                "link": "https://example.com/buy/incline-bench"
+            },
+            {
+                "name": "Dumbbells",
+                "required": True,
+                "description": "Dumbbells (30-35 lbs each) for incline skull crushers",
+                "image": None,
+                "link": "https://example.com/buy/dumbbells"
+            }
+        ],
+        "camera_position": {
+            "distance": "2-2.5 meters away",
+            "angle": "Side view (90°) or front view",
+            "height": "Chest to head level",
+            "tips": [
+                "Place camera on your side to see full tricep extension",
+                "Ensure incline bench and dumbbell position are visible",
+                "Camera should capture tricep engagement and controlled movement",
+                "Watch for proper elbow position and reduced torque"
+            ]
+        }
     }
 ]
 

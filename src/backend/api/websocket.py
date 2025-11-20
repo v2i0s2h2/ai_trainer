@@ -250,8 +250,26 @@ class WorkoutStreamManager:
             except Exception as e:
                 logger.error(f"Error initializing DepressionRowTrainer: {e}")
                 raise ValueError(f"Depression Row trainer not available: {e}")
+        elif "weightedpullup" in exercise_lower or ("weighted" in exercise_lower and "pull" in exercise_lower):
+            # Weighted Pull-ups - use PullupTrainer
+            return PullupTrainer()
+        elif "closegrippulldown" in exercise_lower or ("close" in exercise_lower and "grip" in exercise_lower and "pull" in exercise_lower):
+            # Close Grip Pull Down - use PullupTrainer
+            return PullupTrainer()
+        elif "widegriprow" in exercise_lower or ("wide" in exercise_lower and "grip" in exercise_lower and "row" in exercise_lower):
+            # Wide Grip Row - use RowTrainer
+            return RowTrainer()
+        elif "singlearmrow" in exercise_lower or ("single" in exercise_lower and "arm" in exercise_lower and "row" in exercise_lower):
+            # Single Arm Row - use RowTrainer
+            return RowTrainer()
+        elif "weighteddip" in exercise_lower or ("weighted" in exercise_lower and "dip" in exercise_lower):
+            # Weighted Dips - use TricepDipTrainer
+            return TricepDipTrainer()
+        elif "inclineskullcrusher" in exercise_lower or ("incline" in exercise_lower and "skull" in exercise_lower):
+            # Incline Skull Crushers - use TricepDipTrainer
+            return TricepDipTrainer()
         else:
-            available = "wall-squat, plank, rear-delt-raise, pant-pull, pad-cuff, glute-fly, knee-drop, hamstring-medial-bridge, ball-squeeze, quad-stretch, depression-row"
+            available = "wall-squat, plank, rear-delt-raise, pant-pull, pad-cuff, glute-fly, knee-drop, hamstring-medial-bridge, ball-squeeze, quad-stretch, depression-row, weighted-pull-ups, close-grip-pull-down, wide-grip-row, single-arm-row, weighted-dips, incline-skull-crushers"
             raise ValueError(f"Unknown exercise: {self.exercise}. Available: {available}")
     
     async def stream_frames(self, websocket: WebSocket, camera_device: str = "auto"):

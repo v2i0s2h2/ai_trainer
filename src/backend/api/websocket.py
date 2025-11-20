@@ -268,8 +268,26 @@ class WorkoutStreamManager:
         elif "inclineskullcrusher" in exercise_lower or ("incline" in exercise_lower and "skull" in exercise_lower):
             # Incline Skull Crushers - use TricepDipTrainer
             return TricepDipTrainer()
+        elif "inclinebenchpress" in exercise_lower or ("incline" in exercise_lower and "bench" in exercise_lower and "press" in exercise_lower):
+            # Incline Bench Press - use PushupTrainer for now
+            return PushupTrainer()
+        elif "flatdumbbellbenchpress" in exercise_lower or ("flat" in exercise_lower and "dumbbell" in exercise_lower and "bench" in exercise_lower):
+            # Flat Dumbbell Bench Press - use PushupTrainer for now
+            return PushupTrainer()
+        elif "cablecrossover" in exercise_lower or ("cable" in exercise_lower and ("crossover" in exercise_lower or "fly" in exercise_lower)):
+            # Cable Crossovers/Flys - use PushupTrainer for now
+            return PushupTrainer()
+        elif "hammercurl" in exercise_lower or ("hammer" in exercise_lower and "curl" in exercise_lower):
+            # Hammer Curls - use BicepCurlTrainer
+            return BicepCurlTrainer()
+        elif "barbellcurl" in exercise_lower or ("barbell" in exercise_lower and "curl" in exercise_lower):
+            # Barbell Curls - use BicepCurlTrainer
+            return BicepCurlTrainer()
+        elif "cablecrunch" in exercise_lower or ("cable" in exercise_lower and "crunch" in exercise_lower):
+            # Cable Crunch - use CrunchTrainer
+            return CrunchTrainer()
         else:
-            available = "wall-squat, plank, rear-delt-raise, pant-pull, pad-cuff, glute-fly, knee-drop, hamstring-medial-bridge, ball-squeeze, quad-stretch, depression-row, weighted-pull-ups, close-grip-pull-down, wide-grip-row, single-arm-row, weighted-dips, incline-skull-crushers"
+            available = "wall-squat, plank, rear-delt-raise, pant-pull, pad-cuff, glute-fly, knee-drop, hamstring-medial-bridge, ball-squeeze, quad-stretch, depression-row, weighted-pull-ups, close-grip-pull-down, wide-grip-row, single-arm-row, weighted-dips, incline-skull-crushers, incline-bench-press, flat-dumbbell-bench-press, cable-crossovers, hammer-curls, barbell-curls, cable-crunch"
             raise ValueError(f"Unknown exercise: {self.exercise}. Available: {available}")
     
     async def stream_frames(self, websocket: WebSocket, camera_device: str = "auto"):

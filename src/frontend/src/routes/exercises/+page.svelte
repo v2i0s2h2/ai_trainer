@@ -52,6 +52,31 @@
 	function getLowerExercises(type: string) {
 		return getExercisesByTypeAndCategory(type, 'lower');
 	}
+	
+	// For advanced section: split upper body into Back/Triceps and Chest/Biceps
+	function getBackAndTricepsExercises() {
+		const backTricepsIds = [
+			'weighted-pull-ups',
+			'close-grip-pull-down',
+			'wide-grip-row',
+			'single-arm-row',
+			'weighted-dips',
+			'incline-skull-crushers'
+		];
+		return getUpperExercises('advanced').filter(ex => backTricepsIds.includes(ex.id));
+	}
+	
+	function getChestAndBicepsExercises() {
+		const chestBicepsIds = [
+			'incline-bench-press',
+			'flat-dumbbell-bench-press',
+			'cable-crossovers',
+			'hammer-curls',
+			'barbell-curls',
+			'cable-crunch'
+		];
+		return getUpperExercises('advanced').filter(ex => chestBicepsIds.includes(ex.id));
+	}
 </script>
 
 <div class="exercises-container">
@@ -114,21 +139,55 @@
 		</div>
 	{:else}
 		<div class="exercises-content">
-			<!-- Upper Body Section -->
-			<div class="section">
-				<h2 class="section-title">
-					<span class="section-icon">⬆️</span>
-					{selectedExerciseType === 'advanced' ? 'Back and Triceps' : 'Upper Body'}
-				</h2>
-				{#if getUpperExercises(selectedExerciseType).length > 0}
-					<ExerciseGrid exercises={getUpperExercises(selectedExerciseType)} />
-				{:else}
-					<div class="empty-section">
-						<p>No {selectedExerciseType === 'advanced' ? 'back and triceps' : 'upper body'} exercises available yet.</p>
-						<p class="coming-soon">More exercises coming soon! 🚀</p>
-					</div>
-				{/if}
-			</div>
+			{#if selectedExerciseType === 'advanced'}
+				<!-- Back and Triceps Section -->
+				<div class="section">
+					<h2 class="section-title">
+						<span class="section-icon">⬆️</span>
+						Back and Triceps
+					</h2>
+					{#if getBackAndTricepsExercises().length > 0}
+						<ExerciseGrid exercises={getBackAndTricepsExercises()} />
+					{:else}
+						<div class="empty-section">
+							<p>No back and triceps exercises available yet.</p>
+							<p class="coming-soon">More exercises coming soon! 🚀</p>
+						</div>
+					{/if}
+				</div>
+				
+				<!-- Chest and Biceps Section -->
+				<div class="section">
+					<h2 class="section-title">
+						<span class="section-icon">💪</span>
+						Chest and Biceps
+					</h2>
+					{#if getChestAndBicepsExercises().length > 0}
+						<ExerciseGrid exercises={getChestAndBicepsExercises()} />
+					{:else}
+						<div class="empty-section">
+							<p>No chest and biceps exercises available yet.</p>
+							<p class="coming-soon">More exercises coming soon! 🚀</p>
+						</div>
+					{/if}
+				</div>
+			{:else}
+				<!-- Upper Body Section (for non-advanced) -->
+				<div class="section">
+					<h2 class="section-title">
+						<span class="section-icon">⬆️</span>
+						Upper Body
+					</h2>
+					{#if getUpperExercises(selectedExerciseType).length > 0}
+						<ExerciseGrid exercises={getUpperExercises(selectedExerciseType)} />
+					{:else}
+						<div class="empty-section">
+							<p>No upper body exercises available yet.</p>
+							<p class="coming-soon">More exercises coming soon! 🚀</p>
+						</div>
+					{/if}
+				</div>
+			{/if}
 			
 			<!-- Lower Body Section -->
 			<div class="section">

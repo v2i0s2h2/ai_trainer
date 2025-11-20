@@ -906,6 +906,247 @@ EXERCISES = [
                 "Watch for proper elbow position and reduced torque"
             ]
         }
+    },
+    {
+        "id": "incline-bench-press",
+        "name": "Incline Bench Press",
+        "exercise_type": "advanced",
+        "category": "upper",
+        "difficulty": "advanced",
+        "duration": 10,
+        "sets": 1,
+        "reps": 12,
+        "thumbnail": "/images/exercises/bench-press.jpg",
+        "description": "Exercise starts in video. NOTE: Requires gym equipment (incline bench press machine or barbell with incline bench). Cannot be performed at home.",
+        "target_muscles": ["Pectoralis Major (Upper)", "Anterior Deltoids", "Triceps Brachii"],
+        "youtube_link": "https://youtu.be/s8irV9uIxgI?si=W5rk10Gpfk9eexqS",
+        "weight_progression": {
+            "starting_weight_lbs": 0.0,
+            "progression_range": "Varies by strength level",
+            "progression_notes": "Warm up with 10-15 lbs less than working weight (8 reps). Working set: all-out to failure. Goal is 10-12 reps. Once you hit 12 reps, increase weight next week. Use rest-pause after failure for 2-3 extra reps. Grip: Pinky on bench notch, hands slightly inside elbows (like dumbbell press position). Avoid wider grip to reduce shoulder pressure."
+        },
+        "equipment": [
+            {
+                "name": "Incline Bench Press Machine",
+                "required": True,
+                "description": "Gym incline bench press machine (30-45 degree angle) or barbell with incline bench",
+                "image": None,
+                "link": "https://example.com/buy/incline-bench-press"
+            }
+        ],
+        "camera_position": {
+            "distance": "2-3 meters away",
+            "angle": "Side view (90°)",
+            "height": "Chest to head level",
+            "tips": [
+                "Place camera on your side to see full bench press motion",
+                "Ensure bench angle and full range of motion are visible",
+                "Camera should capture proper grip position and bar path",
+                "Watch for controlled movement and proper form"
+            ]
+        }
+    },
+    {
+        "id": "flat-dumbbell-bench-press",
+        "name": "Flat Dumbbell Bench Press",
+        "exercise_type": "advanced",
+        "category": "upper",
+        "difficulty": "advanced",
+        "duration": 8,
+        "sets": 1,
+        "reps": 8,
+        "thumbnail": "/images/exercises/bench-press.jpg",
+        "description": "Exercise starts in video. NOTE: Requires gym equipment (flat bench and heavy dumbbells). Cannot be performed at home without proper setup.",
+        "target_muscles": ["Pectoralis Major", "Anterior Deltoids", "Triceps Brachii"],
+        "youtube_link": "https://youtu.be/s8irV9uIxgI?si=W5rk10Gpfk9eexqS",
+        "weight_progression": {
+            "starting_weight_lbs": 70.0,
+            "progression_range": "70-80 lbs",
+            "progression_notes": "Working set with 80 lbs dumbbells. Goal is 8 reps. Once you hit target reps, increase weight next week. Take 3-4 minute rest before working set. After working set, perform quick drop set (e.g., 80 lbs to 60 lbs). No rest-pause with dumbbells (too risky)."
+        },
+        "equipment": [
+            {
+                "name": "Flat Bench",
+                "required": True,
+                "description": "Gym flat bench for dumbbell press",
+                "image": None,
+                "link": "https://example.com/buy/bench"
+            },
+            {
+                "name": "Heavy Dumbbells",
+                "required": True,
+                "description": "Heavy dumbbells (70-80 lbs each) for bench press",
+                "image": None,
+                "link": "https://example.com/buy/dumbbells"
+            }
+        ],
+        "camera_position": {
+            "distance": "2-3 meters away",
+            "angle": "Side view (90°)",
+            "height": "Chest level",
+            "tips": [
+                "Place camera on your side to see full dumbbell press motion",
+                "Ensure bench and full range of motion are visible",
+                "Camera should capture controlled movement and proper form",
+                "Watch for proper dumbbell path and chest engagement"
+            ]
+        }
+    },
+    {
+        "id": "cable-crossovers",
+        "name": "Cable Crossovers/Flys",
+        "exercise_type": "advanced",
+        "category": "upper",
+        "difficulty": "advanced",
+        "duration": 5,
+        "sets": 1,
+        "reps": 12,
+        "thumbnail": "/images/exercises/cable-fly.jpg",
+        "description": "Exercise starts in video. NOTE: Requires gym equipment (cable machine). Cannot be performed at home.",
+        "target_muscles": ["Pectoralis Major (Inner)", "Anterior Deltoids"],
+        "youtube_link": "https://youtu.be/s8irV9uIxgI?si=W5rk10Gpfk9eexqS",
+        "weight_progression": {
+            "starting_weight_lbs": 0.0,
+            "progression_range": "Varies by strength level",
+            "progression_notes": "Warm up first, then all-out set to failure. Goal is 12 solid reps. Don't go too far back - only go back as far as you can without shrugging and while maintaining inner chest connection. After failure, perform partials for total fatigue (these don't count in main rep count)."
+        },
+        "equipment": [
+            {
+                "name": "Cable Machine",
+                "required": True,
+                "description": "Gym cable machine with cable crossover setup",
+                "image": None,
+                "link": "https://example.com/buy/cable-machine"
+            }
+        ],
+        "camera_position": {
+            "distance": "2-2.5 meters away",
+            "angle": "Front view or side view (90°)",
+            "height": "Chest level",
+            "tips": [
+                "Place camera in front or side to see cable fly motion",
+                "Ensure cable machine and full range of motion are visible",
+                "Camera should capture inner chest engagement",
+                "Watch for proper form - don't go too far back, maintain chest connection"
+            ]
+        }
+    },
+    {
+        "id": "hammer-curls",
+        "name": "Hammer Curls",
+        "exercise_type": "advanced",
+        "category": "upper",
+        "difficulty": "advanced",
+        "duration": 5,
+        "sets": 1,
+        "reps": 8,
+        "thumbnail": "/images/exercises/bicep-curl.jpg",
+        "description": "Exercise starts in video. NOTE: Requires gym equipment (dumbbells). Safer alternative to regular curls for elbow pressure.",
+        "target_muscles": ["Biceps Brachii", "Brachialis", "Brachioradialis", "Forearm Extensors"],
+        "youtube_link": "https://youtu.be/s8irV9uIxgI?si=W5rk10Gpfk9eexqS",
+        "weight_progression": {
+            "starting_weight_lbs": 30.0,
+            "progression_range": "30-35 lbs",
+            "progression_notes": "Warm up with 30 lbs (12 reps target). Working set with 35 lbs (7-8 reps target). If too much elbow pressure, drop weight and do lighter high reps (15-20) for burnout. Hammer curls put more pressure on wrist extensors."
+        },
+        "equipment": [
+            {
+                "name": "Dumbbells",
+                "required": True,
+                "description": "Dumbbells (30-35 lbs each) for hammer curls",
+                "image": None,
+                "link": "https://example.com/buy/dumbbells"
+            }
+        ],
+        "camera_position": {
+            "distance": "2-2.5 meters away",
+            "angle": "Front view or side view (90°)",
+            "height": "Chest to shoulder level",
+            "tips": [
+                "Place camera in front or side to see hammer curl motion",
+                "Ensure full range of motion and arm position are visible",
+                "Camera should capture bicep and forearm engagement",
+                "Watch for proper form and controlled movement"
+            ]
+        }
+    },
+    {
+        "id": "barbell-curls",
+        "name": "Barbell Curls",
+        "exercise_type": "advanced",
+        "category": "upper",
+        "difficulty": "advanced",
+        "duration": 5,
+        "sets": 1,
+        "reps": 12,
+        "thumbnail": "/images/exercises/bicep-curl.jpg",
+        "description": "Exercise starts in video. NOTE: Requires gym equipment (barbell). Cannot be performed at home.",
+        "target_muscles": ["Biceps Brachii", "Brachialis", "Forearm Flexors"],
+        "youtube_link": "https://youtu.be/s8irV9uIxgI?si=W5rk10Gpfk9eexqS",
+        "weight_progression": {
+            "starting_weight_lbs": 0.0,
+            "progression_range": "Varies by strength level",
+            "progression_notes": "Quick 2-rep warm-up, then 1.5 minute rest before working set. When you fail, use swing to get weight up, then focus on eccentric (negative) portion for 4 extra reps. This technique helps maximize volume after failure."
+        },
+        "equipment": [
+            {
+                "name": "Barbell",
+                "required": True,
+                "description": "Gym barbell with appropriate weight plates",
+                "image": None,
+                "link": "https://example.com/buy/barbell"
+            }
+        ],
+        "camera_position": {
+            "distance": "2-2.5 meters away",
+            "angle": "Front view or side view (90°)",
+            "height": "Chest to shoulder level",
+            "tips": [
+                "Place camera in front or side to see barbell curl motion",
+                "Ensure full range of motion and bar path are visible",
+                "Camera should capture bicep engagement and form",
+                "Watch for controlled movement and proper technique"
+            ]
+        }
+    },
+    {
+        "id": "cable-crunch",
+        "name": "Cable Crunch/Ab Roll",
+        "exercise_type": "advanced",
+        "category": "upper",
+        "difficulty": "advanced",
+        "duration": 5,
+        "sets": 1,
+        "reps": 15,
+        "thumbnail": "/images/exercises/crunch.jpg",
+        "description": "Exercise starts in video. NOTE: Requires gym equipment (cable system). Cannot be performed at home.",
+        "target_muscles": ["Rectus Abdominis", "Obliques", "Transverse Abdominis"],
+        "youtube_link": "https://youtu.be/s8irV9uIxgI?si=W5rk10Gpfk9eexqS",
+        "weight_progression": {
+            "starting_weight_lbs": 0.0,
+            "progression_range": "Bodyweight to weighted",
+            "progression_notes": "Performed on knees using cable system. Focus on squeezing butt and tucking under. If you feel pressure in low back, you're not ready for this position. Should only feel abs, not low back. Usually paired with side raises for obliques."
+        },
+        "equipment": [
+            {
+                "name": "Cable System",
+                "required": True,
+                "description": "Gym cable machine with cable crunch attachment",
+                "image": None,
+                "link": "https://example.com/buy/cable-machine"
+            }
+        ],
+        "camera_position": {
+            "distance": "2-2.5 meters away",
+            "angle": "Side view (90°)",
+            "height": "Waist to chest level",
+            "tips": [
+                "Place camera on your side to see cable crunch motion",
+                "Ensure cable system and full range of motion are visible",
+                "Camera should capture core engagement and form",
+                "Watch for proper butt squeeze and tuck position"
+            ]
+        }
     }
 ]
 

@@ -59,7 +59,7 @@
 					<span class="camera-text">{exercise.camera_position.angle} • {exercise.camera_position.distance}</span>
 				</div>
 			{/if}
-			{#if exercise.equipment && exercise.equipment.length > 0 && exercise.exercise_type !== 'advanced'}
+			{#if exercise.equipment && exercise.equipment.length > 0 && exercise.exercise_type !== 'advanced' && exercise.exercise_type !== 'lifting'}
 				<div class="equipment-preview">
 					<div class="equipment-items">
 						{#each exercise.equipment.slice(0, 3) as item}

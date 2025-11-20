@@ -177,7 +177,7 @@ class WorkoutStreamManager:
         # Normalize exercise ID (handle variations like "push-ups" vs "pushup")
         exercise_lower = self.exercise.lower().replace("-", "").replace("_", "").replace(" ", "")
         
-        if exercise_lower == "squat" or exercise_lower == "squats" or exercise_lower == "wall-squat" or "wall" in exercise_lower and "squat" in exercise_lower:
+        if exercise_lower == "squat" or exercise_lower == "squats" or exercise_lower == "wall-squat" or exercise_lower == "box-squat" or ("wall" in exercise_lower and "squat" in exercise_lower) or ("box" in exercise_lower and "squat" in exercise_lower):
             return SquatTrainer()
         elif "pushup" in exercise_lower or "push" in exercise_lower:
             return PushupTrainer()
@@ -308,7 +308,7 @@ class WorkoutStreamManager:
             # Forearm Flexion Fix - use basic trainer
             return BicepCurlTrainer()
         else:
-            available = "wall-squat, plank, rear-delt-raise, pant-pull, pad-cuff, glute-fly, knee-drop, hamstring-medial-bridge, ball-squeeze, quad-stretch, depression-row, weighted-pull-ups, close-grip-pull-down, wide-grip-row, single-arm-row, weighted-dips, incline-skull-crushers, incline-bench-press, flat-dumbbell-bench-press, cable-crossovers, hammer-curls, barbell-curls, cable-crunch, incline-dumbbell-shoulder-press, lateral-raises-advanced, lateral-raises-weak-spot, dips-parallel-bars, traps-shrugs, forearm-extension-fix, forearm-flexion-fix"
+            available = "wall-squat, box-squat, plank, rear-delt-raise, pant-pull, pad-cuff, glute-fly, knee-drop, hamstring-medial-bridge, ball-squeeze, quad-stretch, depression-row, weighted-pull-ups, close-grip-pull-down, wide-grip-row, single-arm-row, weighted-dips, incline-skull-crushers, incline-bench-press, flat-dumbbell-bench-press, cable-crossovers, hammer-curls, barbell-curls, cable-crunch, incline-dumbbell-shoulder-press, lateral-raises-advanced, lateral-raises-weak-spot, dips-parallel-bars, traps-shrugs, forearm-extension-fix, forearm-flexion-fix"
             raise ValueError(f"Unknown exercise: {self.exercise}. Available: {available}")
     
     async def stream_frames(self, websocket: WebSocket, camera_device: str = "auto"):

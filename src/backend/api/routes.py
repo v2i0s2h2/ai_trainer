@@ -1427,6 +1427,68 @@ EXERCISES = [
                 "Watch for proper form and left arm focus"
             ]
         }
+    },
+    {
+        "id": "box-squat",
+        "name": "Box Squat",
+        "exercise_type": "lifting",
+        "category": "lower",
+        "difficulty": "intermediate",
+        "duration": 10,
+        "sets": 2,
+        "reps": 12,
+        "thumbnail": "/images/exercises/box-squat.jpg",
+        "description": "Exercise starts in video. NOTE: Requires gym equipment (squat rack, barbell, weight plates, box/bench). Cannot be performed at home. Box squat for quad-focused bodybuilding style. Safer than regular squats - requires control at bottom, no bounce or stretch reflex. For bodybuilding: 90° depth, only 20% pressure on box, quads flexed at bottom. Keep knees pushed out, use glutes. Shoulder-width stance. First set: 10-12 reps connection set at 10-15 lbs less. Second set: failure set at working weight. Progress: when you hit 12 reps, increase weight by 10-15 lbs next week. Start with 65-75 lbs, progress to 85-95 lbs.",
+        "target_muscles": ["Quadriceps", "Glutes", "Hamstrings", "Erector Spinae", "Core Stabilizers"],
+        "youtube_link": None,
+        "weight_progression": {
+            "starting_weight_lbs": 65.0,
+            "progression_range": "65-95+ lbs",
+            "progression_notes": "Start with 65 lbs for connection set (10-12 reps). Working set at 75 lbs (8-12 reps to failure). When you hit 12 reps, increase weight by 10-15 lbs next week. First set: 10-15 lbs less than working weight (connection/challenge set). Second set: failure set at working weight. Rest 2-3 minutes between sets. Focus on quad engagement at bottom - only 20% pressure on box. Keep quads flexed throughout. Progress by 10-15 lbs when hitting 12 reps consistently."
+        },
+        "equipment": [
+            {
+                "name": "Box or Bench",
+                "required": True,
+                "description": "Gym box or bench set to 90° depth (hip top piece should be slightly below knee line for bodybuilding style)",
+                "image": None,
+                "link": "https://example.com/buy/box-bench"
+            },
+            {
+                "name": "Barbell",
+                "required": True,
+                "description": "Gym Olympic barbell for loaded squats",
+                "image": None,
+                "link": "https://example.com/buy/barbell"
+            },
+            {
+                "name": "Weight Plates",
+                "required": True,
+                "description": "Gym weight plates for progressive loading (start with 65-75 lbs total)",
+                "image": None,
+                "link": "https://example.com/buy/weight-plates"
+            },
+            {
+                "name": "Squat Rack",
+                "required": True,
+                "description": "Gym squat rack or power rack for safety and proper setup",
+                "image": None,
+                "link": "https://example.com/buy/squat-rack"
+            }
+        ],
+        "camera_position": {
+            "distance": "2-3 meters away",
+            "angle": "Side view (90°)",
+            "height": "Hip to knee level",
+            "tips": [
+                "Place camera on your side to see full squat motion and depth",
+                "Ensure box, full range of motion, and knee position are visible",
+                "Camera should capture 90° depth and quad engagement at bottom",
+                "Watch for proper knee position (pushed out, not caving in)",
+                "Check that only 20% pressure is on box, quads remain flexed",
+                "Ensure shoulder-width stance and proper bar position are visible"
+            ]
+        }
     }
 ]
 

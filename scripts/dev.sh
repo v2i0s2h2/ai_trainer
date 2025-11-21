@@ -60,7 +60,7 @@ sleep 2
 
 # Start frontend
 echo "${BLUE}[Frontend]${NC} Starting Vite dev server..."
-npm run dev &
+npm run dev -- --host &
 FRONTEND_PID=$!
 
 # Wait for both processes

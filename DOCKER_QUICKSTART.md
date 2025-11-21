@@ -1,23 +1,35 @@
 # 🐳 Docker Quick Start
 
-## Build & Run
+## Multi-Container Setup (Recommended)
+
+### Build & Run
 
 ```bash
-# Build image
-docker build -t ai-trainer:latest .
+# Build both containers
+docker-compose build
 
-# Run with docker-compose (recommended)
+# Start both services
 docker-compose up -d
 
-# Or run directly
-docker run -d -p 8000:8000 -v $(pwd)/data:/app/data ai-trainer:latest
+# View logs
+docker-compose logs -f
 ```
 
-## Access
+### Access
 
-- **Frontend + API**: http://localhost:8000
+- **Frontend**: http://localhost:3000
+- **Backend API**: http://localhost:8000
 - **API Docs**: http://localhost:8000/docs
 - **Health Check**: http://localhost:8000/health
+
+## Single Container Setup (Legacy)
+
+If you prefer single container, use the original `Dockerfile`:
+
+```bash
+docker build -t ai-trainer:latest -f Dockerfile .
+docker run -d -p 8000:8000 -v $(pwd)/data:/app/data ai-trainer:latest
+```
 
 ## Commands
 

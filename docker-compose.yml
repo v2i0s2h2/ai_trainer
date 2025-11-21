@@ -1,18 +1,16 @@
-version: '3.8'
-
 services:
-  ai-trainer:
+  backend:
     build:
       context: .
-      dockerfile: Dockerfile
-    container_name: ai-trainer
+      dockerfile: Dockerfile.backend
+    container_name: ai-trainer-backend
     ports:
-      - "${PORT:-8000}:8000"
+      - "${BACKEND_PORT:-8000}:8000"
     environment:
       - PORT=8000
       - HOST=0.0.0.0
       - PYTHONUNBUFFERED=1
-      # Add more environment variables as needed
+      - CORS_ORIGINS=http://localhost:3000,http://frontend:80
     volumes:
       # Mount data directory to persist SQLite database
       - ./data:/app/data
@@ -25,4 +23,28 @@ services:
       timeout: 10s
       retries: 3
       start_period: 40s
+    networks:
+      - ai-trainer-network
 
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile.frontend
+    container_name: ai-trainer-frontend
+    ports:
+      - "${FRONTEND_PORT:-3000}:80"
+    depends_on:
+      - backend
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost/"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+    networks:
+      - ai-trainer-network
+
+networks:
+  ai-trainer-network:
+    driver: bridge

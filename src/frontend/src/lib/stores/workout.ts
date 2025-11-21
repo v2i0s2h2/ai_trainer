@@ -60,8 +60,10 @@ function createWorkoutStore() {
 			}));
 			
 			// WebSocket URL with camera device parameter
+			// Use same hostname/port as current page (works with nginx proxy in Docker)
 			const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
-			const wsUrl = `${protocol}//${window.location.hostname}:8000/ws/workout?exercise=${exercise}&camera=${cameraDevice}`;
+			const port = window.location.port ? `:${window.location.port}` : '';
+			const wsUrl = `${protocol}//${window.location.hostname}${port}/ws/workout?exercise=${exercise}&camera=${cameraDevice}`;
 			
 			console.log('[Workout Store] Connecting to:', wsUrl, 'with camera:', cameraDevice);
 			

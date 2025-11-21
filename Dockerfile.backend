@@ -1,24 +1,5 @@
-# Multi-stage Dockerfile for AI Trainer
-# Stage 1: Frontend Build
-FROM node:20-alpine AS frontend-builder
-
-WORKDIR /app
-
-# Copy package files
-COPY package.json package-lock.json ./
-
-# Install dependencies
-RUN npm ci
-
-# Copy frontend source
-COPY svelte.config.js vite.config.ts tsconfig.json ./
-COPY src/frontend ./src/frontend
-
-# Build frontend
-RUN npm run build
-
-# Stage 2: Python Backend
-FROM python:3.11-slim AS backend
+# Backend Dockerfile - FastAPI Python Application
+FROM python:3.11-slim
 
 WORKDIR /app
 
@@ -39,11 +20,6 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Copy backend source
 COPY src/backend ./src/backend
 COPY startup_backend.py .
-COPY scripts/ ./scripts/
-
-# Copy built frontend from previous stage
-# SvelteKit builds to 'build' directory
-COPY --from=frontend-builder /app/build ./build
 
 # Create data directory for SQLite
 RUN mkdir -p /app/data

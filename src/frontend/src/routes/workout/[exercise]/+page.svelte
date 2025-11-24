@@ -32,6 +32,12 @@
 			if (camRes.ok) {
 				const camData = await camRes.json();
 				cameras = camData.cameras || [];
+				// Add client camera option at the top
+				cameras.unshift({
+					index: 'client',
+					name: 'Use Phone/Device Camera',
+					backend: 'client'
+				});
 				console.log('Available cameras:', cameras);
 			}
 		} catch (err) {
@@ -255,7 +261,7 @@
 	
 	<div class="video-section">
 		<div class="video-wrapper">
-			<LiveVideoFeed />
+			<LiveVideoFeed cameraMode={selectedCamera === 'client' ? 'client' : 'auto'} />
 			<RepCounter />
 		</div>
 	</div>

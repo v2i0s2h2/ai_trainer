@@ -179,6 +179,15 @@ function createWorkoutStore() {
 		
 		reset: () => {
 			set(initialState);
+		},
+		
+		sendFrame: (imageData: string) => {
+			if (ws && ws.readyState === WebSocket.OPEN) {
+				ws.send(JSON.stringify({
+					type: 'frame',
+					image: imageData
+				}));
+			}
 		}
 	};
 }

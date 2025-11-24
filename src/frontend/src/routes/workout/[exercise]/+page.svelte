@@ -15,6 +15,7 @@
 	let cameras: any[] = [];
 	let selectedCamera = "auto"; // "auto" means auto-detect external webcam
 	let showCameraSetup = true; // Show camera setup guidance before workout starts
+let showLaptopNotice = true;
 	
 	onMount(async () => {
 		try {
@@ -136,6 +137,24 @@
 						</a>
 					{/if}
 				</div>
+			</div>
+		</div>
+	{/if}
+
+	{#if showLaptopNotice}
+		<div class="device-notice">
+			<div class="notice-content">
+				<div class="notice-text">
+					<span class="notice-title">Best experience on laptop or external webcam</span>
+					<p>
+						Full-body tracking needs a wide camera angle. Mobile phones usually can’t capture the entire pose, so
+						rep counting might be unreliable. For best results, use a laptop (or USB webcam) placed a few meters away.
+					</p>
+					{#if selectedCamera === 'client'}
+						<p class="warning">You selected phone camera mode. Try a laptop webcam if pose isn’t detected properly.</p>
+					{/if}
+				</div>
+				<button class="notice-dismiss" on:click={() => showLaptopNotice = false}>Got it</button>
 			</div>
 		</div>
 	{/if}
@@ -326,6 +345,55 @@
 		border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 		padding: 1rem 1.5rem;
 	}
+
+.device-notice {
+	background: rgba(59, 130, 246, 0.15);
+	border: 1px solid rgba(59, 130, 246, 0.4);
+	border-radius: 1rem;
+	padding: 1rem;
+	margin: 1rem auto;
+	max-width: 1200px;
+	color: var(--text-primary);
+}
+
+.notice-content {
+	display: flex;
+	align-items: flex-start;
+	justify-content: space-between;
+	gap: 1rem;
+	flex-wrap: wrap;
+}
+
+.notice-title {
+	font-weight: 600;
+	display: block;
+	margin-bottom: 0.25rem;
+}
+
+.notice-text p {
+	margin: 0.25rem 0;
+	font-size: 0.9rem;
+	color: var(--text-secondary);
+}
+
+.notice-text .warning {
+	color: #f87171;
+	font-weight: 600;
+}
+
+.notice-dismiss {
+	background: transparent;
+	border: 1px solid rgba(59, 130, 246, 0.6);
+	border-radius: 0.5rem;
+	padding: 0.4rem 0.75rem;
+	color: rgba(59, 130, 246, 0.9);
+	cursor: pointer;
+	font-weight: 600;
+}
+
+.notice-dismiss:hover {
+	background: rgba(59, 130, 246, 0.15);
+}
 	
 	.info-content {
 		max-width: 1200px;

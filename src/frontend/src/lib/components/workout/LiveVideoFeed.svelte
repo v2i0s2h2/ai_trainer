@@ -11,6 +11,7 @@
 	let canvasElement: HTMLCanvasElement;
 	let stream: MediaStream | null = null;
 	let captureInterval: number | null = null;
+let isFullscreen = false;
 
 	async function startClientCamera() {
 		if (cameraMode !== 'client') return;
@@ -80,10 +81,28 @@
 
 	onDestroy(() => {
 		stopClientCamera();
+	exitFullscreen();
 	});
+
+function toggleFullscreen() {
+	isFullscreen = !isFullscreen;
+	if (isFullscreen) {
+		document.documentElement.style.overflow = 'hidden';
+	} else {
+		exitFullscreen();
+	}
+}
+
+function exitFullscreen() {
+	document.documentElement.style.overflow = '';
+	isFullscreen = false;
+}
 </script>
 
-<div class="video-container">
+<div class="video-container" class:fullscreen={isFullscreen}>
+	<button class="fullscreen-toggle" on:click={toggleFullscreen}>
+		{isFullscreen ? 'Exit Fullscreen' : 'Fullscreen'}
+	</button>
 	{#if !isConnected}
 		<div class="loading-state">
 			<div class="spinner"></div>
@@ -132,6 +151,36 @@
 		align-items: center;
 		justify-content: center;
 	}
+
+.video-container.fullscreen {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100vw;
+	height: 100vh;
+	aspect-ratio: unset;
+	z-index: 2000;
+	border-radius: 0;
+}
+
+.fullscreen-toggle {
+	position: absolute;
+	top: 1rem;
+	right: 1rem;
+	z-index: 10;
+	background: rgba(0, 0, 0, 0.5);
+	color: white;
+	border: 1px solid rgba(255, 255, 255, 0.2);
+	padding: 0.4rem 0.8rem;
+	border-radius: 999px;
+	font-size: 0.85rem;
+	cursor: pointer;
+	backdrop-filter: blur(4px);
+}
+
+.fullscreen-toggle:hover {
+	background: rgba(0, 0, 0, 0.7);
+}
 	
 	.video-frame {
 		width: 100%;

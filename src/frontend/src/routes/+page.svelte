@@ -31,8 +31,8 @@
 			<div class="notice-text">
 				<h3>Best experience on laptop or external webcam</h3>
 				<p>
-					Full-body tracking needs a wide camera angle. Mobile phones usually can’t capture the entire pose, so rep counting might be unreliable. 
-					Use a laptop (or USB webcam) placed a few meters away for best results.
+					Full-body tracking needs a wide camera angle. Mobile phones usually can’t capture the entire pose, 
+					Use a laptop and  placed a few meters away for best results.
 				</p>
 			</div>
 		</div>

@@ -15,7 +15,6 @@
 	let cameras: any[] = [];
 	let selectedCamera = "auto"; // "auto" means auto-detect external webcam
 	let showCameraSetup = true; // Show camera setup guidance before workout starts
-	
 	onMount(async () => {
 		try {
 			// Fetch exercise details
@@ -32,6 +31,12 @@
 			if (camRes.ok) {
 				const camData = await camRes.json();
 				cameras = camData.cameras || [];
+				// Add client camera option at the top
+				cameras.unshift({
+					index: 'client',
+					name: 'Use Phone/Device Camera',
+					backend: 'client'
+				});
 				console.log('Available cameras:', cameras);
 			}
 		} catch (err) {
@@ -133,6 +138,7 @@
 			</div>
 		</div>
 	{/if}
+
 	
 	{#if showCameraSetup && exerciseData?.camera_position}
 		<div class="camera-setup-overlay">
@@ -255,7 +261,7 @@
 	
 	<div class="video-section">
 		<div class="video-wrapper">
-			<LiveVideoFeed />
+			<LiveVideoFeed cameraMode={selectedCamera === 'client' ? 'client' : 'auto'} />
 			<RepCounter />
 		</div>
 	</div>
@@ -320,6 +326,7 @@
 		border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 		padding: 1rem 1.5rem;
 	}
+
 	
 	.info-content {
 		max-width: 1200px;

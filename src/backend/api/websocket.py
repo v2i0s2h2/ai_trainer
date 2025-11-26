@@ -310,7 +310,89 @@ class WorkoutStreamManager:
         else:
             available = "wall-squat, box-squat, plank, rear-delt-raise, pant-pull, pad-cuff, glute-fly, knee-drop, hamstring-medial-bridge, ball-squeeze, quad-stretch, depression-row, weighted-pull-ups, close-grip-pull-down, wide-grip-row, single-arm-row, weighted-dips, incline-skull-crushers, incline-bench-press, flat-dumbbell-bench-press, cable-crossovers, hammer-curls, barbell-curls, cable-crunch, incline-dumbbell-shoulder-press, lateral-raises-advanced, lateral-raises-weak-spot, dips-parallel-bars, traps-shrugs, forearm-extension-fix, forearm-flexion-fix"
             raise ValueError(f"Unknown exercise: {self.exercise}. Available: {available}")
-    
+
+    async def process_client_frames(self, websocket: WebSocket):
+        """Process frames sent from client via WebSocket"""
+        self.active = True
+        self.trainer = self.get_trainer()
+        
+        # Initialize MediaPipe
+        import mediapipe as mp
+        mp_pose = mp.solutions.pose
+        mp_drawing = mp.solutions.drawing_utils
+        
+        logger.info("Starting client frame processing mode")
+        
+        with mp_pose.Pose(
+            static_image_mode=False,
+            model_complexity=1,
+            enable_segmentation=False,
+            min_detection_confidence=0.5,
+            min_tracking_confidence=0.5
+        ) as pose:
+            
+            while self.active:
+                try:
+                    # Receive frame data from client
+                    data = await websocket.receive_text()
+                    message = json.loads(data)
+                    
+                    if message.get("type") != "frame":
+                        continue
+                        
+                    # Decode base64 image
+                    image_data = message.get("image", "").split(",")[1]
+                    nparr = np.frombuffer(base64.b64decode(image_data), np.uint8)
+                    frame = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
+                    
+                    if frame is None:
+                        continue
+                        
+                    h, w = frame.shape[:2]
+                    
+                    # Process with MediaPipe
+                    rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+                    results = pose.process(rgb)
+                    
+                    # Draw pose landmarks
+                    if results.pose_landmarks:
+                        mp_drawing.draw_landmarks(
+                            frame,
+                            results.pose_landmarks,
+                            mp_pose.POSE_CONNECTIONS
+                        )
+                        
+                        # Get trainer feedback
+                        feedback = self.trainer.process_frame(results, w, h)
+                    else:
+                        feedback = {
+                            "reps": 0,
+                            "feedback": "No pose detected",
+                            "angles": {}
+                        }
+                    
+                    # Encode frame back to JPEG to send to client
+                    _, buffer = cv2.imencode('.jpg', frame, [cv2.IMWRITE_JPEG_QUALITY, 80])
+                    frame_b64 = base64.b64encode(buffer).decode('utf-8')
+                    
+                    # Send processed frame and feedback back to client
+                    await websocket.send_json({
+                        "type": "frame",
+                        "image": f"data:image/jpeg;base64,{frame_b64}",
+                        "reps": feedback.get("reps", 0),
+                        "feedback": feedback.get("feedback", ""),
+                        "angles": feedback.get("angles", {}),
+                        "progress": feedback.get("progress", 0.0)
+                    })
+                    
+                except WebSocketDisconnect:
+                    self.active = False
+                    break
+                except Exception as e:
+                    logger.error(f"Error processing client frame: {e}")
+                    # Don't break loop on single frame error, but log it
+                    pass
+
     async def stream_frames(self, websocket: WebSocket, camera_device: str = "auto"):
         """Stream video frames with pose detection"""
         self.active = True
@@ -439,8 +521,12 @@ async def workout_websocket(
             "message": "Ready to start workout"
         })
         
-        # Start streaming frames with camera selection
-        await manager.stream_frames(websocket, camera_device=camera)
+        if camera == "client":
+            # Client-side camera streaming
+            await manager.process_client_frames(websocket)
+        else:
+            # Server-side camera streaming (default)
+            await manager.stream_frames(websocket, camera_device=camera)
         
     except WebSocketDisconnect:
         logger.info("WebSocket disconnected")

@@ -8,6 +8,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 import uvicorn
 import logging
+import os
 from typing import Optional
 
 # Setup logging
@@ -22,9 +23,11 @@ app = FastAPI(
 )
 
 # CORS middleware for frontend communication
+# Allow all origins in production, or use CORS_ORIGINS env var
+cors_origins = os.getenv("CORS_ORIGINS", "*").split(",") if os.getenv("CORS_ORIGINS") else ["*"]
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:5173", "http://localhost:3000"],  # Vite dev server
+    allow_origins=cors_origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -49,7 +52,7 @@ app.include_router(ws.router)
 
 @app.get("/")
 async def root():
-    """Health check endpoint"""
+    """API root endpoint"""
     return {"status": "ok", "message": "AI Trainer API is running"}
 
 @app.get("/health")
@@ -62,7 +65,7 @@ if __name__ == "__main__":
     uvicorn.run(
         "src.backend.main:app",
         host="0.0.0.0",
-        port=8000,
+        port=8001,
         reload=True,
         log_level="info"
     )

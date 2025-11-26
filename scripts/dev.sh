@@ -34,7 +34,7 @@ echo ""
 echo "${GREEN}✅ Setup complete!${NC}"
 echo ""
 echo "${BLUE}Starting servers:${NC}"
-echo "  📡 Backend API: http://localhost:8000"
+echo "  📡 Backend API: http://localhost:8001"
 echo "  🌐 Frontend:   http://localhost:5173"
 echo ""
 echo "Press Ctrl+C to stop both servers"
@@ -60,7 +60,7 @@ sleep 2
 
 # Start frontend
 echo "${BLUE}[Frontend]${NC} Starting Vite dev server..."
-npm run dev &
+npm run dev -- --host &
 FRONTEND_PID=$!
 
 # Wait for both processes

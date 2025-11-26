@@ -84,7 +84,7 @@ npm install
 ```
 
 This starts:
-- Backend API: http://localhost:8000
+- Backend API: http://localhost:8001
 - Frontend: http://localhost:5173
 
 ## 📱 Usage
@@ -96,6 +96,8 @@ This starts:
 3. Select an exercise (e.g., Squats)
 4. Allow webcam access
 5. Follow on-screen instructions and feedback
+
+> **Camera tip:** Full-body tracking works best on a laptop or desktop with a wide webcam (or USB camera) placed a few meters away. Mobile phones rarely capture the entire pose, so rep counting and form feedback may be unreliable on mobile.
 
 ### CLI (Legacy)
 

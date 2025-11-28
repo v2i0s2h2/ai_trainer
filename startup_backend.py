@@ -13,12 +13,17 @@ sys.path.insert(0, str(root))
 
 # Now import and run
 if __name__ == "__main__":
-    import uvicorn
-    uvicorn.run(
-        "src.backend.main:app",
-        host="0.0.0.0",
-        port=8001,
-        reload=True,
-        log_level="info"
-    )
+    # Initialize database
+    try:
+        from src.backend.database.db import init_db
 
+        print("Initializing database...")
+        init_db()
+    except Exception as e:
+        print(f"Warning: Database initialization failed: {e}")
+
+    import uvicorn
+
+    uvicorn.run(
+        "src.backend.main:app", host="0.0.0.0", port=8001, reload=True, log_level="info"
+    )

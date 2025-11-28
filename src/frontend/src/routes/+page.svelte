@@ -3,43 +3,37 @@
 	import WelcomeHero from '$lib/components/home/WelcomeHero.svelte';
 	import StartWorkoutCTA from '$lib/components/home/StartWorkoutCTA.svelte';
 	import TodayProgress from '$lib/components/home/TodayProgress.svelte';
-	
-	let stats = {
+	import { progressStore } from '$lib/stores/progress';
+
+	$: stats = $progressStore.todayStats || {
 		reps_today: 0,
 		streak: 0,
 		calories: 0
 	};
-	
+
 	onMount(async () => {
-		try {
-			const res = await fetch('/api/stats/today');
-			if (res.ok) {
-				stats = await res.json();
-			}
-		} catch (err) {
-			console.error('Failed to load stats:', err);
-		}
+		await progressStore.loadTodayStats();
 	});
 </script>
 
 <div class="home-container">
 	<WelcomeHero userName="Champion" />
-	
+
 	<section class="device-notice">
 		<div class="notice-content">
 			<div class="notice-icon">🖥️</div>
 			<div class="notice-text">
 				<h3>Best experience on laptop or external webcam</h3>
 				<p>
-					Full-body tracking needs a wide camera angle. Mobile phones usually can’t capture the entire pose, 
+					Full-body tracking needs a wide camera angle. Mobile phones usually can’t capture the entire pose,
 					Use a laptop and  placed a few meters away for best results.
 				</p>
 			</div>
 		</div>
 	</section>
-	
+
 	<StartWorkoutCTA />
-	<TodayProgress 
+	<TodayProgress
 		repsToday={stats.reps_today}
 		streak={stats.streak}
 		calories={stats.calories}
@@ -53,7 +47,7 @@
 		margin: 0 auto;
 		animation: fadeIn 0.3s ease-in;
 	}
-	
+
 	@keyframes fadeIn {
 		from {
 			opacity: 0;
@@ -64,7 +58,7 @@
 			transform: translateY(0);
 		}
 	}
-	
+
 	.device-notice {
 		background: rgba(59, 130, 246, 0.15);
 		border: 1px solid rgba(59, 130, 246, 0.4);
@@ -73,35 +67,34 @@
 		margin: 1.5rem 0;
 		color: var(--text-primary);
 	}
-	
+
 	.notice-content {
 		display: flex;
 		gap: 1rem;
 		align-items: flex-start;
 	}
-	
+
 	.notice-icon {
 		font-size: 1.75rem;
 	}
-	
+
 	.notice-text h3 {
 		margin: 0;
 		font-size: 1rem;
 		font-weight: 600;
 		color: var(--text-primary);
 	}
-	
+
 	.notice-text p {
 		margin: 0.35rem 0 0;
 		font-size: 0.9rem;
 		color: var(--text-secondary);
 		line-height: 1.4;
 	}
-	
+
 	@media (max-width: 640px) {
 		.notice-content {
 			flex-direction: column;
 		}
 	}
 </style>
-

@@ -1643,7 +1643,9 @@ async def get_cameras():
 
 
 @router.get("/stats/today", response_model=TodayStatsResponse)
-async def get_today_stats(db: Session = Depends(get_db)):
+async def get_today_stats(
+    current_user: User = Depends(get_current_user), db: Session = Depends(get_db)
+):
     """Get today's workout statistics"""
     from datetime import date, datetime, timedelta
 
@@ -1658,7 +1660,9 @@ async def get_today_stats(db: Session = Depends(get_db)):
     today_workouts = (
         db.query(Workout)
         .filter(
-            Workout.user_id == 1, Workout.date >= today_start, Workout.date <= today_end
+            Workout.user_id == current_user.id,
+            Workout.date >= today_start,
+            Workout.date <= today_end,
         )
         .all()
     )
@@ -1667,7 +1671,7 @@ async def get_today_stats(db: Session = Depends(get_db)):
     reps_today = sum(w.reps_completed for w in today_workouts) if today_workouts else 0
 
     # Calculate streak (reuse logic from profile endpoint)
-    all_workouts = db.query(Workout).filter(Workout.user_id == 1).all()
+    all_workouts = db.query(Workout).filter(Workout.user_id == current_user.id).all()
     current_streak = 0
 
     if all_workouts:
@@ -1710,7 +1714,9 @@ async def get_today_stats(db: Session = Depends(get_db)):
 
 
 @router.get("/stats/weekly")
-async def get_weekly_stats(db: Session = Depends(get_db)):
+async def get_weekly_stats(
+    current_user: User = Depends(get_current_user), db: Session = Depends(get_db)
+):
     """Get weekly workout statistics for last 7 days (Mon-Sun)"""
     from datetime import date, datetime, timedelta
 
@@ -1730,7 +1736,9 @@ async def get_weekly_stats(db: Session = Depends(get_db)):
     week_workouts = (
         db.query(Workout)
         .filter(
-            Workout.user_id == 1, Workout.date >= week_start, Workout.date <= week_end
+            Workout.user_id == current_user.id,
+            Workout.date >= week_start,
+            Workout.date <= week_end,
         )
         .all()
     )
@@ -1762,21 +1770,17 @@ async def get_weekly_stats(db: Session = Depends(get_db)):
 
 
 @router.post("/workouts", response_model=dict)
-async def save_workout(workout: WorkoutCreate, db: Session = Depends(get_db)):
+async def save_workout(
+    workout: WorkoutCreate,
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db),
+):
     """Save a completed workout to database"""
-    from src.backend.database.models import User, Workout
-
-    # Get or create default user (user_id=1)
-    user = db.query(User).filter(User.id == 1).first()
-    if not user:
-        user = User(id=1, name="Champion", email=None)
-        db.add(user)
-        db.commit()
-        db.refresh(user)
+    from src.backend.database.models import Workout
 
     # Create workout record
     db_workout = Workout(
-        user_id=user.id,
+        user_id=current_user.id,
         exercise_id=workout.exercise_id,
         date=datetime.utcnow(),
         duration_seconds=workout.duration,
@@ -1799,7 +1803,11 @@ async def save_workout(workout: WorkoutCreate, db: Session = Depends(get_db)):
 
 
 @router.get("/workouts/history", response_model=List[WorkoutResponse])
-async def get_workout_history(limit: int = 10, db: Session = Depends(get_db)):
+async def get_workout_history(
+    limit: int = 10,
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db),
+):
     """Get workout history - list of past workouts user completed"""
     from src.backend.database.models import Exercise, Workout
 
@@ -1807,9 +1815,7 @@ async def get_workout_history(limit: int = 10, db: Session = Depends(get_db)):
     workouts = (
         db.query(Workout, Exercise)
         .join(Exercise, Workout.exercise_id == Exercise.id)
-        .filter(
-            Workout.user_id == 1  # Default user for now
-        )
+        .filter(Workout.user_id == current_user.id)
         .order_by(Workout.date.desc())
         .limit(limit)
         .all()
@@ -1836,7 +1842,9 @@ async def get_workout_history(limit: int = 10, db: Session = Depends(get_db)):
 
 
 @router.get("/achievements")
-async def get_achievements(db: Session = Depends(get_db)):
+async def get_achievements(
+    current_user: User = Depends(get_current_user), db: Session = Depends(get_db)
+):
     """Get user achievements with category filtering (rehab/basic/advanced/lifting)"""
     from src.backend.database.models import Achievement, UserAchievement
 
@@ -1844,12 +1852,14 @@ async def get_achievements(db: Session = Depends(get_db)):
         # Get all achievements
         all_achievements = db.query(Achievement).all()
 
-        # Get unlocked achievements for user_id = 1
+        # Get unlocked achievements for current user
         unlocked_achievement_ids = set()
         unlocked_with_dates = {}
 
         user_achievements = (
-            db.query(UserAchievement).filter(UserAchievement.user_id == 1).all()
+            db.query(UserAchievement)
+            .filter(UserAchievement.user_id == current_user.id)
+            .all()
         )
 
         for ua in user_achievements:
@@ -1939,12 +1949,13 @@ async def create_diet_entry(
 async def get_diet_entries(
     start_date: Optional[str] = None,
     end_date: Optional[str] = None,
+    current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db),
 ):
     """Get diet entries for a date range (defaults to today)"""
     from src.backend.database.models import DietEntry
 
-    query = db.query(DietEntry)
+    query = db.query(DietEntry).filter(DietEntry.user_id == current_user.id)
 
     if start_date:
         start = datetime.fromisoformat(start_date.replace("Z", "+00:00"))
@@ -1966,7 +1977,9 @@ async def get_diet_entries(
 
 @router.get("/diet/stats", response_model=DietStatsResponse)
 async def get_diet_stats(
-    target_date: Optional[str] = None, db: Session = Depends(get_db)
+    target_date: Optional[str] = None,
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db),
 ):
     """Get daily nutrition statistics"""
     from src.backend.database.models import DietEntry
@@ -1980,7 +1993,13 @@ async def get_diet_stats(
     end = datetime.combine(target, datetime.max.time())
 
     entries = (
-        db.query(DietEntry).filter(DietEntry.date >= start, DietEntry.date <= end).all()
+        db.query(DietEntry)
+        .filter(
+            DietEntry.user_id == current_user.id,
+            DietEntry.date >= start,
+            DietEntry.date <= end,
+        )
+        .all()
     )
 
     # Calculate totals
@@ -2006,11 +2025,19 @@ async def get_diet_stats(
 
 
 @router.delete("/diet/entries/{entry_id}")
-async def delete_diet_entry(entry_id: int, db: Session = Depends(get_db)):
+async def delete_diet_entry(
+    entry_id: int,
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db),
+):
     """Delete a diet entry"""
     from src.backend.database.models import DietEntry
 
-    entry = db.query(DietEntry).filter(DietEntry.id == entry_id).first()
+    entry = (
+        db.query(DietEntry)
+        .filter(DietEntry.id == entry_id, DietEntry.user_id == current_user.id)
+        .first()
+    )
     if not entry:
         raise HTTPException(status_code=404, detail="Diet entry not found")
 

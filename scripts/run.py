@@ -15,9 +15,9 @@ fi
 source .venv/bin/activate
 
 # Ensure dependencies are installed/updated
-if [ -f "requirements.txt" ]; then
+if [ -f "src/backend/requirements.txt" ]; then
     echo "Ensuring dependencies from requirements.txt..."
-    pip install -r requirements.txt
+    pip install -r src/backend/requirements.txt
 fi
 
 # Which trainer to run (default glute fly enhanced)

@@ -114,7 +114,7 @@ def upgrade_pip(venv_python: Path) -> None:
 
 
 def install_requirements(venv_python: Path, project_root: Path) -> None:
-    requirements = project_root / "requirements.txt"
+    requirements = project_root / "src" / "backend" / "requirements.txt"
     if requirements.exists():
         print(f"Installing dependencies from {requirements}...")
         run([str(venv_python), "-m", "pip", "install", "-r", str(requirements)])

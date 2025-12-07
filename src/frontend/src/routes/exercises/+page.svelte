@@ -1,22 +1,23 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import ExerciseGrid from '$lib/components/exercises/ExerciseGrid.svelte';
-	
+	import { API_BASE_URL } from '$lib/constants';
+
 	let allExercises: any[] = [];
 	let loading = true;
 	let searchQuery = '';
 	let selectedExerciseType: 'rehab' | 'basic' | 'advanced' | 'lifting' = 'basic';
-	
+
 	const exerciseTypes = [
 		{ id: 'rehab', name: 'Rehab', icon: '🏥' },
 		{ id: 'basic', name: 'Basic', icon: '💪' },
 		{ id: 'advanced', name: 'Advanced', icon: '🔥' },
 		{ id: 'lifting', name: 'Lifting', icon: '🏋️' }
 	];
-	
+
 	onMount(async () => {
 		try {
-			const res = await fetch('/api/exercises');
+			const res = await fetch(`${API_BASE_URL}/api/exercises`);
 			if (res.ok) {
 				allExercises = await res.json();
 			}
@@ -26,33 +27,33 @@
 			loading = false;
 		}
 	});
-	
+
 	function getExercisesByTypeAndCategory(type: string, category: 'upper' | 'lower') {
-		let filtered = allExercises.filter(ex => 
+		let filtered = allExercises.filter(ex =>
 			ex.exercise_type === type && ex.category === category
 		);
-		
+
 		// Filter by search query
 		if (searchQuery.trim()) {
 			const query = searchQuery.toLowerCase();
-			filtered = filtered.filter(ex => 
+			filtered = filtered.filter(ex =>
 				ex.name.toLowerCase().includes(query) ||
 				ex.difficulty.toLowerCase().includes(query) ||
 				ex.target_muscles.some((m: string) => m.toLowerCase().includes(query))
 			);
 		}
-		
+
 		return filtered;
 	}
-	
+
 	function getUpperExercises(type: string) {
 		return getExercisesByTypeAndCategory(type, 'upper');
 	}
-	
+
 	function getLowerExercises(type: string) {
 		return getExercisesByTypeAndCategory(type, 'lower');
 	}
-	
+
 	// For advanced section: split upper body into Back/Triceps and Chest/Biceps
 	function getBackAndTricepsExercises() {
 		const backTricepsIds = [
@@ -65,7 +66,7 @@
 		];
 		return getUpperExercises('advanced').filter(ex => backTricepsIds.includes(ex.id));
 	}
-	
+
 	function getChestAndBicepsExercises() {
 		const chestBicepsIds = [
 			'incline-bench-press',
@@ -77,7 +78,7 @@
 		];
 		return getUpperExercises('advanced').filter(ex => chestBicepsIds.includes(ex.id));
 	}
-	
+
 	function getShoulderDayExercises() {
 		const shoulderDayIds = [
 			'incline-dumbbell-shoulder-press',
@@ -105,7 +106,7 @@
 		</div>
 		<p class="subtitle">Choose your next challenge</p>
 	</header>
-	
+
 	<!-- Search Bar -->
 	<div class="search-section">
 		<div class="search-bar">
@@ -127,7 +128,7 @@
 			{/if}
 		</div>
 	</div>
-	
+
 	<!-- Exercise Type Tabs -->
 	<div class="tabs-section">
 		<div class="tabs">
@@ -143,7 +144,7 @@
 			{/each}
 		</div>
 	</div>
-	
+
 	<!-- Exercise Content -->
 	{#if loading}
 		<div class="loading">
@@ -168,7 +169,7 @@
 						</div>
 					{/if}
 				</div>
-				
+
 				<!-- Chest and Biceps Section -->
 				<div class="section">
 					<h2 class="section-title">
@@ -184,7 +185,7 @@
 						</div>
 					{/if}
 				</div>
-				
+
 				<!-- Shoulder Day + Bi and Tri Section -->
 				<div class="section">
 					<h2 class="section-title">
@@ -217,7 +218,7 @@
 					{/if}
 				</div>
 			{/if}
-			
+
 			<!-- Lower Body Section -->
 			<div class="section">
 				<h2 class="section-title">
@@ -244,7 +245,7 @@
 		margin: 0 auto;
 		animation: fadeIn 0.3s ease-in;
 	}
-	
+
 	@keyframes fadeIn {
 		from {
 			opacity: 0;
@@ -255,11 +256,11 @@
 			transform: translateY(0);
 		}
 	}
-	
+
 	.page-header {
 		margin-bottom: 2rem;
 	}
-	
+
 	.header-top {
 		display: flex;
 		justify-content: space-between;
@@ -267,14 +268,14 @@
 		margin-bottom: 0.5rem;
 		gap: 1rem;
 	}
-	
+
 	.page-header h1 {
 		font-size: 2rem;
 		font-weight: 700;
 		margin: 0;
 		color: var(--text-primary);
 	}
-	
+
 	.equipment-link-btn {
 		display: flex;
 		align-items: center;
@@ -290,27 +291,27 @@
 		transition: all 0.2s;
 		white-space: nowrap;
 	}
-	
+
 	.equipment-link-btn:hover {
 		background-color: var(--bg-card-hover);
 		border-color: var(--primary);
 		color: var(--primary);
 		transform: translateY(-2px);
 	}
-	
+
 	.equipment-link-btn svg {
 		flex-shrink: 0;
 	}
-	
+
 	.subtitle {
 		color: var(--text-secondary);
 		font-size: 1rem;
 	}
-	
+
 	.search-section {
 		margin-bottom: 1.5rem;
 	}
-	
+
 	.search-bar {
 		display: flex;
 		align-items: center;
@@ -321,16 +322,16 @@
 		border: 1px solid rgba(255, 255, 255, 0.1);
 		transition: border-color 0.2s;
 	}
-	
+
 	.search-bar:focus-within {
 		border-color: var(--primary);
 	}
-	
+
 	.search-bar svg {
 		color: var(--text-secondary);
 		flex-shrink: 0;
 	}
-	
+
 	.search-input {
 		flex: 1;
 		background: transparent;
@@ -339,11 +340,11 @@
 		font-size: 1rem;
 		outline: none;
 	}
-	
+
 	.search-input::placeholder {
 		color: var(--text-secondary);
 	}
-	
+
 	.clear-btn {
 		background: transparent;
 		border: none;
@@ -355,15 +356,15 @@
 		justify-content: center;
 		transition: color 0.2s;
 	}
-	
+
 	.clear-btn:hover {
 		color: var(--text-primary);
 	}
-	
+
 	.tabs-section {
 		margin-bottom: 2rem;
 	}
-	
+
 	.tabs {
 		display: flex;
 		gap: 0.75rem;
@@ -371,7 +372,7 @@
 		padding-bottom: 0.5rem;
 		-webkit-overflow-scrolling: touch;
 	}
-	
+
 	.tab-btn {
 		display: flex;
 		align-items: center;
@@ -388,38 +389,38 @@
 		white-space: nowrap;
 		flex-shrink: 0;
 	}
-	
+
 	.tab-btn:hover {
 		background-color: var(--bg-card-hover);
 		border-color: rgba(255, 255, 255, 0.2);
 	}
-	
+
 	.tab-btn.active {
 		background-color: var(--primary);
 		border-color: var(--primary);
 		color: white;
 	}
-	
+
 	.tab-icon {
 		font-size: 1.125rem;
 	}
-	
+
 	.tab-label {
 		font-weight: 600;
 	}
-	
+
 	.exercises-content {
 		display: flex;
 		flex-direction: column;
 		gap: 3rem;
 	}
-	
+
 	.section {
 		display: flex;
 		flex-direction: column;
 		gap: 1.5rem;
 	}
-	
+
 	.section-title {
 		display: flex;
 		align-items: center;
@@ -429,11 +430,11 @@
 		color: var(--text-primary);
 		margin-bottom: 0.5rem;
 	}
-	
+
 	.section-icon {
 		font-size: 1.5rem;
 	}
-	
+
 	.empty-section {
 		text-align: center;
 		padding: 3rem 1rem;
@@ -441,16 +442,16 @@
 		border-radius: 0.75rem;
 		color: var(--text-secondary);
 	}
-	
+
 	.empty-section p {
 		margin-bottom: 0.5rem;
 	}
-	
+
 	.coming-soon {
 		font-size: 0.875rem;
 		opacity: 0.7;
 	}
-	
+
 	.loading {
 		text-align: center;
 		padding: 3rem;
@@ -460,7 +461,7 @@
 		align-items: center;
 		gap: 1rem;
 	}
-	
+
 	.spinner {
 		width: 48px;
 		height: 48px;
@@ -469,31 +470,31 @@
 		border-radius: 50%;
 		animation: spin 1s linear infinite;
 	}
-	
+
 	@keyframes spin {
 		to {
 			transform: rotate(360deg);
 		}
 	}
-	
+
 	@media (max-width: 640px) {
 		.exercises-container {
 			padding: 1.5rem 1rem;
 		}
-		
+
 		.tabs {
 			gap: 0.5rem;
 		}
-		
+
 		.tab-btn {
 			padding: 0.625rem 1.25rem;
 			font-size: 0.8125rem;
 		}
-		
+
 		.section-title {
 			font-size: 1.25rem;
 		}
-		
+
 		.exercises-content {
 			gap: 2rem;
 		}

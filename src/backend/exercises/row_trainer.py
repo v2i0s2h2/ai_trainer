@@ -22,11 +22,18 @@ def get_mediapipe():
     return mp, mp_pose, mp_drawing
 
 try:
-    from src.backend.core.voice_feedback import VoiceSystem
-    voice = VoiceSystem()
-    VOICE_ENABLED = True
-except:
+    # Skip voice on headless servers - check if display available
+    import os
+    if os.environ.get('DISPLAY') or os.name == 'nt':  # Has display or is Windows
+        from src.backend.core.voice_feedback import VoiceSystem
+        voice = VoiceSystem()
+        VOICE_ENABLED = True
+    else:
+        VOICE_ENABLED = False
+        print("[RowTrainer] Voice disabled - no display available (server mode)")
+except Exception as e:
     VOICE_ENABLED = False
+    print(f"[RowTrainer] Voice disabled: {e}")
 
 # Import enhanced pose processor
 try:

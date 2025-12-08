@@ -1,5 +1,6 @@
 import { writable } from 'svelte/store';
 import { speak, initSpeech } from '$lib/utils/speech';
+import { WS_BASE_URL } from '$lib/constants';
 
 export interface WorkoutFrame {
 	image: string;
@@ -35,40 +36,37 @@ const initialState: WorkoutState = {
 
 function createWorkoutStore() {
 	const { subscribe, set, update } = writable<WorkoutState>(initialState);
-	
+
 	let ws: WebSocket | null = null;
 	let durationInterval: number | null = null;
 	let lastFeedback = '';
 	let lastReps = 0;
-	
+
 	// Initialize speech on first use
 	initSpeech();
-	
+
 	return {
 		subscribe,
-		
+
 		connect: (exercise: string, cameraDevice: string = "auto") => {
 			if (ws) {
 				ws.close();
 			}
-			
+
 			update(state => ({
 				...state,
 				exercise,
 				error: null,
 				isConnected: false
 			}));
-			
-			// WebSocket URL with camera device parameter
-			// Use same hostname/port as current page (works with nginx proxy in Docker)
-			const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
-			const port = window.location.port ? `:${window.location.port}` : '';
-			const wsUrl = `${protocol}//${window.location.hostname}${port}/ws/workout?exercise=${exercise}&camera=${cameraDevice}`;
-			
+
+			// WebSocket URL - connect to backend server, not frontend
+			const wsUrl = `${WS_BASE_URL}/ws/workout?exercise=${exercise}&camera=${cameraDevice}`;
+
 			console.log('[Workout Store] Connecting to:', wsUrl, 'with camera:', cameraDevice);
-			
+
 			ws = new WebSocket(wsUrl);
-			
+
 			ws.onopen = () => {
 				console.log('[Workout Store] WebSocket connected');
 				update(state => ({
@@ -78,7 +76,7 @@ function createWorkoutStore() {
 					startTime: Date.now(),
 					error: null
 				}));
-				
+
 				// Start duration timer
 				durationInterval = window.setInterval(() => {
 					update(state => ({
@@ -87,34 +85,34 @@ function createWorkoutStore() {
 					}));
 				}, 1000);
 			};
-			
+
 			ws.onmessage = (event) => {
 				try {
 					const data = JSON.parse(event.data);
 					console.log('[Workout Store] Message:', data.type);
-					
+
 					if (data.type === 'frame') {
 						const reps = data.reps || 0;
 						const feedback = data.feedback || '';
-						
+
 						// Voice feedback for rep completion
 						if (reps > lastReps) {
 							speak(`Rep ${reps} complete!`, 'high');
 							lastReps = reps;
 						}
-						
+
 						// Voice feedback for form corrections
 						if (feedback && feedback !== lastFeedback && feedback !== 'Good form - keep going!') {
 							// Only speak corrections, not the default good message
-							if (feedback.includes('Chest up') || 
-							    feedback.includes('knees') || 
-							    feedback.includes('Adjust') ||
-							    feedback.includes('Keep')) {
+							if (feedback.includes('Chest up') ||
+								feedback.includes('knees') ||
+								feedback.includes('Adjust') ||
+								feedback.includes('Keep')) {
 								speak(feedback, 'normal');
 								lastFeedback = feedback;
 							}
 						}
-						
+
 						update(state => ({
 							...state,
 							currentFrame: {
@@ -138,7 +136,7 @@ function createWorkoutStore() {
 					console.error('[Workout Store] Parse error:', err);
 				}
 			};
-			
+
 			ws.onerror = (error) => {
 				console.error('[Workout Store] WebSocket error:', error);
 				update(state => ({
@@ -147,7 +145,7 @@ function createWorkoutStore() {
 					isConnected: false
 				}));
 			};
-			
+
 			ws.onclose = () => {
 				console.log('[Workout Store] WebSocket closed');
 				update(state => ({
@@ -155,32 +153,32 @@ function createWorkoutStore() {
 					isConnected: false,
 					isActive: false
 				}));
-				
+
 				if (durationInterval) {
 					clearInterval(durationInterval);
 					durationInterval = null;
 				}
 			};
 		},
-		
+
 		disconnect: () => {
 			if (ws) {
 				ws.close();
 				ws = null;
 			}
-			
+
 			if (durationInterval) {
 				clearInterval(durationInterval);
 				durationInterval = null;
 			}
-			
+
 			set(initialState);
 		},
-		
+
 		reset: () => {
 			set(initialState);
 		},
-		
+
 		sendFrame: (imageData: string) => {
 			if (ws && ws.readyState === WebSocket.OPEN) {
 				ws.send(JSON.stringify({

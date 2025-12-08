@@ -188,23 +188,23 @@ class WorkoutStreamManager:
         """Initialize the appropriate trainer based on exercise type"""
         # Import trainers here to prevent "Image not found" or "Illegal instruction"
         # crashes at startup if libraries are missing/incompatible
-        from src.backend.exercises.bicep_curl_trainer import BicepCurlTrainer
-        from src.backend.exercises.crunch_trainer import CrunchTrainer
-        from src.backend.exercises.lateral_raise_trainer import LateralRaiseTrainer
-        from src.backend.exercises.lunge_trainer import LungeTrainer
-        from src.backend.exercises.plank_trainer import PlankTrainer
-        from src.backend.exercises.pullup_trainer import PullupTrainer
-        from src.backend.exercises.pushup_trainer import PushupTrainer
-        from src.backend.exercises.row_trainer import RowTrainer
-        from src.backend.exercises.shoulder_press_trainer import ShoulderPressTrainer
-        from src.backend.exercises.squat_trainer import SquatTrainer
-        from src.backend.exercises.tricep_dip_trainer import TricepDipTrainer
+        logger.info("Importing trainers...")
+        try:
+            from src.backend.exercises.row_trainer import RowTrainer
+            logger.info("RowTrainer imported")
+        except Exception as e:
+            logger.error(f"Failed to import RowTrainer: {e}")
+            raise
 
+        # Only import the trainer we need to avoid hanging on MediaPipe
+        # For pant-pull exercise, we use RowTrainer
+        
         # Normalize exercise ID (handle variations like "push-ups" vs "pushup")
         exercise_lower = (
             self.exercise.lower().replace("-", "").replace("_", "").replace(" ", "")
         )
 
+        # Lazy import only the trainer we need
         if (
             exercise_lower == "squat"
             or exercise_lower == "squats"
@@ -213,24 +213,33 @@ class WorkoutStreamManager:
             or ("wall" in exercise_lower and "squat" in exercise_lower)
             or ("box" in exercise_lower and "squat" in exercise_lower)
         ):
+            from src.backend.exercises.squat_trainer import SquatTrainer
             return SquatTrainer()
         elif "pushup" in exercise_lower or "push" in exercise_lower:
+            from src.backend.exercises.pushup_trainer import PushupTrainer
             return PushupTrainer()
         elif "shoulder" in exercise_lower or "press" in exercise_lower:
+            from src.backend.exercises.shoulder_press_trainer import ShoulderPressTrainer
             return ShoulderPressTrainer()
         elif "bicep" in exercise_lower or "curl" in exercise_lower:
+            from src.backend.exercises.bicep_curl_trainer import BicepCurlTrainer
             return BicepCurlTrainer()
         elif exercise_lower == "plank":
+            from src.backend.exercises.plank_trainer import PlankTrainer
             return PlankTrainer()
         elif "row" in exercise_lower and "pull" not in exercise_lower:
             return RowTrainer()
         elif "pullup" in exercise_lower or "pull" in exercise_lower:
+            from src.backend.exercises.pullup_trainer import PullupTrainer
             return PullupTrainer()
         elif "lunge" in exercise_lower:
+            from src.backend.exercises.lunge_trainer import LungeTrainer
             return LungeTrainer()
         elif "crunch" in exercise_lower:
+            from src.backend.exercises.crunch_trainer import CrunchTrainer
             return CrunchTrainer()
         elif "tricep" in exercise_lower or "dip" in exercise_lower:
+            from src.backend.exercises.tricep_dip_trainer import TricepDipTrainer
             return TricepDipTrainer()
         elif "reardelt" in exercise_lower or (
             "rear" in exercise_lower
@@ -238,6 +247,7 @@ class WorkoutStreamManager:
             and "raise" in exercise_lower
         ):
             # Rear Delt Raise - use LateralRaiseTrainer for now (similar movement pattern)
+            from src.backend.exercises.lateral_raise_trainer import LateralRaiseTrainer
             return LateralRaiseTrainer()
         elif "pantpull" in exercise_lower or (
             "pant" in exercise_lower and "pull" in exercise_lower
@@ -250,6 +260,7 @@ class WorkoutStreamManager:
             # Pad Cuff - use RowTrainer for now (similar rotator cuff movement)
             return RowTrainer()
         elif "lateral" in exercise_lower or "raise" in exercise_lower:
+            from src.backend.exercises.lateral_raise_trainer import LateralRaiseTrainer
             return LateralRaiseTrainer()
         elif exercise_lower == "glutefly" or (
             exercise_lower == "glute" and "fly" in exercise_lower

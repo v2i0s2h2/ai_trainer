@@ -425,13 +425,27 @@ class WorkoutStreamManager:
     async def process_client_frames(self, websocket: WebSocket):
         """Process frames sent from client via WebSocket"""
         self.active = True
-        self.trainer = self.get_trainer()
+        
+        try:
+            logger.info("Initializing trainer...")
+            self.trainer = self.get_trainer()
+            logger.info(f"Trainer initialized: {type(self.trainer).__name__}")
+        except Exception as e:
+            logger.error(f"Failed to initialize trainer: {e}")
+            await websocket.send_json({"type": "error", "message": f"Trainer init failed: {e}"})
+            return
 
         # Initialize MediaPipe
-        import mediapipe as mp
-
-        mp_pose = mp.solutions.pose
-        mp_drawing = mp.solutions.drawing_utils
+        try:
+            logger.info("Importing MediaPipe...")
+            import mediapipe as mp
+            mp_pose = mp.solutions.pose
+            mp_drawing = mp.solutions.drawing_utils
+            logger.info("MediaPipe imported successfully")
+        except Exception as e:
+            logger.error(f"Failed to import MediaPipe: {e}")
+            await websocket.send_json({"type": "error", "message": f"MediaPipe import failed: {e}"})
+            return
 
         logger.info("Starting client frame processing mode")
 

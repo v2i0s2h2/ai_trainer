@@ -26,7 +26,6 @@ app = FastAPI(
 # CORS middleware for frontend communication
 # Explicitly list allowed origins - wildcard doesn't work with credentials
 default_origins = [
-    "https://cbab319b.ai-trainer-em7.pages.dev",
     "https://ai-trainer-em7.pages.dev",
     "https://backend.sudhanshudairy.store",
     "http://localhost:5173",
@@ -37,9 +36,11 @@ default_origins = [
 env_origins = os.getenv("CORS_ORIGINS", "").split(",") if os.getenv("CORS_ORIGINS") else []
 cors_origins = default_origins + [o.strip() for o in env_origins if o.strip()]
 
+# Allow all Cloudflare Pages deployment URLs (each has unique subdomain like 00cd92a2.ai-trainer-em7.pages.dev)
 app.add_middleware(
     CORSMiddleware,
     allow_origins=cors_origins,
+    allow_origin_regex=r"https://[a-z0-9]+\.ai-trainer-em7\.pages\.dev",
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],

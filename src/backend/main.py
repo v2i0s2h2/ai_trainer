@@ -24,10 +24,19 @@ app = FastAPI(
 )
 
 # CORS middleware for frontend communication
-# Allow all origins in production, or use CORS_ORIGINS env var
-cors_origins = (
-    os.getenv("CORS_ORIGINS", "*").split(",") if os.getenv("CORS_ORIGINS") else ["*"]
-)
+# Explicitly list allowed origins - wildcard doesn't work with credentials
+default_origins = [
+    "https://cbab319b.ai-trainer-em7.pages.dev",
+    "https://ai-trainer-em7.pages.dev",
+    "https://backend.sudhanshudairy.store",
+    "http://localhost:5173",
+    "http://localhost:8001",
+    "http://localhost:8000",
+]
+# Allow additional origins from environment variable
+env_origins = os.getenv("CORS_ORIGINS", "").split(",") if os.getenv("CORS_ORIGINS") else []
+cors_origins = default_origins + [o.strip() for o in env_origins if o.strip()]
+
 app.add_middleware(
     CORSMiddleware,
     allow_origins=cors_origins,

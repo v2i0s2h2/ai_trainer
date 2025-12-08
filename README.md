@@ -16,6 +16,7 @@ A full-stack fitness application with real-time pose detection, rep counting, an
 
 ## 🏗️ Architecture
 
+
 ### Monorepo Structure
 ```
 ai_trainer/

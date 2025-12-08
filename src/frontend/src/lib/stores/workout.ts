@@ -48,7 +48,7 @@ function createWorkoutStore() {
 	return {
 		subscribe,
 
-		connect: (exercise: string, cameraDevice: string = "auto") => {
+		connect: (exercise: string, cameraDevice: string = "client") => {
 			if (ws) {
 				ws.close();
 			}

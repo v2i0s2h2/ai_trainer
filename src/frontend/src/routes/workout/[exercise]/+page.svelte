@@ -14,7 +14,7 @@
     let exerciseData: any = null;
     let loading = true;
     let cameras: any[] = [];
-    let selectedCamera = "auto"; // "auto" means auto-detect external webcam
+    let selectedCamera = "client"; // "client" for browser camera (required for remote server)
     let showCameraSetup = true; // Show camera setup guidance before workout starts
     onMount(async () => {
         try {

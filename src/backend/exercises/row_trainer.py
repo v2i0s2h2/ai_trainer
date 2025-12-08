@@ -2,10 +2,24 @@
 # Run: python -m src.backend.exercises.row_trainer
 
 import cv2
-import mediapipe as mp
 import numpy as np
 import time
 from typing import Optional, Tuple, Dict, Any
+
+# Lazy import mediapipe to prevent hang at module load time
+mp = None
+mp_pose = None
+mp_drawing = None
+
+def get_mediapipe():
+    """Lazy load mediapipe"""
+    global mp, mp_pose, mp_drawing
+    if mp is None:
+        import mediapipe as _mp
+        mp = _mp
+        mp_pose = mp.solutions.pose
+        mp_drawing = mp.solutions.drawing_utils
+    return mp, mp_pose, mp_drawing
 
 try:
     from src.backend.core.voice_feedback import VoiceSystem
@@ -21,9 +35,6 @@ try:
 except ImportError:
     ENHANCED_PROCESSOR_AVAILABLE = False
     print("[WARNING] EnhancedPoseProcessor not available, using basic processing")
-
-mp_pose = mp.solutions.pose
-mp_drawing = mp.solutions.drawing_utils
 
 def get_xy(results, idx, w, h):
 	lm = results.pose_landmarks.landmark[idx]
@@ -80,6 +91,8 @@ class RowTrainer:
 
 	def compute_elbow_angle(self, results, side: str, w: int, h: int) -> Optional[float]:
 		"""Compute elbow angle (shoulder-elbow-wrist)"""
+		_, mp_pose, _ = get_mediapipe()  # Lazy load mediapipe
+		
 		if self.use_enhanced and self.processor:
 			if side == 'left':
 				SHOULDER_IDX = mp_pose.PoseLandmark.LEFT_SHOULDER.value
@@ -150,6 +163,7 @@ class RowTrainer:
 		now = time.time()
 		if now - self.last_feedback_time > self.feedback_cooldown:
 			# Check if shoulders are retracted (pulled back)
+			_, mp_pose, _ = get_mediapipe()
 			L_SHOULDER = mp_pose.PoseLandmark.LEFT_SHOULDER.value
 			R_SHOULDER = mp_pose.PoseLandmark.RIGHT_SHOULDER.value
 			lsh = get_xy(results, L_SHOULDER, w, h)
@@ -190,6 +204,8 @@ class RowTrainer:
 		}
 
 	def run(self) -> None:
+		_, mp_pose, mp_drawing = get_mediapipe()  # Lazy load mediapipe
+		
 		cap = cv2.VideoCapture(0)
 		if not cap.isOpened():
 			print("❌ Could not open webcam.")

@@ -2,28 +2,50 @@
 # Run: python -m src.backend.exercises.crunch_trainer
 
 import cv2
-import mediapipe as mp
+import cv2
 import numpy as np
 import time
 from typing import Optional, Tuple, Dict, Any
+import os
+
+# Lazy load mediapipe to prevent hang at module load time
+mp = None
+mp_pose = None
+mp_drawing = None
+
+def get_mediapipe():
+    """Lazy load mediapipe"""
+    global mp, mp_pose, mp_drawing
+    if mp is None:
+        import mediapipe as _mp
+        mp = _mp
+        mp_pose = mp.solutions.pose
+        mp_drawing = mp.solutions.drawing_utils
+    return mp, mp_pose, mp_drawing
 
 try:
-    from src.backend.core.voice_feedback import VoiceSystem
-    voice = VoiceSystem()
-    VOICE_ENABLED = True
-except:
+    # Skip voice on headless servers - check if display available
+    if os.environ.get('DISPLAY') or os.name == 'nt':  # Has display or is Windows
+        from src.backend.core.voice_feedback import VoiceSystem
+        voice = VoiceSystem()
+        VOICE_ENABLED = True
+    else:
+        VOICE_ENABLED = False
+        print("[CrunchTrainer] Voice disabled - no display available (server mode)")
+except Exception as e:
     VOICE_ENABLED = False
+    print(f"[CrunchTrainer] Voice disabled: {e}")
 
-# Import enhanced pose processor
-try:
-    from src.backend.core.pose_processor import EnhancedPoseProcessor
-    ENHANCED_PROCESSOR_AVAILABLE = True
-except ImportError:
-    ENHANCED_PROCESSOR_AVAILABLE = False
-    print("[WARNING] EnhancedPoseProcessor not available, using basic processing")
-
-mp_pose = mp.solutions.pose
-mp_drawing = mp.solutions.drawing_utils
+# Import enhanced pose processor - skip on headless servers
+ENHANCED_PROCESSOR_AVAILABLE = False
+if os.environ.get('DISPLAY') or os.name == 'nt':
+    try:
+        from src.backend.core.pose_processor import EnhancedPoseProcessor
+        ENHANCED_PROCESSOR_AVAILABLE = True
+    except ImportError:
+        print("[WARNING] EnhancedPoseProcessor not available, using basic processing")
+else:
+    print("[CrunchTrainer] EnhancedPoseProcessor disabled - server mode (no display)")
 
 def get_xy(results, idx, w, h):
 	lm = results.pose_landmarks.landmark[idx]
@@ -85,6 +107,7 @@ class CrunchTrainer:
 			angle = self.processor.compute_torso_angle_enhanced(landmarks)
 			return angle
 		else:
+			_, mp_pose, _ = get_mediapipe()
 			L_SHOULDER = mp_pose.PoseLandmark.LEFT_SHOULDER.value
 			L_HIP = mp_pose.PoseLandmark.LEFT_HIP.value
 			L_KNEE = mp_pose.PoseLandmark.LEFT_KNEE.value
@@ -128,6 +151,7 @@ class CrunchTrainer:
 		now = time.time()
 		if now - self.last_feedback_time > self.feedback_cooldown:
 			# Check if lower back is on floor (hip position)
+			_, mp_pose, _ = get_mediapipe()
 			L_HIP = mp_pose.PoseLandmark.LEFT_HIP.value
 			R_HIP = mp_pose.PoseLandmark.RIGHT_HIP.value
 			lhip = get_xy(results, L_HIP, w, h)
@@ -179,6 +203,9 @@ class CrunchTrainer:
 		if self.use_enhanced and self.processor:
 			pose = self.processor.pose
 		else:
+			# Lazy load mediapipe
+			_, mp_pose, mp_drawing = get_mediapipe()
+			
 			pose_context = mp_pose.Pose(
 				static_image_mode=False,
 				model_complexity=1,

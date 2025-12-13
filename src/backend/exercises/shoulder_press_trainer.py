@@ -2,28 +2,50 @@
 # Run: python -m src.backend.exercises.shoulder_press_trainer
 
 import cv2
-import mediapipe as mp
+import cv2
 import numpy as np
 import time
 from typing import Optional, Tuple, Dict, Any
+import os
+
+# Lazy load mediapipe to prevent hang at module load time
+mp = None
+mp_pose = None
+mp_drawing = None
+
+def get_mediapipe():
+    """Lazy load mediapipe"""
+    global mp, mp_pose, mp_drawing
+    if mp is None:
+        import mediapipe as _mp
+        mp = _mp
+        mp_pose = mp.solutions.pose
+        mp_drawing = mp.solutions.drawing_utils
+    return mp, mp_pose, mp_drawing
 
 try:
-    from src.backend.core.voice_feedback import VoiceSystem
-    voice = VoiceSystem()
-    VOICE_ENABLED = True
-except:
+    # Skip voice on headless servers - check if display available
+    if os.environ.get('DISPLAY') or os.name == 'nt':  # Has display or is Windows
+        from src.backend.core.voice_feedback import VoiceSystem
+        voice = VoiceSystem()
+        VOICE_ENABLED = True
+    else:
+        VOICE_ENABLED = False
+        print("[ShoulderPressTrainer] Voice disabled - no display available (server mode)")
+except Exception as e:
     VOICE_ENABLED = False
+    print(f"[ShoulderPressTrainer] Voice disabled: {e}")
 
-# Import enhanced pose processor
-try:
-    from src.backend.core.pose_processor import EnhancedPoseProcessor
-    ENHANCED_PROCESSOR_AVAILABLE = True
-except ImportError:
-    ENHANCED_PROCESSOR_AVAILABLE = False
-    print("[WARNING] EnhancedPoseProcessor not available, using basic processing")
-
-mp_pose = mp.solutions.pose
-mp_drawing = mp.solutions.drawing_utils
+# Import enhanced pose processor - skip on headless servers
+ENHANCED_PROCESSOR_AVAILABLE = False
+if os.environ.get('DISPLAY') or os.name == 'nt':
+    try:
+        from src.backend.core.pose_processor import EnhancedPoseProcessor
+        ENHANCED_PROCESSOR_AVAILABLE = True
+    except ImportError:
+        print("[WARNING] EnhancedPoseProcessor not available, using basic processing")
+else:
+    print("[ShoulderPressTrainer] EnhancedPoseProcessor disabled - server mode (no display)")
 
 # Legacy functions for backward compatibility
 def get_xy(results, idx, w, h):
@@ -84,6 +106,7 @@ class ShoulderPressTrainer:
 			return False
 		
 		# Check if standing upright
+		_, mp_pose, _ = get_mediapipe()
 		L_SHOULDER = mp_pose.PoseLandmark.LEFT_SHOULDER.value
 		R_SHOULDER = mp_pose.PoseLandmark.RIGHT_SHOULDER.value
 		L_HIP = mp_pose.PoseLandmark.LEFT_HIP.value
@@ -129,6 +152,7 @@ class ShoulderPressTrainer:
 			
 			return self.processor.compute_angle_enhanced(shoulder_pt, elbow_pt, wrist_pt)
 		else:
+			_, mp_pose, _ = get_mediapipe()
 			if side == 'left':
 				SHOULDER = mp_pose.PoseLandmark.LEFT_SHOULDER.value
 				ELBOW = mp_pose.PoseLandmark.LEFT_ELBOW.value
@@ -178,6 +202,7 @@ class ShoulderPressTrainer:
 		now = time.time()
 		if now - self.last_feedback_time > self.feedback_cooldown:
 			# Check if both arms moving together
+			_, mp_pose, _ = get_mediapipe()
 			L_WRIST = mp_pose.PoseLandmark.LEFT_WRIST.value
 			R_WRIST = mp_pose.PoseLandmark.RIGHT_WRIST.value
 			lwrist = get_xy(results, L_WRIST, w, h)
@@ -233,6 +258,9 @@ class ShoulderPressTrainer:
 		if self.use_enhanced and self.processor:
 			pose = self.processor.pose
 		else:
+			# Lazy load mediapipe
+			_, mp_pose, mp_drawing = get_mediapipe()
+			
 			pose_context = mp_pose.Pose(
 				static_image_mode=False,
 				model_complexity=1,

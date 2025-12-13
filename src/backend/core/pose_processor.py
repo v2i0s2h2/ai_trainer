@@ -9,10 +9,13 @@ Improves accuracy by:
 
 import cv2
 import numpy as np
-import mediapipe as mp
+import time
 from typing import Dict, Tuple, Optional, List
 from collections import deque
-import time
+
+# Lazy load mediapipe to prevent server hang
+mp = None
+
 
 class LandmarkSmoother:
     """Smooth landmarks using exponential moving average"""
@@ -67,6 +70,11 @@ class EnhancedPoseProcessor:
         
         # MediaPipe setup
         if use_mediapipe:
+            global mp
+            if mp is None:
+                import mediapipe as _mp
+                mp = _mp
+            
             self.mp_pose = mp.solutions.pose
             self.mp_drawing = mp.solutions.drawing_utils
             self.pose = self.mp_pose.Pose(

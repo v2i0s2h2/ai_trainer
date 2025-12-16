@@ -24,6 +24,9 @@ build/
 .svelte-kit/
 .output/
 
+# Frontend Source (Exclude from backend image)
+src/frontend/
+
 # IDE
 .vscode/
 .idea/
@@ -71,5 +74,3 @@ temp/
 Dockerfile*
 docker-compose*.yml
 .dockerignore
-
-

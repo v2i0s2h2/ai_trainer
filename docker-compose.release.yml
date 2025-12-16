@@ -1,0 +1,18 @@
+services:
+  backend:
+    # REPLACE 'YOUR_USERNAME' with your Docker Hub username
+    image: vishnu202/ai-trainer-backend:latest
+    container_name: ai-trainer-backend
+    ports:
+      - "8000:8000"
+    env_file:
+      - .env
+    volumes:
+      - ./data:/app/data
+    restart: always
+    networks:
+      - ai-trainer-network
+
+networks:
+  ai-trainer-network:
+    driver: bridge

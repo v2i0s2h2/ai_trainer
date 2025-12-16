@@ -16,6 +16,8 @@
     let cameras: any[] = [];
     let selectedCamera = "client"; // "client" for browser camera (required for remote server)
     let showCameraSetup = true; // Show camera setup guidance before workout starts
+    let showDisclaimer = true; // Show strict disclaimer before anything else
+
     onMount(async () => {
         try {
             // Fetch exercise details
@@ -108,7 +110,40 @@
         </div>
     {/if}
 
-    {#if exerciseData}
+
+    {#if showDisclaimer}
+        <div class="disclaimer-overlay">
+            <div class="disclaimer-card">
+                <div class="disclaimer-header">
+                    <span class="warning-icon">⚠️</span>
+                    <h2>Critical Notice</h2>
+                </div>
+                
+                <div class="disclaimer-content">
+                    <div class="warning-section">
+                        <p class="strict-text">These exercises are highly technical.</p>
+                        <p>First, spend 2-3 weeks learning about these exercises.</p>
+                        <p>Understand the nutrition requirements.</p>
+                        <p class="highlight-text">Only start when you have absolutely no questions left.</p>
+                        <p>Proceed only when you have complete clarity.</p>
+                        <p class="bottom-line">Bottom line: You must consult with me at least once before starting.</p>
+                    </div>
+
+                    <div class="disclaimer-actions">
+                        <a href="/diet" class="learn-btn">
+                            📚 Go to Technical Learn Page
+                        </a>
+                        
+                        <button class="agree-btn" on:click={() => showDisclaimer = false}>
+                            ✅ I Have Consulted & I am Ready
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {/if}
+
+    {#if exerciseData && !showDisclaimer}
         <div class="exercise-info-banner">
             <div class="info-content">
                 <div class="info-section">
@@ -394,6 +429,152 @@
 
     .retry-btn:hover {
         background: rgba(239, 68, 68, 0.3);
+    }
+
+
+    .disclaimer-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.95);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 2000;
+        padding: 1rem;
+        backdrop-filter: blur(8px);
+    }
+
+    .disclaimer-card {
+        background: #1a1a1a;
+        border: 2px solid #ef4444; /* Red border for warning */
+        border-radius: 1rem;
+        padding: 2.5rem;
+        max-width: 550px;
+        width: 100%;
+        max-height: 90vh; /* Prevent it from being taller than screen */
+        overflow-y: auto; /* Allow scrolling if content is too long */
+        box-shadow: 0 0 50px rgba(239, 68, 68, 0.2);
+        animation: slide-up 0.4s ease-out;
+    }
+
+    .disclaimer-header {
+        text-align: center;
+        margin-bottom: 2rem;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 1rem;
+    }
+
+    .warning-icon {
+        font-size: 3rem;
+        animation: pulse-warning 2s infinite;
+    }
+
+    .disclaimer-header h2 {
+        color: #ef4444;
+        font-size: 2rem;
+        font-weight: 800;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        margin: 0;
+    }
+
+    .warning-section {
+        display: flex;
+        flex-direction: column;
+        gap: 1.2rem;
+        font-size: 1.1rem;
+        line-height: 1.5;
+        color: #e5e5e5;
+        text-align: left;
+        margin-bottom: 2.5rem;
+        padding: 1.5rem;
+        background: rgba(239, 68, 68, 0.05);
+        border-radius: 0.5rem;
+    }
+
+    .warning-section p {
+        margin: 0;
+        padding-left: 1rem;
+        border-left: 3px solid #ef4444;
+    }
+
+    .strict-text {
+        font-weight: 600;
+        font-size: 1.2rem;
+        color: white;
+    }
+
+    .highlight-text {
+        color: #fbbf24; /* Amber */
+        font-weight: 600;
+    }
+
+    .bottom-line {
+        font-weight: 800;
+        color: #ef4444;
+        text-transform: uppercase;
+        font-size: 1rem;
+        margin-top: 0.5rem !important;
+    }
+
+    .disclaimer-actions {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    .learn-btn {
+        background: #3b82f6;
+        color: white;
+        padding: 1rem;
+        border-radius: 0.5rem;
+        font-weight: 600;
+        text-align: center;
+        text-decoration: none;
+        font-size: 1.1rem;
+        transition: transform 0.2s;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+    }
+
+    .learn-btn:hover {
+        background: #2563eb;
+        transform: translateY(-2px);
+    }
+
+    .agree-btn {
+        background: transparent;
+        border: 2px solid #22c55e;
+        color: #22c55e;
+        padding: 1rem;
+        border-radius: 0.5rem;
+        font-weight: 600;
+        font-size: 1rem;
+        cursor: pointer;
+        transition: all 0.2s;
+    }
+
+    .agree-btn:hover {
+        background: rgba(34, 197, 94, 0.1);
+        transform: translateY(-2px);
+    }
+
+    @keyframes pulse-warning {
+        0% { transform: scale(1); opacity: 1; }
+        50% { transform: scale(1.1); opacity: 0.8; }
+        100% { transform: scale(1); opacity: 1; }
+    }
+
+    @keyframes slide-up {
+        from { transform: translateY(20px); opacity: 0; }
+        to { transform: translateY(0); opacity: 1; }
     }
 
     .exercise-info-banner {

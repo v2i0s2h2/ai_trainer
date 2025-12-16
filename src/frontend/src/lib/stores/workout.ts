@@ -104,10 +104,13 @@ function createWorkoutStore() {
 						// Voice feedback for form corrections
 						if (feedback && feedback !== lastFeedback && feedback !== 'Good form - keep going!') {
 							// Only speak corrections, not the default good message
-							if (feedback.includes('Chest up') ||
-								feedback.includes('knees') ||
-								feedback.includes('Adjust') ||
-								feedback.includes('Keep')) {
+							// Expanded keyword list to cover more feedback types (calibration, stability, etc.)
+							const importantKeywords = [
+								'Chest', 'knees', 'Adjust', 'Keep', 'Don\'t', 'Stop', 'Lower', 'Raise', 'Hips', 'Back',
+								'pelvis', 'roll', 'stable', 'Calibration', 'Calibrating', 'Complete', 'Hold', 'Lift', 'Ankle'
+							];
+
+							if (importantKeywords.some(keyword => feedback.includes(keyword))) {
 								speak(feedback, 'normal');
 								lastFeedback = feedback;
 							}

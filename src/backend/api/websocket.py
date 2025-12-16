@@ -21,31 +21,6 @@ logger = logging.getLogger(__name__)
 
 
 # Rehab exercise wrappers (basic processing for now, full trainers coming soon)
-class GluteFlyTrainer:
-    """Wrapper for Glute Fly exercise - uses basic processing for now"""
-
-    def __init__(self):
-        self.reps = 0
-        self.current_feedback = "Glute Fly - Position yourself for calibration"
-        print("[GluteFlyTrainer] Using basic processing (full trainer coming soon)")
-
-    def process_frame(self, results, w: int, h: int, side: str = "left"):
-        """Basic process_frame for WebSocket compatibility"""
-        if not results.pose_landmarks:
-            return {
-                "reps": self.reps,
-                "feedback": "No pose detected - step into frame",
-                "angles": {},
-                "progress": 0.0,
-            }
-
-        # Basic feedback for now
-        return {
-            "reps": self.reps,
-            "feedback": "Glute Fly exercise - Full trainer coming soon",
-            "angles": {},
-            "progress": 0.0,
-        }
 
 
 class KneeDropTrainer:
@@ -265,8 +240,8 @@ class WorkoutStreamManager:
         elif exercise_lower == "glutefly" or (
             exercise_lower == "glute" and "fly" in exercise_lower
         ):
-            # Glute Fly trainer wrapper
             try:
+                from src.backend.exercises.glute_fly import GluteFlyTrainer
                 return GluteFlyTrainer()
             except Exception as e:
                 logger.error(f"Error initializing GluteFlyTrainer: {e}")

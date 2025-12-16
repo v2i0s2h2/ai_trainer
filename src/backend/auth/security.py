@@ -6,7 +6,10 @@ import bcrypt
 from jose import JWTError, jwt
 
 # Configuration
-SECRET_KEY = os.getenv("SECRET_KEY", "super_secret_key_for_ai_trainer_dev")
+SECRET_KEY = os.getenv("SECRET_KEY")
+if not SECRET_KEY:
+    raise ValueError("FATAL ERROR: SECRET_KEY environment variable is not set! Server cannot start securely.")
+
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 30 * 24 * 60  # 30 days for convenience
 

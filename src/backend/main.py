@@ -12,8 +12,8 @@ from fastapi import FastAPI, HTTPException, WebSocket, WebSocketDisconnect
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 
-AGENT_ENV: str = os.getenv("DEPLOYMENT_ENV", "development")
-DEV_MODE: bool = AGENT_ENV == "development"
+DEPLOYMENT_ENV: str = os.getenv("DEPLOYMENT_ENV", "development")
+DEV_MODE: bool = DEPLOYMENT_ENV == "development"
 
 
 # Setup logging

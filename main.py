@@ -6,7 +6,6 @@ Main entry point for AI Trainer Pro
 import sys
 from pathlib import Path
 
-from dotenv import load_dotenv
 
 # Add src directory to Python path
 src_path = Path(__file__).parent / "src"
@@ -18,7 +17,3 @@ from exercises.glute_fly import main
 if __name__ == "__main__":
     main()
 
-
-# Load .env file from parent directory
-env_path = Path(__file__).parent.parent / ".env"
-_ = load_dotenv(dotenv_path=env_path)

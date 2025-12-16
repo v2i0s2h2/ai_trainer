@@ -1,9 +1,13 @@
 import os
 from datetime import datetime, timedelta
-from typing import Optional
+from typing import Optional, Union
 
 import bcrypt
 from jose import JWTError, jwt
+from dotenv import load_dotenv
+
+# Load environment variables explicitly to handle special chars (avoid shell parsing issues)
+load_dotenv()
 
 # Configuration
 SECRET_KEY = os.getenv("SECRET_KEY")

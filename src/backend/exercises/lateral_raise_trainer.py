@@ -35,13 +35,18 @@ except Exception as e:
     VOICE_ENABLED = False
     print(f"[LateralRaiseTrainer] Voice disabled: {e}")
 
-# Import enhanced pose processor
-try:
-    from src.backend.core.pose_processor import EnhancedPoseProcessor
-    ENHANCED_PROCESSOR_AVAILABLE = True
-except ImportError:
-    ENHANCED_PROCESSOR_AVAILABLE = False
-    print("[WARNING] EnhancedPoseProcessor not available, using basic processing")
+# Import enhanced pose processor - skip on headless servers
+# EnhancedPoseProcessor imports mediapipe at module level which hangs on VPS
+import os
+ENHANCED_PROCESSOR_AVAILABLE = False
+if os.environ.get('DISPLAY') or os.name == 'nt':  # Has display or Windows
+    try:
+        from src.backend.core.pose_processor import EnhancedPoseProcessor
+        ENHANCED_PROCESSOR_AVAILABLE = True
+    except ImportError:
+        print("[WARNING] EnhancedPoseProcessor not available, using basic processing")
+else:
+    print("[LateralRaiseTrainer] EnhancedPoseProcessor disabled - server mode (no display)")
 
 def get_xy(results, idx, w, h):
 	lm = results.pose_landmarks.landmark[idx]

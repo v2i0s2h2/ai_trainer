@@ -2,28 +2,49 @@
 # Run: python -m src.backend.exercises.squat_trainer
 
 import cv2
-import mediapipe as mp
 import numpy as np
 import time
 from typing import Optional, Tuple, Dict, Any
+import os
+
+# Lazy load mediapipe to prevent hang at module load time
+mp = None
+mp_pose = None
+mp_drawing = None
+
+def get_mediapipe():
+    """Lazy load mediapipe"""
+    global mp, mp_pose, mp_drawing
+    if mp is None:
+        import mediapipe as _mp
+        mp = _mp
+        mp_pose = mp.solutions.pose
+        mp_drawing = mp.solutions.drawing_utils
+    return mp, mp_pose, mp_drawing
 
 try:
-    from src.backend.core.voice_feedback import VoiceSystem
-    voice = VoiceSystem()
-    VOICE_ENABLED = True
-except:
+    # Skip voice on headless servers - check if display available
+    if os.environ.get('DISPLAY') or os.name == 'nt':  # Has display or is Windows
+        from src.backend.core.voice_feedback import VoiceSystem
+        voice = VoiceSystem()
+        VOICE_ENABLED = True
+    else:
+        VOICE_ENABLED = False
+        print("[SquatTrainer] Voice disabled - no display available (server mode)")
+except Exception as e:
     VOICE_ENABLED = False
+    print(f"[SquatTrainer] Voice disabled: {e}")
 
-# Import enhanced pose processor
-try:
-    from src.backend.core.pose_processor import EnhancedPoseProcessor
-    ENHANCED_PROCESSOR_AVAILABLE = True
-except ImportError:
-    ENHANCED_PROCESSOR_AVAILABLE = False
-    print("[WARNING] EnhancedPoseProcessor not available, using basic processing")
-
-mp_pose = mp.solutions.pose
-mp_drawing = mp.solutions.drawing_utils
+# Import enhanced pose processor - skip on headless servers
+ENHANCED_PROCESSOR_AVAILABLE = False
+if os.environ.get('DISPLAY') or os.name == 'nt':
+    try:
+        from src.backend.core.pose_processor import EnhancedPoseProcessor
+        ENHANCED_PROCESSOR_AVAILABLE = True
+    except ImportError:
+        print("[WARNING] EnhancedPoseProcessor not available, using basic processing")
+else:
+    print("[SquatTrainer] EnhancedPoseProcessor disabled - server mode (no display)")
 
 # Legacy functions for backward compatibility
 def get_xy(results, idx, w, h):
@@ -82,6 +103,7 @@ class SquatTrainer:
 
 	def check_setup(self, results, w: int, h: int) -> bool:
 		# Simple stance width check using ankle distance
+		_, mp_pose, _ = get_mediapipe()
 		L_ANKLE = mp_pose.PoseLandmark.LEFT_ANKLE.value
 		R_ANKLE = mp_pose.PoseLandmark.RIGHT_ANKLE.value
 		L_HIP = mp_pose.PoseLandmark.LEFT_HIP.value
@@ -110,6 +132,7 @@ class SquatTrainer:
 			return angle
 		else:
 			# Fallback to basic calculation
+			_, mp_pose, _ = get_mediapipe()
 			if side == 'left':
 				HIP = mp_pose.PoseLandmark.LEFT_HIP.value
 				KNEE = mp_pose.PoseLandmark.LEFT_KNEE.value
@@ -132,6 +155,7 @@ class SquatTrainer:
 			return angle
 		else:
 			# Fallback to basic calculation
+			_, mp_pose, _ = get_mediapipe()
 			L_SH = mp_pose.PoseLandmark.LEFT_SHOULDER.value
 			R_SH = mp_pose.PoseLandmark.RIGHT_SHOULDER.value
 			L_HIP = mp_pose.PoseLandmark.LEFT_HIP.value
@@ -190,6 +214,7 @@ class SquatTrainer:
 				self.last_feedback_time = now
 			
 			# Check knee tracking
+			_, mp_pose, _ = get_mediapipe()
 			L_KNEE = mp_pose.PoseLandmark.LEFT_KNEE.value
 			R_KNEE = mp_pose.PoseLandmark.RIGHT_KNEE.value
 			L_ANKLE = mp_pose.PoseLandmark.LEFT_ANKLE.value
@@ -255,6 +280,9 @@ class SquatTrainer:
 			pose = self.processor.pose
 			# No context manager needed for enhanced processor
 		else:
+			# Lazy load mediapipe
+			_, mp_pose, mp_drawing = get_mediapipe()
+			
 			# Use basic MediaPipe with context manager
 			pose_context = mp_pose.Pose(
 				static_image_mode=False,
@@ -302,6 +330,7 @@ class SquatTrainer:
 						say("Chest up rakho, back straight.", 1.0)
 					
 					# Knees tracking heuristic (knee vs ankle x distance)
+					_, mp_pose, _ = get_mediapipe()
 					L_KNEE = mp_pose.PoseLandmark.LEFT_KNEE.value
 					R_KNEE = mp_pose.PoseLandmark.RIGHT_KNEE.value
 					L_ANKLE = mp_pose.PoseLandmark.LEFT_ANKLE.value

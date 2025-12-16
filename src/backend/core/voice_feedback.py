@@ -27,6 +27,10 @@ class VoiceSystem:
         self.last_say_time = {}
         self.pyttsx3_engine = None
         try:
+            # Check for display/audio device first
+            if not (os.environ.get('DISPLAY') or os.name == 'nt'):
+                raise RuntimeError("Headless environment detected")
+
             pygame.mixer.init(frequency=22050, size=-16, channels=2, buffer=512)
             print("[VOICE] Initialized gTTS + pygame backend")
         except Exception as e:
@@ -40,9 +44,11 @@ class VoiceSystem:
                     print("[VOICE] Falling back to pyttsx3 backend")
                 except Exception as e2:
                     print(f"[VOICE] pyttsx3 init also failed: {e2}")
-                    raise
+                    self.backend = "disabled"
             else:
-                raise
+                self.backend = "disabled"
+                print("[VOICE] Voice feedback disabled (no audio backend available)")
+
 
         self.thread = Thread(target=self._worker, daemon=True)
         self.thread.start()

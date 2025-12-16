@@ -5,49 +5,25 @@ services:
       dockerfile: Dockerfile.backend
     container_name: ai-trainer-backend
     ports:
-      - "${BACKEND_PORT:-8000}:8000"
+      - "8000:8000"
     environment:
       - PORT=8000
       - HOST=0.0.0.0
       - PYTHONUNBUFFERED=1
-      - CORS_ORIGINS=http://localhost:3000,http://frontend:80
+      # Update strictly to your Cloudflare Pages domain + Tunnel URL
+      - CORS_ORIGINS=https://ai-trainer-em7.pages.dev,https://backend.sudhanshudairy.store
     volumes:
-      # Mount data directory to persist SQLite database
+      # Persist database
       - ./data:/app/data
-      # Mount models if you have pre-trained models
+      # Mount models if needed
       - ./models:/app/models:ro
-    restart: unless-stopped
+    restart: always
     healthcheck:
-      test:
-        [
-          "CMD",
-          "python",
-          "-c",
-          "import urllib.request; urllib.request.urlopen('http://localhost:8000/health')",
-        ]
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/health')"]
       interval: 30s
       timeout: 10s
       retries: 3
       start_period: 40s
-    networks:
-      - ai-trainer-network
-
-  frontend:
-    build:
-      context: .
-      dockerfile: Dockerfile.frontend
-    container_name: ai-trainer-frontend
-    ports:
-      - "${FRONTEND_PORT:-3000}:80"
-    depends_on:
-      - backend
-    restart: unless-stopped
-    healthcheck:
-      test: ["CMD", "wget", "-q", "--spider", "http://127.0.0.1/"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
-      start_period: 10s
     networks:
       - ai-trainer-network
 

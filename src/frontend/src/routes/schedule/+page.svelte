@@ -1,5 +1,7 @@
 <script lang="ts">
     import { onMount } from 'svelte';
+    import { API_BASE_URL } from '$lib/constants';
+    import BookingModal from '$lib/components/schedule/BookingModal.svelte';
     
     // Mock schedule data (will move to backend later)
     // 0 = Unavailable, 1 = Available, 2 = Booked
@@ -47,8 +49,47 @@
         { day: 'Sunday', slots: [] } // Closed
     ];
 
+    // Booking modal state
+    let showBookingModal = false;
+    let selectedDay = '';
+    let selectedTime = '';
+    let selectedDate = '';
+    let successMessage = '';
+
+    function getNextDate(dayName: string): string {
+        const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+        const today = new Date();
+        const targetDay = days.indexOf(dayName);
+        const currentDay = today.getDay();
+        
+        let daysUntilTarget = targetDay - currentDay;
+        if (daysUntilTarget <= 0) {
+            daysUntilTarget += 7; // Next week
+        }
+        
+        const targetDate = new Date(today);
+        targetDate.setDate(today.getDate() + daysUntilTarget);
+        return targetDate.toISOString().split('T')[0]; // YYYY-MM-DD
+    }
+
     function handleBook(day: string, time: string) {
-        alert(`Booking request for ${day} at ${time} sent! \n(Backend integration pending)`);
+        selectedDay = day;
+        selectedTime = time;
+        selectedDate = getNextDate(day);
+        showBookingModal = true;
+        successMessage = '';
+    }
+
+    function handleBookingSuccess() {
+        showBookingModal = false;
+        successMessage = `Booking confirmed for ${selectedDay} at ${selectedTime}!`;
+        setTimeout(() => {
+            successMessage = '';
+        }, 5000);
+    }
+
+    function handleBookingCancel() {
+        showBookingModal = false;
     }
 </script>
 
@@ -58,6 +99,13 @@
         <h1>Consultation & Scheduling</h1>
         <p class="subtitle">Book a 1-on-1 session to perfect your form and nutrition plan.</p>
     </header>
+
+    <!-- Success Message -->
+    {#if successMessage}
+        <div class="success-banner">
+            ✅ {successMessage}
+        </div>
+    {/if}
 
     <!-- Contact Info Cards -->
     <div class="contact-grid">
@@ -117,6 +165,17 @@
     </div>
 </div>
 
+<!-- Booking Modal -->
+{#if showBookingModal}
+    <BookingModal
+        day={selectedDay}
+        time={selectedTime}
+        bookingDate={selectedDate}
+        on:success={handleBookingSuccess}
+        on:cancel={handleBookingCancel}
+    />
+{/if}
+
 <style>
     .schedule-container {
         padding: 2rem;
@@ -141,6 +200,17 @@
     .subtitle {
         color: #94a3b8;
         font-size: 1.1rem;
+    }
+
+    .success-banner {
+        background: rgba(34, 197, 94, 0.15);
+        border: 1px solid #22c55e;
+        color: #86efac;
+        padding: 1rem;
+        border-radius: 0.5rem;
+        margin-bottom: 2rem;
+        text-align: center;
+        font-weight: 600;
     }
 
     /* Contact Cards */

@@ -132,18 +132,17 @@ def get_all_bookings(
     current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db)
 ):
-    """Get all bookings (admin view)"""
-    # For now, any authenticated user can view all bookings
-    # TODO: Add admin role check
-    
+    """Get all bookings (admin view vs public status)"""
     bookings = db.query(Booking).order_by(
         Booking.booking_date.desc()
     ).all()
     
+    is_admin = current_user.role == "admin"
+    
     return [
         BookingResponse(
             id=b.id,
-            name=b.name,
+            name=b.name if is_admin else "Booked", # Hide name for non-admins
             day=b.day,
             time=b.time,
             booking_date=b.booking_date.isoformat(),

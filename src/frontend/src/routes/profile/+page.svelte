@@ -274,9 +274,18 @@
         <!-- Account Actions -->
         <div class="account-card">
             <h2 class="section-title">Account</h2>
-            <button class="logout-btn" on:click={handleLogout}>
-                🚪 Logout
-            </button>
+            
+            <div class="account-links">
+                <button class="menu-item-btn" on:click={() => goto('/profile/bookings')}>
+                    <span class="icon">🗓️</span>
+                    <span class="label">My Consultations</span>
+                    <span class="arrow">→</span>
+                </button>
+                
+                <button class="logout-btn" on:click={handleLogout}>
+                    🚪 Logout
+                </button>
+            </div>
             <p class="coming-soon-text">More account features coming soon</p>
         </div>
     {/if}
@@ -722,6 +731,48 @@
 
     .logout-btn:hover {
         background-color: rgba(239, 68, 68, 0.2);
+    }
+
+    .account-links {
+        display: flex;
+        flex-direction: column;
+        gap: 0.75rem;
+        margin-bottom: 1rem;
+    }
+
+    .menu-item-btn {
+        display: flex;
+        align-items: center;
+        width: 100%;
+        padding: 1rem;
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 0.75rem;
+        color: white;
+        cursor: pointer;
+        transition: all 0.2s;
+        text-align: left;
+    }
+
+    .menu-item-btn:hover {
+        background: rgba(255, 255, 255, 0.08);
+        border-color: var(--primary);
+    }
+
+    .menu-item-btn .icon {
+        font-size: 1.25rem;
+        margin-right: 1rem;
+    }
+
+    .menu-item-btn .label {
+        flex: 1;
+        font-weight: 600;
+        font-size: 0.95rem;
+    }
+
+    .menu-item-btn .arrow {
+        color: var(--text-secondary);
+        opacity: 0.5;
     }
 
     .coming-soon-text {

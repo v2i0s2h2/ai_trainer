@@ -3,15 +3,14 @@
     import { API_BASE_URL } from '$lib/constants';
     import BookingModal from '$lib/components/schedule/BookingModal.svelte';
     
-    // Mock schedule data (will move to backend later)
-    // 0 = Unavailable, 1 = Available, 2 = Booked
-    const schedule = [
+    // Static base schedule (Availability slots)
+    let schedule = [
         { day: 'Monday', slots: [
             { time: '09:00 AM', status: 1 },
             { time: '10:00 AM', status: 0 },
             { time: '11:00 AM', status: 1 },
             { time: '04:00 PM', status: 1 },
-            { time: '05:00 PM', status: 2 }
+            { time: '05:00 PM', status: 1 }
         ]},
         { day: 'Tuesday', slots: [
             { time: '09:00 AM', status: 1 },
@@ -23,7 +22,7 @@
         { day: 'Wednesday', slots: [
             { time: '09:00 AM', status: 1 },
             { time: '10:00 AM', status: 1 },
-            { time: '11:00 AM', status: 2 },
+            { time: '11:00 AM', status: 1 },
             { time: '04:00 PM', status: 1 },
             { time: '05:00 PM', status: 1 }
         ]},
@@ -46,15 +45,51 @@
             { time: '11:00 AM', status: 1 },
             { time: '12:00 PM', status: 1 }
         ]},
-        { day: 'Sunday', slots: [] } // Closed
+        { day: 'Sunday', slots: [] }
     ];
 
-    // Booking modal state
+    // Booking modal & sync state
     let showBookingModal = false;
     let selectedDay = '';
     let selectedTime = '';
     let selectedDate = '';
     let successMessage = '';
+    let isLoading = false;
+
+    onMount(async () => {
+        await syncScheduleWithBookings();
+    });
+
+    async function syncScheduleWithBookings() {
+        isLoading = true;
+        try {
+            const token = localStorage.getItem('token');
+            const response = await fetch(`${API_BASE_URL}/api/bookings/`, {
+                headers: { 'Authorization': `Bearer ${token}` }
+            });
+
+            if (response.ok) {
+                const realBookings = await response.json();
+                
+                // Update schedule status based on real bookings
+                schedule = schedule.map(dayData => ({
+                    ...dayData,
+                    slots: dayData.slots.map(slot => {
+                        const isBooked = realBookings.some(b => 
+                            b.day === dayData.day && 
+                            b.time === slot.time && 
+                            b.status === 'confirmed'
+                        );
+                        return isBooked ? { ...slot, status: 2 } : slot;
+                    })
+                }));
+            }
+        } catch (err) {
+            console.error('Failed to sync schedule:', err);
+        } finally {
+            isLoading = false;
+        }
+    }
 
     function getNextDate(dayName: string): string {
         const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
@@ -69,7 +104,7 @@
         
         const targetDate = new Date(today);
         targetDate.setDate(today.getDate() + daysUntilTarget);
-        return targetDate.toISOString().split('T')[0]; // YYYY-MM-DD
+        return targetDate.toISOString().split('T')[0];
     }
 
     function handleBook(day: string, time: string) {
@@ -80,9 +115,10 @@
         successMessage = '';
     }
 
-    function handleBookingSuccess() {
+    async function handleBookingSuccess() {
         showBookingModal = false;
         successMessage = `Booking confirmed for ${selectedDay} at ${selectedTime}!`;
+        await syncScheduleWithBookings(); // Re-sync to show new booking
         setTimeout(() => {
             successMessage = '';
         }, 5000);

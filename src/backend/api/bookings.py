@@ -36,6 +36,7 @@ class BookingCreate(BaseModel):
 
 class BookingResponse(BaseModel):
     id: int
+    user_id: int # Added to identify owner in frontend
     name: str
     day: str
     time: str
@@ -94,6 +95,7 @@ def create_booking(
     
     return BookingResponse(
         id=new_booking.id,
+        user_id=new_booking.user_id,
         name=new_booking.name,
         day=new_booking.day,
         time=new_booking.time,
@@ -116,6 +118,7 @@ def get_my_bookings(
     return [
         BookingResponse(
             id=b.id,
+            user_id=b.user_id,
             name=b.name,
             day=b.day,
             time=b.time,
@@ -142,6 +145,7 @@ def get_all_bookings(
     return [
         BookingResponse(
             id=b.id,
+            user_id=b.user_id,
             name=b.name if is_admin else "Booked", # Hide name for non-admins
             day=b.day,
             time=b.time,

@@ -1,10 +1,12 @@
 <script lang="ts">
     import { onMount } from 'svelte';
     import { API_BASE_URL } from '$lib/constants';
+    import { authStore } from '$lib/stores/auth';
     import BookingModal from '$lib/components/schedule/BookingModal.svelte';
     
-    // Static base schedule (Availability slots)
+    // Status codes: 0=Unavailable, 1=Available, 2=Booked by Others, 3=Booked by ME
     let schedule = [
+        // ... (same static structure)
         { day: 'Monday', slots: [
             { time: '09:00 AM', status: 1 },
             { time: '10:00 AM', status: 0 },
@@ -48,7 +50,6 @@
         { day: 'Sunday', slots: [] }
     ];
 
-    // Booking modal & sync state
     let showBookingModal = false;
     let selectedDay = '';
     let selectedTime = '';
@@ -64,6 +65,8 @@
         isLoading = true;
         try {
             const token = localStorage.getItem('token');
+            const currentUserId = $authStore.user?.id;
+            
             const response = await fetch(`${API_BASE_URL}/api/bookings/`, {
                 headers: { 'Authorization': `Bearer ${token}` }
             });
@@ -71,16 +74,20 @@
             if (response.ok) {
                 const realBookings = await response.json();
                 
-                // Update schedule status based on real bookings
                 schedule = schedule.map(dayData => ({
                     ...dayData,
                     slots: dayData.slots.map(slot => {
-                        const isBooked = realBookings.some(b => 
+                        const booking = realBookings.find(b => 
                             b.day === dayData.day && 
                             b.time === slot.time && 
                             b.status === 'confirmed'
                         );
-                        return isBooked ? { ...slot, status: 2 } : slot;
+                        
+                        if (booking) {
+                            // Status 3 if mine, Status 2 if others
+                            return { ...slot, status: booking.user_id === currentUserId ? 3 : 2 };
+                        }
+                        return slot;
                     })
                 }));
             }
@@ -164,11 +171,11 @@
 
     <!-- Weekly Schedule -->
     <div class="schedule-grid">
-        <div class="schedule-header">
+                <div class="schedule-header">
             <h2>Weekly Availability</h2>
             <div class="legend">
                 <span class="status available">Available</span>
-                <span class="status booked">Booked</span>
+                <span class="status mine">Your Session</span>
                 <span class="status unavailable">Unavailable</span>
             </div>
         </div>
@@ -182,12 +189,14 @@
                             <div class="slot closed">Closed</div>
                         {:else}
                             {#each dayData.slots as slot}
-                                <div class="slot {slot.status === 1 ? 'available' : slot.status === 2 ? 'booked' : 'unavailable'}">
+                                <div class="slot {slot.status === 1 ? 'available' : slot.status === 2 ? 'booked' : slot.status === 3 ? 'mine' : 'unavailable'}">
                                     <span class="time">{slot.time}</span>
                                     {#if slot.status === 1}
                                         <button class="book-btn" on:click={() => handleBook(dayData.day, slot.time)}>Book</button>
                                     {:else if slot.status === 2}
-                                        <span class="status-text">Booked</span>
+                                        <span class="status-text">Unavailable</span>
+                                    {:else if slot.status === 3}
+                                        <span class="status-text mine-text">Your Session</span>
                                     {:else}
                                         <span class="status-text">--</span>
                                     {/if}
@@ -331,7 +340,7 @@
     }
 
     .status.available::before { background: #2563eb; }
-    .status.booked::before { background: #dc2626; }
+    .status.mine::before { background: #10b981; }
     .status.unavailable::before { background: #475569; }
 
     .timetable {
@@ -384,10 +393,20 @@
         background: rgba(37, 99, 235, 0.2);
     }
 
+    .slot.mine {
+        background: rgba(16, 185, 129, 0.1);
+        border: 1px solid #10b981;
+    }
+
+    .mine-text {
+        color: #34d399 !important;
+        font-weight: 700;
+    }
+
     .slot.booked {
-        background: rgba(220, 38, 38, 0.1);
-        border: 1px solid #dc2626;
-        opacity: 0.7;
+        background: rgba(47, 55, 105, 0.1);
+        border: 1px solid #475569;
+        opacity: 0.5;
     }
 
     .slot.unavailable {

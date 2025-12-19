@@ -17,6 +17,7 @@ class User(Base):
     name = Column(String, default="Champion")
     email = Column(String, unique=True, nullable=True)
     hashed_password = Column(String, nullable=True)
+    role = Column(String, default="user")  # "user" or "admin"
     created_at = Column(DateTime, default=datetime.utcnow)
 
     # Relationships

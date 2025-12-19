@@ -7,6 +7,7 @@ export interface User {
     id: number;
     name: string;
     email: string;
+    role: string;
 }
 
 export interface AuthState {
@@ -14,6 +15,7 @@ export interface AuthState {
     user: User | null;
     token: string | null;
     loading: boolean;
+    initialized: boolean;
     error: string | null;
 }
 
@@ -22,6 +24,7 @@ const initialState: AuthState = {
     user: null,
     token: null,
     loading: false,
+    initialized: false,
     error: null,
 };
 
@@ -127,6 +130,39 @@ function createAuthStore() {
             goto("/login");
         },
 
+        async refreshUser() {
+            const token = localStorage.getItem("token");
+            if (!token) return;
+
+            update((state) => ({ ...state, loading: true }));
+
+            try {
+                const res = await fetch(`${API_BASE_URL}/api/auth/me`, {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                });
+
+                if (res.ok) {
+                    const user = await res.json();
+                    localStorage.setItem("user", JSON.stringify(user));
+                    update((state) => ({
+                        ...state,
+                        user,
+                        isAuthenticated: true,
+                        loading: false,
+                    }));
+                } else if (res.status === 401) {
+                    this.logout();
+                } else {
+                    update((state) => ({ ...state, loading: false }));
+                }
+            } catch (err) {
+                console.error("Failed to refresh user:", err);
+                update((state) => ({ ...state, loading: false }));
+            }
+        },
+
         init() {
             if (browser) {
                 const token = localStorage.getItem("token");
@@ -139,13 +175,19 @@ function createAuthStore() {
                             isAuthenticated: true,
                             token,
                             user,
-                            loading: false,
+                            loading: true, // Start loading as we refresh
+                            initialized: true,
                             error: null,
                         });
+                        // Refresh user data (especially role) from server
+                        this.refreshUser();
                     } catch (e) {
                         // Invalid data
                         this.logout();
+                        update(s => ({ ...s, initialized: true }));
                     }
+                } else {
+                    update(s => ({ ...s, initialized: true }));
                 }
             }
         },

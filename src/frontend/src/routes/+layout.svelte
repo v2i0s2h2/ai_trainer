@@ -17,14 +17,24 @@
 
 	$: {
 		// Route protection
-		if (typeof window !== 'undefined') {
+		if (typeof window !== 'undefined' && $authStore.initialized) {
 			const path = $page.url.pathname;
 			const isAuthRoute = path === '/login' || path === '/signup';
+			const isAdminRoute = path.startsWith('/admin');
 
 			if (!$authStore.isAuthenticated && !isAuthRoute) {
 				goto('/login');
-			} else if ($authStore.isAuthenticated && isAuthRoute) {
-				goto('/');
+			} else if ($authStore.isAuthenticated) {
+				if (isAuthRoute) {
+					goto('/');
+				} else if (isAdminRoute && !$authStore.loading) {
+					// Only redirect if we ARE authenticated, DONE loading/refreshing, 
+					// and DEFINITELY not an admin
+					if ($authStore.user && $authStore.user.role !== 'admin') {
+						console.warn('Unauthorized access to admin route');
+						goto('/');
+					}
+				}
 			}
 		}
 	}

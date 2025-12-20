@@ -147,7 +147,7 @@
                                     {cancelLoadingId === booking.id ? 'Cancelling...' : 'Cancel Session'}
                                 </button>
                             {:else}
-                                <span class="cancel-deadline">Cancellation closed (< 24h)</span>
+                                <span class="cancel-deadline">Cancellation closed (&lt; 24h)</span>
                             {/if}
                         </div>
                     {/if}

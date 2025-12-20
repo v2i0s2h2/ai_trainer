@@ -52,7 +52,7 @@ def ensure_admin(email: str):
         conn = sqlite3.connect(db_path)
         cursor = conn.cursor()
         print(f"👑 Ensuring admin status for: {email}...")
-        cursor.execute("UPDATE users SET role = 'admin' WHERE email = ?", (email,))
+        cursor.execute("UPDATE users SET role = 'admin', name = 'vi' WHERE email = ?", (email,))
         if cursor.rowcount > 0:
             print(f"✅ User {email} is now an Admin.")
         else:

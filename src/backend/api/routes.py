@@ -156,6 +156,7 @@ class UserProfileResponse(BaseModel):
     id: int
     name: str
     email: Optional[str]
+    role: str
     stats: UserStats
     preferences: UserPreferences
     created_at: datetime
@@ -2126,6 +2127,7 @@ async def get_user_profile(
         id=user.id,
         name=user.name or "Champion",
         email=user.email,
+        role=user.role,
         stats=stats,
         preferences=preferences,
         created_at=user.created_at,
@@ -2214,6 +2216,7 @@ async def update_user_profile(
         id=user.id,
         name=user.name or "Champion",
         email=user.email,
+        role=user.role,
         stats=stats,
         preferences=preferences,
         created_at=user.created_at,

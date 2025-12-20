@@ -17,6 +17,7 @@ class User(Base):
     name = Column(String, default="Champion")
     email = Column(String, unique=True, nullable=True)
     hashed_password = Column(String, nullable=True)
+    role = Column(String, default="user")  # "user" or "admin"
     created_at = Column(DateTime, default=datetime.utcnow)
 
     # Relationships
@@ -116,3 +117,26 @@ class DietEntry(Base):
     notes = Column(String, nullable=True)
 
     created_at = Column(DateTime, default=datetime.utcnow)
+
+
+class Booking(Base):
+    __tablename__ = "bookings"
+
+    id = Column(Integer, primary_key=True, index=True)
+    user_id = Column(Integer, ForeignKey("users.id"))
+    
+    # Booking details
+    name = Column(String, nullable=False)  # User's name for the consultation
+    day = Column(String, nullable=False)  # e.g., "Monday"
+    time = Column(String, nullable=False)  # e.g., "10:00 AM"
+    booking_date = Column(DateTime, nullable=False)  # Actual date of the consultation
+    
+    # Status: confirmed (auto), cancelled
+    status = Column(String, default="confirmed")
+    
+    # Timestamps
+    created_at = Column(DateTime, default=datetime.utcnow)
+    cancelled_at = Column(DateTime, nullable=True)
+    
+    # Relationship
+    user = relationship("User")

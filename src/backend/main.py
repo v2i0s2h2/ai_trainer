@@ -56,7 +56,7 @@ app.add_middleware(
 
 # Import routers
 try:
-    from src.backend.api import auth, routes
+    from src.backend.api import auth, routes, bookings
     from src.backend.api import websocket as ws
 except ImportError:
     # Fallback for direct execution
@@ -65,12 +65,13 @@ except ImportError:
 
     root = Path(__file__).parent.parent.parent
     sys.path.insert(0, str(root))
-    from src.backend.api import auth, routes
+    from src.backend.api import auth, routes, bookings
     from src.backend.api import websocket as ws
 
 # Register routes
 app.include_router(auth.router, prefix="/api")
 app.include_router(routes.router, prefix="/api")
+app.include_router(bookings.router)
 app.include_router(ws.router)
 
 

@@ -41,6 +41,7 @@ class UserResponse(BaseModel):
     id: int
     email: str
     name: str
+    role: str
 
     class Config:
         from_attributes = True
@@ -78,6 +79,7 @@ def register(user_in: UserCreate, db: Session = Depends(get_db)):
             "id": new_user.id,
             "name": new_user.name,
             "email": new_user.email,
+            "role": new_user.role,
         },
     }
 
@@ -114,6 +116,7 @@ def login(user_in: UserLogin, db: Session = Depends(get_db)):
             "id": user.id,
             "name": user.name,
             "email": user.email,
+            "role": user.role,
         },
     }
 
@@ -150,3 +153,9 @@ def get_current_user(
         raise credentials_exception
 
     return user
+
+
+@router.get("/me", response_model=UserResponse)
+def get_me(current_user: User = Depends(get_current_user)):
+    """Get current user data including role"""
+    return current_user

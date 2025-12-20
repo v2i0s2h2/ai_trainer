@@ -37,14 +37,14 @@ default_origins = [
     "http://localhost:5173",
     "http://localhost:8001",
     "http://localhost:8000",
+    "https://ai-trainer-em7.pages.dev",
+    "https://aitrainer.at0.app",
 ]
 # Allow additional origins from environment variable
 env_origins = (
     os.getenv("CORS_ORIGINS", "").split(",") if os.getenv("CORS_ORIGINS") else []
 )
-cors_origins = [o.strip() for o in env_origins if o.strip()]
-if DEV_MODE:
-    cors_origins = default_origins + cors_origins
+cors_origins = default_origins + [o.strip() for o in env_origins if o.strip()]
 
 logger.info(f"Allowed CORS origins: {cors_origins}")
 
@@ -52,9 +52,9 @@ logger.info(f"Allowed CORS origins: {cors_origins}")
 app.add_middleware(
     CORSMiddleware,
     allow_origins=cors_origins,
-    allow_origin_regex=r"https://([a-z0-9]+\.)?ai-trainer-em7\.pages\.dev",
+    allow_origin_regex=r"https://([a-z0-9]+\.)*ai-trainer-em7\.pages\.dev",
     allow_credentials=True,
-    allow_methods=["*"],
+    allow_methods=["*", "OPTIONS"],
     allow_headers=["*"],
 )
 

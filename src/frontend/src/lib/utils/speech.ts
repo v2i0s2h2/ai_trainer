@@ -4,25 +4,25 @@
 
 // Store loaded voices
 let voices: SpeechSynthesisVoice[] = [];
+let lastSpokenTime: Record<string, number> = {};
 
 function loadVoices() {
-	if (speechSynthesis) {
-		voices = speechSynthesis.getVoices();
+	if (typeof window !== 'undefined' && window.speechSynthesis) {
+		voices = window.speechSynthesis.getVoices();
 		console.log('[Speech] Loaded voices:', voices.length);
 	}
 }
 
 export function initSpeech() {
 	if (typeof window !== 'undefined' && 'speechSynthesis' in window) {
-		speechSynthesis = window.speechSynthesis;
 		console.log('[Speech] Web Speech API available');
 
 		// Load voices initially
 		loadVoices();
 
 		// Handle async voice loading (Chrome/Brave requires this)
-		if (speechSynthesis.onvoiceschanged !== undefined) {
-			speechSynthesis.onvoiceschanged = loadVoices;
+		if (window.speechSynthesis.onvoiceschanged !== undefined) {
+			window.speechSynthesis.onvoiceschanged = loadVoices;
 		}
 
 		return true;
@@ -32,11 +32,7 @@ export function initSpeech() {
 }
 
 export function speak(text: string, priority: 'high' | 'normal' | 'low' = 'normal') {
-	if (!speechSynthesis) {
-		initSpeech();
-	}
-
-	if (!speechSynthesis) {
+	if (typeof window === 'undefined' || !window.speechSynthesis) {
 		console.warn('[Speech] Cannot speak, API not available');
 		return;
 	}
@@ -56,7 +52,7 @@ export function speak(text: string, priority: 'high' | 'normal' | 'low' = 'norma
 	}
 
 	// Cancel any ongoing speech
-	speechSynthesis.cancel();
+	window.speechSynthesis.cancel();
 
 	// Create utterance
 	const utterance = new SpeechSynthesisUtterance(text);
@@ -78,21 +74,19 @@ export function speak(text: string, priority: 'high' | 'normal' | 'low' = 'norma
 
 		if (voice) {
 			utterance.voice = voice;
-			// Console log only once to avoid spam
-			// console.log('[Speech] Using voice:', voice.name);
 		}
 	}
 
 	// Speak
-	speechSynthesis.speak(utterance);
+	window.speechSynthesis.speak(utterance);
 	lastSpokenTime[text] = now;
 
 	console.log('[Speech] Speaking:', text);
 }
 
 export function stopSpeech() {
-	if (speechSynthesis) {
-		speechSynthesis.cancel();
+	if (typeof window !== 'undefined' && window.speechSynthesis) {
+		window.speechSynthesis.cancel();
 	}
 }
 

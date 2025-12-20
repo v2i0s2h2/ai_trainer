@@ -41,27 +41,6 @@ def run_migrations():
     except Exception as e:
         print(f"⚠️  Migration warning: {e}")
 
-def ensure_admin(email: str):
-    """Ensure a user has admin role on startup"""
-    import sqlite3
-    db_path = Path("data/fitness.db")
-    if not db_path.exists():
-        return
-        
-    try:
-        conn = sqlite3.connect(db_path)
-        cursor = conn.cursor()
-        print(f"👑 Ensuring admin status for: {email}...")
-        cursor.execute("UPDATE users SET role = 'admin', name = 'vi' WHERE email = ?", (email,))
-        if cursor.rowcount > 0:
-            print(f"✅ User {email} is now an Admin.")
-        else:
-            print(f"ℹ️  Admin update: User {email} not found yet (please sign up first).")
-        conn.commit()
-        conn.close()
-    except Exception as e:
-        print(f"⚠️  Admin setup warning: {e}")
-
 # Now import and run
 if __name__ == "__main__":
     # Initialize database tables

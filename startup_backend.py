@@ -12,8 +12,8 @@ from dotenv import load_dotenv
 root = Path(__file__).parent
 sys.path.insert(0, str(root))
 
-# Load .env file from parent directory
-env_path = Path(__file__).parent.parent / ".env"
+# Load .env file from current directory
+env_path = Path(__file__).parent / ".env"
 _ = load_dotenv(dotenv_path=env_path)
 
 # Now import and run

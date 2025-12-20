@@ -11,6 +11,10 @@ import uvicorn
 from fastapi import FastAPI, HTTPException, WebSocket, WebSocketDisconnect
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
+from dotenv import load_dotenv
+
+# Load environment variables
+load_dotenv()
 
 DEPLOYMENT_ENV: str = os.getenv("DEPLOYMENT_ENV", "development")
 DEV_MODE: bool = DEPLOYMENT_ENV == "development"
@@ -38,17 +42,17 @@ default_origins = [
 env_origins = (
     os.getenv("CORS_ORIGINS", "").split(",") if os.getenv("CORS_ORIGINS") else []
 )
-cors_origins = (
-    default_origins + [o.strip() for o in env_origins if o.strip()]
-    if DEV_MODE
-    else [o.strip() for o in env_origins if o.strip()]
-)
+cors_origins = [o.strip() for o in env_origins if o.strip()]
+if DEV_MODE:
+    cors_origins = default_origins + cors_origins
+
+logger.info(f"Allowed CORS origins: {cors_origins}")
 
 # Allow all Cloudflare Pages deployment URLs (each has unique subdomain like 00cd92a2.ai-trainer-em7.pages.dev)
 app.add_middleware(
     CORSMiddleware,
     allow_origins=cors_origins,
-    allow_origin_regex=r"https://[a-z0-9]+\.ai-trainer-em7\.pages\.dev",
+    allow_origin_regex=r"https://([a-z0-9]+\.)?ai-trainer-em7\.pages\.dev",
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],

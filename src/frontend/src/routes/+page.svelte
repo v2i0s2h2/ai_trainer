@@ -26,7 +26,23 @@
 				<h3>Best experience on laptop or external webcam</h3>
 				<p>
 					Full-body tracking needs a wide camera angle. Mobile phones usually can’t capture the entire pose,
-					Use a laptop and  placed a few meters away for best results.
+					Use a laptop and placed a few meters away for best results.
+				</p>
+			</div>
+		</div>
+	</section>
+
+	<section class="safety-notice">
+		<div class="notice-content">
+			<div class="notice-icon">⚠️</div>
+			<div class="notice-text">
+				<h3>Fitness Safety First</h3>
+				<p>
+					Do not perform any exercise before <strong>completely understanding</strong> the technique and 
+					<strong>consulting</strong> with a professional.
+				</p>
+				<p class="sub-tip">
+					Please watch all tutorials and read the <strong>Learn</strong> section before starting.
 				</p>
 			</div>
 		</div>
@@ -73,8 +89,30 @@
 		border: 1px solid rgba(59, 130, 246, 0.4);
 		border-radius: 1rem;
 		padding: 1rem 1.25rem;
-		margin: 1.5rem 0;
+		margin: 1rem 0;
 		color: var(--text-primary);
+	}
+
+	.safety-notice {
+		background: rgba(217, 119, 6, 0.15);
+		border: 1px solid rgba(245, 158, 11, 0.4);
+		border-radius: 1rem;
+		padding: 1rem 1.25rem;
+		margin: 1rem 0;
+		color: var(--text-primary);
+	}
+
+	.sub-tip {
+		font-size: 0.85rem !important;
+		opacity: 0.9;
+		background: rgba(0, 0, 0, 0.2);
+		padding: 0.5rem;
+		border-radius: 0.5rem;
+		margin-top: 0.75rem !important;
+	}
+
+	.safety-notice strong {
+		color: #fbbf24;
 	}
 
 	.notice-content {

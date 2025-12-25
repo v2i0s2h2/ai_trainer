@@ -1,5 +1,5 @@
-from datetime import timedelta
-from typing import Optional
+from datetime import datetime, timedelta
+from typing import List, Optional
 
 from fastapi import APIRouter, Depends, HTTPException, status
 from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
@@ -42,6 +42,17 @@ class UserResponse(BaseModel):
     email: str
     name: str
     role: str
+
+    class Config:
+        from_attributes = True
+
+
+class AdminUserResponse(BaseModel):
+    id: int
+    email: Optional[str]
+    name: str
+    role: str
+    created_at: datetime
 
     class Config:
         from_attributes = True
@@ -159,3 +170,18 @@ def get_current_user(
 def get_me(current_user: User = Depends(get_current_user)):
     """Get current user data including role"""
     return current_user
+
+
+@router.get("/admin/users", response_model=List[AdminUserResponse])
+def get_all_users(
+    current_user: User = Depends(get_current_user), db: Session = Depends(get_db)
+):
+    """Admin only: Get list of all registered users"""
+    if current_user.role != "admin":
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="You do not have permission to access this resource",
+        )
+
+    users = db.query(User).all()
+    return users

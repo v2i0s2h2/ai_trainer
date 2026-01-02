@@ -18,6 +18,7 @@ class User(Base):
     email = Column(String, unique=True, nullable=True)
     hashed_password = Column(String, nullable=True)
     role = Column(String, default="user")  # "user" or "admin"
+    google_id = Column(String, unique=True, nullable=True, index=True)
     created_at = Column(DateTime, default=datetime.utcnow)
 
     # Relationships

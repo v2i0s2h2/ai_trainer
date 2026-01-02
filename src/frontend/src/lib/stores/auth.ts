@@ -77,6 +77,49 @@ function createAuthStore() {
             }
         },
 
+        async loginWithGoogle(credential: string) {
+            update((state) => ({ ...state, loading: true, error: null }));
+
+            try {
+                const res = await fetch(`${API_BASE_URL}/api/auth/google`, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ credential }),
+                });
+
+                const data = await res.json();
+
+                if (!res.ok) {
+                    throw new Error(data.detail || "Google login failed");
+                }
+
+                // Save to local storage
+                if (browser) {
+                    localStorage.setItem("token", data.access_token);
+                    localStorage.setItem("user", JSON.stringify(data.user));
+                }
+
+                update((state) => ({
+                    ...state,
+                    isAuthenticated: true,
+                    token: data.access_token,
+                    user: data.user,
+                    loading: false,
+                    error: null,
+                }));
+
+                goto("/profile");
+                return true;
+            } catch (err: any) {
+                update((state) => ({
+                    ...state,
+                    loading: false,
+                    error: err.message || "An error occurred during Google login",
+                }));
+                return false;
+            }
+        },
+
         async register(name: string, email: string, password: string) {
             update((state) => ({ ...state, loading: true, error: null }));
 

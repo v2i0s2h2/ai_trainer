@@ -16,3 +16,5 @@ export const WS_BASE_URL = (
         ? import.meta.env.VITE_WS_URL || getWsUrl(API_BASE_URL)
         : "ws://localhost:8001"
 ) as string;
+
+export const GOOGLE_CLIENT_ID = import.meta.env.VITE_GOOGLE_CLIENT_ID as string;

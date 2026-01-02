@@ -1,4 +1,5 @@
 from datetime import datetime, timedelta
+import os
 from typing import List, Optional
 
 from fastapi import APIRouter, Depends, HTTPException, status
@@ -16,7 +17,12 @@ from src.backend.auth.security import (
 from src.backend.database.db import get_db
 from src.backend.database.models import User
 
+from google.oauth2 import id_token
+from google.auth.transport import requests as google_requests
+
 router = APIRouter(prefix="/auth", tags=["auth"])
+
+GOOGLE_CLIENT_ID = os.getenv("GOOGLE_CLIENT_ID")
 
 
 # Schemas
@@ -35,6 +41,10 @@ class Token(BaseModel):
     access_token: str
     token_type: str
     user: dict  # Basic user info to return with token
+
+
+class GoogleLogin(BaseModel):
+    credential: str
 
 
 class UserResponse(BaseModel):
@@ -130,6 +140,87 @@ def login(user_in: UserLogin, db: Session = Depends(get_db)):
             "role": user.role,
         },
     }
+
+
+@router.post("/google", response_model=Token)
+def google_login(login_data: GoogleLogin, db: Session = Depends(get_db)):
+    """Verify Google ID token and login/register user"""
+    if not GOOGLE_CLIENT_ID:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="Google Client ID not configured on server",
+        )
+
+    try:
+        # Verify the ID token
+        idinfo = id_token.verify_oauth2_token(
+            login_data.credential, google_requests.Request(), GOOGLE_CLIENT_ID
+        )
+
+        # ID token is valid. Get user's Google ID and email.
+        google_id = idinfo["sub"]
+        email = idinfo.get("email")
+        name = idinfo.get("name", "Champion")
+
+        if not email:
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail="Email not provided by Google",
+            )
+
+        # 1. Try to find user by google_id
+        user = db.query(User).filter(User.google_id == google_id).first()
+
+        if not user:
+            # 2. Try to find user by email (account linking)
+            user = db.query(User).filter(User.email == email).first()
+
+            if user:
+                # Link account
+                user.google_id = google_id
+                if not user.name or user.name == "Champion":
+                    user.name = name
+            else:
+                # 3. Create new user
+                user = User(
+                    email=email,
+                    name=name,
+                    google_id=google_id,
+                    role="user",
+                )
+                db.add(user)
+
+            db.commit()
+            db.refresh(user)
+
+        # Generate token
+        access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
+        access_token = create_access_token(
+            data={"sub": str(user.id)}, expires_delta=access_token_expires
+        )
+
+        return {
+            "access_token": access_token,
+            "token_type": "bearer",
+            "user": {
+                "id": user.id,
+                "name": user.name,
+                "email": user.email,
+                "role": user.role,
+            },
+        }
+
+    except ValueError:
+        # Invalid token
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Invalid Google token",
+        )
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Google login failed: {str(e)}",
+        )
 
 
 # Dependency

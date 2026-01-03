@@ -4,12 +4,13 @@ services:
     image: vishnu202/ai-trainer-backend:latest
     container_name: ai-trainer-backend
     ports:
-      - "8000:8001"
+      - "8001:8001"
     env_file:
       - .env
     volumes:
       - ./data:/app/data
     restart: always
+    pull_policy: always
     networks:
       - ai-trainer-network
 

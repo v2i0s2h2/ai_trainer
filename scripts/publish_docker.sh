@@ -11,9 +11,9 @@ fi
 
 IMAGE_NAME="$DOCKER_USER/ai-trainer-backend"
 
-echo "🐳 Building lean backend image..."
-# Build using Dockerfile.backend
-docker build -f Dockerfile.backend -t $IMAGE_NAME:latest .
+echo "🐳 Building lean backend image for linux/amd64..."
+# Build using Dockerfile.backend and enforce platform for Intel home server
+docker build --platform linux/amd64 -f Dockerfile.backend -t $IMAGE_NAME:latest .
 
 echo "🔑 Logging in to Docker Hub..."
 docker login

@@ -1,15 +1,10 @@
-opencv-python==4.8.0.76; sys_platform == 'darwin'
-opencv-python-headless; sys_platform == 'linux'
+# Production requirements (No training dependencies)
+# Core Vision
+opencv-python-headless==4.8.0.76
 mediapipe==0.10.14
-numpy<2.0
-gtts
-pygame
-tensorflow; sys_platform == 'darwin'
-tensorflow-cpu; sys_platform == 'linux'
-pandas
-scikit-learn
-joblib
-pyttsx3
+numpy==1.26.4
+
+# API & Web
 fastapi>=0.109.0
 uvicorn[standard]>=0.27.0
 python-multipart>=0.0.6
@@ -21,3 +16,7 @@ passlib[bcrypt]>=1.7.4
 python-jose[cryptography]>=3.3.0
 bcrypt>=4.0.1
 google-auth>=2.26.0
+
+# Voice (Optional but included for backend features)
+gtts
+pygame

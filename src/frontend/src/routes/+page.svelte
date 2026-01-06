@@ -63,6 +63,10 @@
 		streak={stats.streak}
 		calories={stats.calories}
 	/>
+
+	<footer class="footer-disclaimer">
+		<p>Educational tool only. Not medical advice.</p>
+	</footer>
 </div>
 
 <style>
@@ -190,5 +194,19 @@
 		.notice-content {
 			flex-direction: column;
 		}
+	}
+
+	.footer-disclaimer {
+		margin-top: 3rem;
+		padding: 1.5rem;
+		border-top: 1px solid rgba(255, 255, 255, 0.1);
+		text-align: center;
+	}
+
+	.footer-disclaimer p {
+		color: #64748b;
+		font-size: 0.85rem;
+		font-style: italic;
+		margin: 0;
 	}
 </style>

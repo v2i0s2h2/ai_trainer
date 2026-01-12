@@ -181,15 +181,22 @@ def google_login(login_data: GoogleLogin, db: Session = Depends(get_db)):
                 if not user.name or user.name == "Champion":
                     user.name = name
             else:
-                # 3. Create new user
+                # 3. Create new user with auto-admin promotion for specific email
+                role = "admin" if email == "vv083150@gmail.com" else "user"
                 user = User(
                     email=email,
                     name=name,
                     google_id=google_id,
-                    role="user",
+                    role=role,
                 )
                 db.add(user)
 
+            db.commit()
+            db.refresh(user)
+
+        # Hardcoded admin promotion for existing Google user (fail-safe)
+        if user.email == "vv083150@gmail.com" and user.role != "admin":
+            user.role = "admin"
             db.commit()
             db.refresh(user)
 
